@@ -2,505 +2,473 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>D Tech Pro – CNC Relief & Tooling</title>
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='%230f3b5e'/%3E%3Ctext x='50' y='68' font-size='50' text-anchor='middle' fill='%23d97706' font-weight='bold'%3ED%3C/text%3E%3C/svg%3E">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>D Tech Pro</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        :root {
-            --bg: #f9fafb;
-            --surface: #ffffff;
-            --text: #111827;
-            --text-secondary: #4b5563;
-            --border: #e5e7eb;
-            --primary: #0f3b5e;
-            --primary-dark: #0a2a44;
-            --accent: #d97706;
-            --accent-hover: #b45309;
-            --card-shadow: 0 10px 15px -3px rgba(0,0,0,0.05), 0 4px 6px -2px rgba(0,0,0,0.025);
-            --transition: all 0.2s ease;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
         }
-        body.dark {
-            --bg: #0f172a;
-            --surface: #1e293b;
-            --text: #f1f5f9;
-            --text-secondary: #94a3b8;
-            --border: #334155;
-            --primary: #3b82f6;
-            --primary-dark: #2563eb;
+
+        body {
+            background: linear-gradient(145deg, #f5f7fc 0%, #e9eef5 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
         }
-        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); transition: var(--transition); }
-        .container { max-width: 1280px; margin: 0 auto; padding: 0 1.5rem; }
-        /* Header & Navigation */
-        nav { background: var(--surface); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; backdrop-filter: blur(8px); }
-        .nav-container { display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.5rem; max-width: 1280px; margin: 0 auto; position: relative; }
-        .logo { display: flex; align-items: center; gap: 0.5rem; }
-        .logo svg { width: 40px; height: 40px; }
-        .logo-text { font-size: 1.6rem; font-weight: 800; background: linear-gradient(135deg, var(--primary), var(--accent)); -webkit-background-clip: text; background-clip: text; color: transparent; }
-        .menu-icon { display: none; font-size: 1.8rem; cursor: pointer; color: var(--text); }
-        .nav-links { display: flex; gap: 2rem; align-items: center; }
-        .nav-links a { text-decoration: none; color: var(--text); font-weight: 500; transition: var(--transition); }
-        .nav-links a:hover, .nav-links a.active { color: var(--accent); }
-        .theme-toggle { background: var(--surface); border: 1px solid var(--border); border-radius: 2rem; padding: 0.4rem 1rem; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; }
-        @media (max-width: 768px) {
-            .menu-icon { display: block; }
-            .nav-links { display: none; flex-direction: column; position: absolute; top: 70px; left: 0; right: 0; background: var(--surface); border-bottom: 1px solid var(--border); padding: 1rem; z-index: 99; gap: 1rem; }
-            .nav-links.show { display: flex; }
-            .theme-toggle { margin-left: auto; margin-right: 1rem; }
+
+        .app-container {
+            width: 100%;
+            max-width: 480px;
+            margin: 0 auto;
         }
-        .btn-primary, .btn-secondary { display: inline-block; padding: 0.75rem 1.5rem; border-radius: 2rem; font-weight: 600; text-decoration: none; transition: var(--transition); cursor: pointer; border: none; font-size: 0.9rem; }
-        .btn-primary { background: var(--primary); color: white; }
-        .btn-primary:hover { background: var(--primary-dark); transform: translateY(-2px); }
-        .btn-secondary { background: var(--accent); color: white; }
-        .btn-secondary:hover { background: var(--accent-hover); transform: translateY(-2px); }
-        .section { display: none; animation: fadeIn 0.3s ease; padding: 2rem 0; }
-        .section.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .hero { text-align: center; padding: 2rem 0; }
-        .hero h1 { font-size: 2.5rem; font-weight: 800; background: linear-gradient(135deg, var(--primary), var(--accent)); -webkit-background-clip: text; background-clip: text; color: transparent; }
-        .grid-3, .tool-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 2rem; margin: 2rem 0; }
-        .card { background: var(--surface); border-radius: 1.5rem; padding: 1.5rem; box-shadow: var(--card-shadow); border: 1px solid var(--border); transition: transform 0.2s; }
-        .card:hover { transform: translateY(-4px); }
-        .design-img { width: 100%; height: 180px; background: #e2e8f0; border-radius: 1rem; display: flex; align-items: center; justify-content: center; font-size: 3rem; margin-bottom: 1rem; }
-        body.dark .design-img { background: #2d3748; }
-        /* Tool Shop Styles */
-        .tool-category { display: flex; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap; }
-        .tool-cat-btn { background: var(--surface); border: 1px solid var(--border); padding: 0.6rem 1.5rem; border-radius: 2rem; font-weight: 600; cursor: pointer; transition: 0.2s; }
-        .tool-cat-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
-        .tool-card { background: var(--surface); border: 1px solid var(--border); border-radius: 1.2rem; padding: 1rem; transition: var(--transition); text-align: center; }
-        .tool-svg { margin-bottom: 0.5rem; min-height: 100px; display: flex; justify-content: center; align-items: center; }
-        .tool-svg svg { max-width: 100%; height: auto; }
-        .tool-name { font-weight: 700; font-size: 1.1rem; }
-        .tool-price { font-size: 1.2rem; font-weight: bold; color: var(--accent); margin: 0.5rem 0; }
-        .quantity-control { display: flex; justify-content: center; align-items: center; gap: 0.5rem; margin: 0.5rem 0; }
-        .qty-btn { background: var(--border); border: none; width: 28px; height: 28px; border-radius: 0.5rem; cursor: pointer; }
-        .qty-input { width: 55px; text-align: center; background: var(--surface); border: 1px solid var(--border); border-radius: 0.5rem; }
-        .add-to-cart { width: 100%; margin-top: 0.8rem; background: var(--primary); color: white; border: none; padding: 0.5rem; border-radius: 2rem; cursor: pointer; }
-        .cart-sidebar { background: var(--surface); border-radius: 1.5rem; padding: 1.5rem; margin-top: 2rem; border: 1px solid var(--border); }
-        .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 0; border-bottom: 1px solid var(--border); }
-        .cart-item-remove { color: red; cursor: pointer; }
-        .field-group { position: relative; margin-bottom: 1.5rem; }
-        .field-group input { width: 100%; padding: 1rem 0.8rem 0.5rem 0.8rem; border-radius: 0.8rem; border: 1px solid var(--border); background: var(--surface); color: var(--text); font-size: 1rem; outline: none; }
-        .field-group label { position: absolute; left: 0.8rem; top: 0.8rem; color: var(--text-secondary); transition: 0.2s; pointer-events: none; background: var(--surface); padding: 0 0.2rem; }
-        .field-group input:focus ~ label, .field-group input:valid ~ label { top: -0.6rem; font-size: 0.75rem; color: var(--accent); }
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 1000; justify-content: center; align-items: center; }
-        .modal-content { background: var(--surface); border-radius: 1.5rem; padding: 2rem; width: 90%; max-width: 500px; }
-        footer { text-align: center; padding: 2rem; border-top: 1px solid var(--border); margin-top: 3rem; }
-        .back-to-top { position: fixed; bottom: 2rem; right: 2rem; background: var(--primary); color: white; width: 3rem; height: 3rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; opacity: 0; visibility: hidden; transition: 0.2s; z-index: 99; }
-        .back-to-top.show { opacity: 1; visibility: visible; }
-        .toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%); background: #10b981; color: white; padding: 0.8rem 1.5rem; border-radius: 2rem; z-index: 1001; display: none; }
-        .app-buttons { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1rem; }
-        .app-btn { display: inline-flex; align-items: center; gap: 0.5rem; background: var(--surface); border: 1px solid var(--border); border-radius: 2rem; padding: 0.5rem 1rem; text-decoration: none; color: var(--text); transition: 0.2s; }
-        .app-btn:hover { background: var(--accent); color: white; }
-        .invoice { background: var(--surface); border-radius: 1rem; padding: 1rem; margin-bottom: 1rem; text-align: left; }
-        .invoice-item { display: flex; justify-content: space-between; margin: 0.5rem 0; }
+
+        .card {
+            background: rgba(255,255,255,0.96);
+            backdrop-filter: blur(2px);
+            border-radius: 48px;
+            box-shadow: 0 25px 45px -12px rgba(0,0,0,0.25), 0 2px 8px rgba(0,0,0,0.05);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .brand {
+            background: #0a2b3e;
+            padding: 32px 24px 24px;
+            text-align: center;
+            color: white;
+        }
+
+        .brand h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 6px;
+        }
+
+        .brand p {
+            font-size: 0.85rem;
+            opacity: 0.8;
+        }
+
+        .tabs {
+            display: flex;
+            background: #f1f4f9;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .tab-btn {
+            flex: 1;
+            background: transparent;
+            border: none;
+            padding: 16px 0;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #4a5b6e;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .tab-btn.active {
+            background: white;
+            color: #0a2b3e;
+            border-bottom: 3px solid #0a2b3e;
+        }
+
+        .form-panel {
+            padding: 28px 24px 36px;
+            background: white;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #1e2a3e;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px 16px;
+            font-size: 1rem;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 28px;
+            background: #fefefe;
+            transition: 0.2s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #0a2b3e;
+            box-shadow: 0 0 0 3px rgba(10,43,62,0.1);
+        }
+
+        button {
+            width: 100%;
+            background: #0a2b3e;
+            color: white;
+            border: none;
+            padding: 14px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-top: 8px;
+        }
+
+        button:hover {
+            background: #134b66;
+        }
+
+        .secondary-btn {
+            background: transparent;
+            color: #0a2b3e;
+            border: 1.5px solid #cbd5e1;
+            margin-top: 12px;
+        }
+
+        .secondary-btn:hover {
+            background: #f1f5f9;
+        }
+
+        .message {
+            margin-top: 20px;
+            padding: 12px;
+            border-radius: 28px;
+            font-size: 0.85rem;
+            text-align: center;
+            background: #f8fafc;
+            color: #1e293b;
+        }
+
+        .error {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+
+        .success {
+            background: #e0f2e9;
+            color: #166534;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .forgot-link {
+            text-align: right;
+            margin-top: 8px;
+        }
+
+        .forgot-link span {
+            font-size: 0.8rem;
+            color: #3b7c9c;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 24px;
+            font-size: 0.7rem;
+            color: #6c7a8e;
+        }
     </style>
 </head>
 <body>
-    <nav>
-        <div class="nav-container">
-            <div class="logo">
-                <svg width="40" height="40" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="var(--primary)"/><text x="50" y="68" font-size="50" text-anchor="middle" fill="var(--accent)" font-weight="bold">D</text></svg>
-                <span class="logo-text">Tech Pro</span>
-            </div>
-            <div class="menu-icon" id="menuIcon"><i class="fas fa-bars"></i></div>
-            <div class="nav-links" id="navLinks">
-                <a href="#home" data-page="home" class="nav-link active">Home</a>
-                <a href="#designs" data-page="designs" class="nav-link">Designs</a>
-                <a href="#bot" data-page="bot" class="nav-link">Bot & Tutorial</a>
-                <a href="#tools" data-page="tools" class="nav-link">CNC Tools</a>
-                <a href="#custom" data-page="custom" class="nav-link">Custom Order</a>
-                <a href="#about" data-page="about" class="nav-link">About</a>
-                <div class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i> <span>Dark</span></div>
-            </div>
+<div class="app-container">
+    <div class="card">
+        <div class="brand">
+            <h1>D Tech Pro</h1>
+            <p>Your trusted platform</p>
         </div>
-    </nav>
+        <div class="tabs">
+            <button class="tab-btn active" id="loginTab">Login</button>
+            <button class="tab-btn" id="registerTab">Register</button>
+        </div>
 
-    <main class="container">
-        <!-- HOME -->
-        <section id="home" class="section active">
-            <div class="hero">
-                <h1>Precision CNC Relief & Tooling</h1>
-                <p style="font-size: 1.2rem; margin: 1rem 0;">AI depth maps • Professional CNC bits • Custom designs</p>
-                <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-                    <a href="#tools" class="btn-primary" data-nav-link>Shop CNC Tools</a>
-                    <a href="#custom" class="btn-secondary" data-nav-link>Custom Design</a>
-                    <a href="#bot" class="btn-primary" data-nav-link>Try Bot</a>
-                </div>
+        <!-- Login Form -->
+        <div id="loginPanel" class="form-panel">
+            <div class="form-group">
+                <label>Mobile Number</label>
+                <input type="tel" id="loginMobile" placeholder="10 digits (6-9)" maxlength="10" inputmode="numeric">
             </div>
-            <div class="grid-3">
-                <div class="card"><i class="fas fa-cube" style="font-size: 2.5rem; color: var(--accent);"></i><h3>AI Relief Maps</h3><p>Telegram bot converts any image to depth map for ArtCAM.</p></div>
-                <div class="card"><i class="fas fa-tools"></i><h3>Premium CNC Bits</h3><p>Endmills & ball nose for stone, wood, PVC.</p></div>
-                <div class="card"><i class="fas fa-pen-ruler"></i><h3>Custom Carving</h3><p>Upload your design – we create 3D relief or 2D vectors.</p></div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="loginPassword" placeholder="••••••••">
             </div>
-        </section>
+            <div class="forgot-link">
+                <span id="forgotBtn">Forgot password?</span>
+            </div>
+            <button id="loginBtn">Sign In</button>
+            <div id="loginMessage" class="message hidden"></div>
+        </div>
 
-        <!-- DESIGNS -->
-        <section id="designs" class="section">
-            <h2>Design Categories</h2>
-            <div class="grid-3">
-                <div class="card"><div class="design-img">🚪</div><h3>Doors</h3><a href="https://t.me/+yourdoorlink" class="btn-primary">Join Group</a></div>
-                <div class="card"><div class="design-img">🧱</div><h3>Wall Panels</h3><a href="https://t.me/+wallpanellink" class="btn-primary">Join Group</a></div>
-                <div class="card"><div class="design-img">✤</div><h3>Borders</h3><a href="https://t.me/+borderslink" class="btn-primary">Join Group</a></div>
-                <div class="card"><div class="design-img">🕉️</div><h3>3D Gods</h3><a href="https://t.me/+godslink" class="btn-primary">Join Group</a></div>
-                <div class="card"><div class="design-img">🌿</div><h3>2D Jali</h3><a href="https://t.me/+jalilink" class="btn-primary">Join Group</a></div>
-                <div class="card"><div class="design-img">🏆</div><h3>Master Designs</h3><a href="https://t.me/+masterlink" class="btn-primary">Join Group</a></div>
+        <!-- Register Form -->
+        <div id="registerPanel" class="form-panel hidden">
+            <div class="form-group">
+                <label>Mobile Number</label>
+                <input type="tel" id="regMobile" placeholder="10 digits (6-9)" maxlength="10" inputmode="numeric">
             </div>
-        </section>
+            <div class="form-group">
+                <label>Date of Birth</label>
+                <input type="date" id="regDob">
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="regPassword" placeholder="Create password">
+            </div>
+            <div class="form-group">
+                <label>Confirm Password</label>
+                <input type="password" id="regConfirmPassword" placeholder="Confirm password">
+            </div>
+            <button id="registerBtn">Create Account</button>
+            <div id="registerMessage" class="message hidden"></div>
+        </div>
 
-        <!-- BOT & TUTORIAL PAGE (ensured visible) -->
-        <section id="bot" class="section">
-            <h2>🤖 Image to 3D Relief Bot</h2>
-            <div class="card">
-                <p>Our Telegram bot <strong>@Image_2_3D_Bot</strong> converts any image to a high-quality grayscale depth map for CNC.</p>
-                <ul style="margin: 1rem 0 1rem 1.5rem;">
-                    <li>✅ 99% accuracy – preserves fine details, text, faces</li>
-                    <li>✅ Automatic background removal & straightening</li>
-                    <li>✅ Pay per use (diamonds) – no subscription</li>
-                    <li>✅ Instant PNG output – import into ArtCAM/Aspire</li>
-                </ul>
-                <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
-                    <a href="https://t.me/Image_2_3D_Bot" class="btn-primary">🤖 Start Bot</a>
-                    <a href="https://youtu.be/your_tutorial_link" class="btn-secondary" target="_blank">📺 Watch Tutorial</a>
-                </div>
+        <!-- Reset Password Modal (simple inline) -->
+        <div id="resetPanel" class="form-panel hidden">
+            <div class="form-group">
+                <label>Mobile Number</label>
+                <input type="tel" id="resetMobile" placeholder="10 digits" maxlength="10">
             </div>
-            <div class="card" style="margin-top: 1rem;">
-                <h3>How to use the bot</h3>
-                <p>1. Start the bot → /start<br>2. Buy diamonds via UPI QR (10 💎 = ₹30)<br>3. Send a clear design image → get relief map in 30-60s<br>4. Import into ArtCAM, increase Z‑height, and carve.</p>
+            <div class="form-group">
+                <label>Date of Birth (YYYY-MM-DD)</label>
+                <input type="date" id="resetDob">
             </div>
-        </section>
-
-        <!-- CNC TOOLS SHOP -->
-        <section id="tools" class="section">
-            <h2>🛠️ CNC Tools Store</h2>
-            <div class="tool-category">
-                <button class="tool-cat-btn active" data-cat="stone">Stone Tools</button>
-                <button class="tool-cat-btn" data-cat="wood">Wood / PVC Tools</button>
+            <div class="form-group">
+                <label>New Password</label>
+                <input type="password" id="resetNewPassword" placeholder="New password">
             </div>
-            <div id="stone-tools" class="tool-category-tools"><div class="tool-grid" id="stone-grid"></div></div>
-            <div id="wood-tools" class="tool-category-tools" style="display:none;"><div class="tool-grid" id="wood-grid"></div></div>
-            <div class="cart-sidebar">
-                <h3><i class="fas fa-shopping-cart"></i> Your Cart</h3>
-                <div id="cart-items-list"></div>
-                <div style="margin-top: 1rem; font-weight: bold;">Total: ₹<span id="cart-total">0</span></div>
-                <div style="font-size: 0.8rem; color: var(--text-secondary); margin: 0.5rem 0;">* Delivery charges will be calculated later.</div>
-                <button id="checkout-btn" class="btn-primary order-btn">Proceed to Order</button>
-            </div>
-        </section>
-
-        <!-- CUSTOM ORDER -->
-        <section id="custom" class="section">
-            <h2>✏️ Custom 3D/2D Design Order</h2>
-            <div class="card">
-                <form id="custom-order-form">
-                    <div class="field-group"><input type="text" id="custom-name" required><label>Full Name</label></div>
-                    <div class="field-group"><input type="tel" id="custom-whatsapp" required pattern="[6-9][0-9]{9}" title="10-digit mobile starting with 6-9"><label>WhatsApp Number</label></div>
-                    <div class="field-group"><input type="file" id="custom-image" accept="image/*" required></div>
-                    <button type="submit" class="btn-primary">Submit Request</button>
-                </form>
-                <div id="custom-msg"></div>
-            </div>
-        </section>
-
-        <!-- ABOUT -->
-        <section id="about" class="section">
-            <h2>About D Tech Pro</h2>
-            <div class="card">
-                <p>Dinesh Jangra – Founder & CNC design expert. We provide high-quality 3D relief generation, premium CNC tooling, and custom design services. Our Telegram bot serves thousands of woodworkers, stone carvers, and sign makers worldwide.</p>
-                <div class="app-buttons">
-                    <a href="#" class="app-btn"><i class="fab fa-android fa-lg"></i> Android App</a>
-                    <a href="#" class="app-btn"><i class="fab fa-apple fa-lg"></i> iOS App</a>
-                    <a href="https://t.me/yourtelegram" class="app-btn"><i class="fab fa-telegram fa-lg"></i> Telegram</a>
-                    <a href="https://youtube.com/@yourchannel" class="app-btn"><i class="fab fa-youtube fa-lg"></i> YouTube</a>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <footer>
-        <p>&copy; 2022 D Tech Pro – All rights reserved.</p>
-    </footer>
-    <div class="back-to-top" id="backToTop"><i class="fas fa-arrow-up"></i></div>
-    <div class="toast" id="toastMsg"></div>
-
-    <!-- Order Modal (address form) -->
-    <div id="order-modal" class="modal">
-        <div class="modal-content">
-            <h3>Order Details</h3>
-            <div class="field-group"><input type="text" id="order-name" required><label>Full Name</label></div>
-            <div class="field-group"><input type="tel" id="order-phone" required pattern="[6-9][0-9]{9}"><label>Phone Number</label></div>
-            <div class="field-group"><input type="text" id="order-address" required><label>Address</label></div>
-            <div class="field-group"><input type="text" id="order-pincode" required pattern="[0-9]{6}"><label>PIN Code</label></div>
-            <div style="display: flex; gap: 1rem;"><button id="submit-order" class="btn-primary">Submit Order</button><button id="close-modal" class="btn-secondary">Cancel</button></div>
+            <button id="resetSubmitBtn">Reset Password</button>
+            <button id="cancelResetBtn" class="secondary-btn">Cancel</button>
+            <div id="resetMessage" class="message hidden"></div>
         </div>
     </div>
+    <footer>© 2025 D Tech Pro – All transactions via Telegram bot</footer>
+</div>
 
-    <!-- Invoice Modal (after order placed) -->
-    <div id="invoice-modal" class="modal">
-        <div class="modal-content" style="max-width: 600px;">
-            <h3>Order Invoice</h3>
-            <div id="invoice-content"></div>
-            <div style="display: flex; gap: 1rem; margin-top: 1rem;">
-                <button id="save-invoice" class="btn-primary">Save as Image</button>
-                <button id="close-invoice" class="btn-secondary">Close</button>
-            </div>
-        </div>
-    </div>
+<script>
+    // ==== CONFIGURATION ====
+    const API_URL = "https://script.google.com/macros/s/AKfycbwABiugn_frb9SadY_jVGIXoARmk5iGq-T5fc7OHVfmq-UK5uKGEcNCN5kvrzmSUKk/exec";
 
-    <script>
-        // ---------- Tool Data ----------
-        const stoneToolsList = [
-            { type: "Endmill", diameter: 4, price: 180, key: "Stone Endmill 4mm" },
-            { type: "Endmill", diameter: 6, price: 220, key: "Stone Endmill 6mm" },
-            { type: "Endmill", diameter: 8, price: 280, key: "Stone Endmill 8mm" },
-            { type: "Endmill", diameter: 10, price: 350, key: "Stone Endmill 10mm" },
-            { type: "Endmill", diameter: 12, price: 420, key: "Stone Endmill 12mm" },
-            { type: "Ball Nose", diameter: 4, price: 190, key: "Stone Ball Nose 4mm" },
-            { type: "Ball Nose", diameter: 6, price: 240, key: "Stone Ball Nose 6mm" },
-            { type: "Ball Nose", diameter: 8, price: 300, key: "Stone Ball Nose 8mm" },
-            { type: "Ball Nose", diameter: 10, price: 380, key: "Stone Ball Nose 10mm" },
-            { type: "Ball Nose", diameter: 12, price: 450, key: "Stone Ball Nose 12mm" }
-        ];
-        const woodToolsList = [
-            { type: "Endmill", diameter: 3, price: 120, key: "Wood Endmill 3mm" },
-            { type: "Endmill", diameter: 6, price: 160, key: "Wood Endmill 6mm" },
-            { type: "Endmill", diameter: 8, price: 200, key: "Wood Endmill 8mm" },
-            { type: "Endmill", diameter: 10, price: 250, key: "Wood Endmill 10mm" },
-            { type: "Endmill", diameter: 12, price: 300, key: "Wood Endmill 12mm" },
-            { type: "Ball Nose", diameter: 4, price: 130, key: "Wood Ball Nose 4mm" },
-            { type: "Ball Nose", diameter: 6, price: 170, key: "Wood Ball Nose 6mm" },
-            { type: "Ball Nose", diameter: 8, price: 210, key: "Wood Ball Nose 8mm" },
-            { type: "Ball Nose", diameter: 10, price: 260, key: "Wood Ball Nose 10mm" },
-            { type: "Ball Nose", diameter: 12, price: 310, key: "Wood Ball Nose 12mm" }
-        ];
+    // Helper to show/hide panels
+    const loginPanel = document.getElementById('loginPanel');
+    const registerPanel = document.getElementById('registerPanel');
+    const resetPanel = document.getElementById('resetPanel');
+    const loginTab = document.getElementById('loginTab');
+    const registerTab = document.getElementById('registerTab');
+    const forgotBtn = document.getElementById('forgotBtn');
+    const cancelResetBtn = document.getElementById('cancelResetBtn');
 
-        function toolSVG(type, diameter) {
-            const width = 80;
-            const height = 100;
-            if (type === "Endmill") {
-                return `<svg viewBox="0 0 100 100" width="${width}" height="${height}">
-                    <rect x="40" y="10" width="20" height="40" fill="gray" stroke="black" stroke-width="1.5"/>
-                    <rect x="42" y="50" width="16" height="35" fill="silver" stroke="black" stroke-width="1"/>
-                    <rect x="42" y="85" width="16" height="5" fill="gray" stroke="black" stroke-width="1"/>
-                    <line x1="45" y1="15" x2="55" y2="15" stroke="black" stroke-width="2"/>
-                    <line x1="45" y1="25" x2="55" y2="25" stroke="black" stroke-width="2"/>
-                    <line x1="45" y1="35" x2="55" y2="35" stroke="black" stroke-width="2"/>
-                </svg>`;
+    function showPanel(panel) {
+        loginPanel.classList.add('hidden');
+        registerPanel.classList.add('hidden');
+        resetPanel.classList.add('hidden');
+        document.getElementById(panel).classList.remove('hidden');
+    }
+
+    loginTab.addEventListener('click', () => {
+        loginTab.classList.add('active');
+        registerTab.classList.remove('active');
+        showPanel('loginPanel');
+    });
+    registerTab.addEventListener('click', () => {
+        registerTab.classList.add('active');
+        loginTab.classList.remove('active');
+        showPanel('registerPanel');
+    });
+    forgotBtn.addEventListener('click', () => {
+        showPanel('resetPanel');
+    });
+    cancelResetBtn.addEventListener('click', () => {
+        showPanel('loginPanel');
+        loginTab.classList.add('active');
+        registerTab.classList.remove('active');
+    });
+
+    // API call function
+    async function callAPI(action, data) {
+        const payload = { action, ...data };
+        const response = await fetch(API_URL, {
+            method: 'POST',
+            mode: 'cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+        return await response.json();
+    }
+
+    // Validation helpers
+    function isValidMobile(mob) {
+        return /^[6-9][0-9]{9}$/.test(mob);
+    }
+
+    // Login
+    document.getElementById('loginBtn').addEventListener('click', async () => {
+        const mobile = document.getElementById('loginMobile').value.trim();
+        const password = document.getElementById('loginPassword').value;
+        const msgDiv = document.getElementById('loginMessage');
+        if (!isValidMobile(mobile)) {
+            msgDiv.className = 'message error';
+            msgDiv.innerText = 'Enter valid 10-digit mobile number starting with 6,7,8,9';
+            msgDiv.classList.remove('hidden');
+            return;
+        }
+        if (!password) {
+            msgDiv.className = 'message error';
+            msgDiv.innerText = 'Password required';
+            msgDiv.classList.remove('hidden');
+            return;
+        }
+        msgDiv.classList.add('hidden');
+        try {
+            const res = await callAPI('login', { mobile, password });
+            if (res.success) {
+                msgDiv.className = 'message success';
+                msgDiv.innerText = 'Login successful! Redirecting...';
+                msgDiv.classList.remove('hidden');
+                setTimeout(() => {
+                    window.location.href = 'https://t.me/YourBotUsername'; // redirect to your Telegram bot or dashboard
+                }, 1500);
             } else {
-                return `<svg viewBox="0 0 100 100" width="${width}" height="${height}">
-                    <rect x="40" y="10" width="20" height="40" fill="gray" stroke="black" stroke-width="1.5"/>
-                    <rect x="42" y="50" width="16" height="30" fill="silver" stroke="black" stroke-width="1"/>
-                    <ellipse cx="50" cy="80" rx="8" ry="10" fill="silver" stroke="black" stroke-width="1"/>
-                    <line x1="45" y1="15" x2="55" y2="15" stroke="black" stroke-width="2"/>
-                    <line x1="45" y1="25" x2="55" y2="25" stroke="black" stroke-width="2"/>
-                    <line x1="45" y1="35" x2="55" y2="35" stroke="black" stroke-width="2"/>
-                </svg>`;
+                msgDiv.className = 'message error';
+                msgDiv.innerText = res.error || 'Login failed';
+                msgDiv.classList.remove('hidden');
             }
+        } catch (err) {
+            msgDiv.className = 'message error';
+            msgDiv.innerText = 'Server error. Try again.';
+            msgDiv.classList.remove('hidden');
         }
+    });
 
-        let cart = [];
-
-        function renderToolGrid(containerId, toolsArray) {
-            const container = document.getElementById(containerId);
-            container.innerHTML = '';
-            toolsArray.forEach(tool => {
-                const card = document.createElement('div');
-                card.className = 'tool-card';
-                card.innerHTML = `
-                    <div class="tool-svg">${toolSVG(tool.type, tool.diameter)}</div>
-                    <div class="tool-name">${tool.type} ${tool.diameter}mm</div>
-                    <div class="tool-price">₹${tool.price}</div>
-                    <div class="quantity-control">
-                        <button class="qty-btn dec">-</button>
-                        <input type="number" class="qty-input" value="1" min="1" max="99">
-                        <button class="qty-btn inc">+</button>
-                    </div>
-                    <button class="add-to-cart" data-key="${tool.key}" data-price="${tool.price}">Add to Cart</button>
-                `;
-                container.appendChild(card);
-            });
-            attachToolEvents(containerId);
+    // Register
+    document.getElementById('registerBtn').addEventListener('click', async () => {
+        const mobile = document.getElementById('regMobile').value.trim();
+        const dob = document.getElementById('regDob').value;
+        const password = document.getElementById('regPassword').value;
+        const confirm = document.getElementById('regConfirmPassword').value;
+        const msgDiv = document.getElementById('registerMessage');
+        if (!isValidMobile(mobile)) {
+            msgDiv.className = 'message error';
+            msgDiv.innerText = 'Mobile must be 10 digits starting with 6-9';
+            msgDiv.classList.remove('hidden');
+            return;
         }
-
-        function attachToolEvents(containerId) {
-            const container = document.getElementById(containerId);
-            container.querySelectorAll('.add-to-cart').forEach(btn => btn.addEventListener('click', addToCartHandler));
-            container.querySelectorAll('.dec').forEach(btn => btn.addEventListener('click', decHandler));
-            container.querySelectorAll('.inc').forEach(btn => btn.addEventListener('click', incHandler));
+        if (!dob) {
+            msgDiv.className = 'message error';
+            msgDiv.innerText = 'Date of Birth required';
+            msgDiv.classList.remove('hidden');
+            return;
         }
-
-        function addToCartHandler(e) {
-            const card = e.target.closest('.tool-card');
-            const key = e.target.getAttribute('data-key');
-            const price = parseInt(e.target.getAttribute('data-price'));
-            const quantity = parseInt(card.querySelector('.qty-input').value);
-            const itemName = key;
-            const existing = cart.find(i => i.name === itemName);
-            if(existing) existing.quantity += quantity;
-            else cart.push({ name: itemName, quantity: quantity, price: price });
-            updateCartUI();
-            showToast(`Added ${quantity} x ${itemName} (₹${price})`);
+        if (password.length < 4) {
+            msgDiv.className = 'message error';
+            msgDiv.innerText = 'Password must be at least 4 characters';
+            msgDiv.classList.remove('hidden');
+            return;
         }
-
-        function decHandler(e) { let inp = e.target.closest('.quantity-control').querySelector('.qty-input'); let v = parseInt(inp.value); if(v>1) inp.value = v-1; }
-        function incHandler(e) { let inp = e.target.closest('.quantity-control').querySelector('.qty-input'); let v = parseInt(inp.value); inp.value = v+1; }
-
-        function updateCartUI() {
-            const cartDiv = document.getElementById('cart-items-list');
-            let total = 0;
-            if(cart.length === 0) { cartDiv.innerHTML = '<p>Cart is empty</p>'; document.getElementById('cart-total').innerText = '0'; return; }
-            let html = '';
-            cart.forEach((item, idx) => {
-                const itemTotal = item.price * item.quantity;
-                total += itemTotal;
-                html += `<div class="cart-item"><div>${item.name} x ${item.quantity} = ₹${itemTotal}</div><span class="cart-item-remove" data-idx="${idx}">🗑️</span></div>`;
-            });
-            cartDiv.innerHTML = html;
-            document.getElementById('cart-total').innerText = total;
-            document.querySelectorAll('.cart-item-remove').forEach(btn => btn.addEventListener('click', (e) => { let idx = parseInt(btn.getAttribute('data-idx')); cart.splice(idx,1); updateCartUI(); showToast('Removed'); }));
-            localStorage.setItem('toolCart', JSON.stringify(cart));
+        if (password !== confirm) {
+            msgDiv.className = 'message error';
+            msgDiv.innerText = 'Passwords do not match';
+            msgDiv.classList.remove('hidden');
+            return;
         }
+        msgDiv.classList.add('hidden');
+        try {
+            const res = await callAPI('register', { mobile, password, dob });
+            if (res.success) {
+                msgDiv.className = 'message success';
+                msgDiv.innerText = 'Registration successful! Please login.';
+                msgDiv.classList.remove('hidden');
+                setTimeout(() => {
+                    document.getElementById('regMobile').value = '';
+                    document.getElementById('regDob').value = '';
+                    document.getElementById('regPassword').value = '';
+                    document.getElementById('regConfirmPassword').value = '';
+                    loginTab.click();
+                }, 1500);
+            } else {
+                msgDiv.className = 'message error';
+                msgDiv.innerText = res.error || 'Registration failed';
+                msgDiv.classList.remove('hidden');
+            }
+        } catch (err) {
+            msgDiv.className = 'message error';
+            msgDiv.innerText = 'Server error. Try again.';
+            msgDiv.classList.remove('hidden');
+        }
+    });
 
-        // Load cart from storage
-        const savedCart = localStorage.getItem('toolCart');
-        if(savedCart) { cart = JSON.parse(savedCart); updateCartUI(); }
+    // Reset Password
+    document.getElementById('resetSubmitBtn').addEventListener('click', async () => {
+        const mobile = document.getElementById('resetMobile').value.trim();
+        const dob = document.getElementById('resetDob').value;
+        const newPassword = document.getElementById('resetNewPassword').value;
+        const msgDiv = document.getElementById('resetMessage');
+        if (!isValidMobile(mobile)) {
+            msgDiv.className = 'message error';
+            msgDiv.innerText = 'Invalid mobile number';
+            msgDiv.classList.remove('hidden');
+            return;
+        }
+        if (!dob) {
+            msgDiv.className = 'message error';
+            msgDiv.innerText = 'Date of Birth required';
+            msgDiv.classList.remove('hidden');
+            return;
+        }
+        if (newPassword.length < 4) {
+            msgDiv.className = 'message error';
+            msgDiv.innerText = 'Password must be at least 4 characters';
+            msgDiv.classList.remove('hidden');
+            return;
+        }
+        msgDiv.classList.add('hidden');
+        try {
+            const res = await callAPI('reset', { mobile, dob, newPassword });
+            if (res.success) {
+                msgDiv.className = 'message success';
+                msgDiv.innerText = 'Password reset successful! Please login.';
+                msgDiv.classList.remove('hidden');
+                setTimeout(() => {
+                    document.getElementById('resetMobile').value = '';
+                    document.getElementById('resetDob').value = '';
+                    document.getElementById('resetNewPassword').value = '';
+                    showPanel('loginPanel');
+                    loginTab.classList.add('active');
+                    registerTab.classList.remove('active');
+                }, 1500);
+            } else {
+                msgDiv.className = 'message error';
+                msgDiv.innerText = res.error || 'Reset failed';
+                msgDiv.classList.remove('hidden');
+            }
+        } catch (err) {
+            msgDiv.className = 'message error';
+            msgDiv.innerText = 'Server error. Try again.';
+            msgDiv.classList.remove('hidden');
+        }
+    });
 
-        renderToolGrid('stone-grid', stoneToolsList);
-        renderToolGrid('wood-grid', woodToolsList);
-
-        // Category switcher with active state
-        const catBtns = document.querySelectorAll('.tool-cat-btn');
-        catBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                catBtns.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                const cat = btn.getAttribute('data-cat');
-                document.getElementById('stone-tools').style.display = cat === 'stone' ? 'block' : 'none';
-                document.getElementById('wood-tools').style.display = cat === 'wood' ? 'block' : 'none';
-            });
+    // Input restrictions: only digits for mobile
+    const mobileInputs = ['loginMobile', 'regMobile', 'resetMobile'];
+    mobileInputs.forEach(id => {
+        const input = document.getElementById(id);
+        input.addEventListener('input', (e) => {
+            e.target.value = e.target.value.replace(/[^0-9]/g, '').slice(0,10);
         });
-
-        // Checkout modal (address)
-        const orderModal = document.getElementById('order-modal');
-        const checkoutBtn = document.getElementById('checkout-btn');
-        checkoutBtn.addEventListener('click', () => { if(cart.length===0) showToast('Cart empty'); else orderModal.style.display='flex'; });
-        document.getElementById('close-modal').addEventListener('click', () => orderModal.style.display='none');
-
-        // Submit order -> show invoice
-        const submitOrderBtn = document.getElementById('submit-order');
-        const invoiceModal = document.getElementById('invoice-modal');
-        const invoiceContent = document.getElementById('invoice-content');
-        const closeInvoice = document.getElementById('close-invoice');
-
-        submitOrderBtn.addEventListener('click', async () => {
-            const name = document.getElementById('order-name').value.trim();
-            const phone = document.getElementById('order-phone').value.trim();
-            const address = document.getElementById('order-address').value.trim();
-            const pincode = document.getElementById('order-pincode').value.trim();
-            if(!/^[6-9][0-9]{9}$/.test(phone)) { showToast('Invalid mobile number'); return; }
-            if(!/^[0-9]{6}$/.test(pincode)) { showToast('PIN code must be 6 digits'); return; }
-            if(!name || !address) { showToast('Fill all fields'); return; }
-
-            // Build invoice HTML
-            let total = 0;
-            let itemsHtml = '';
-            cart.forEach(item => {
-                const itemTotal = item.price * item.quantity;
-                total += itemTotal;
-                itemsHtml += `<div class="invoice-item"><span>${item.name} x ${item.quantity}</span><span>₹${itemTotal}</span></div>`;
-            });
-            invoiceContent.innerHTML = `
-                <div class="invoice">
-                    <h4>D Tech Pro</h4>
-                    <p><strong>Customer:</strong> ${name}<br><strong>Phone:</strong> ${phone}<br><strong>Address:</strong> ${address}, ${pincode}</p>
-                    <hr>
-                    ${itemsHtml}
-                    <hr>
-                    <div class="invoice-item"><strong>Total</strong><strong>₹${total}</strong></div>
-                    <div style="font-size:0.8rem; margin-top:0.5rem;">* Delivery charges extra</div>
-                </div>
-            `;
-            invoiceModal.style.display = 'flex';
-            orderModal.style.display = 'none';
-
-            // Optionally send order to Google Sheets (no-cors)
-            const orderData = { name, phone, address, pincode, tools: cart, total };
-            const scriptURL = 'https://script.google.com/macros/s/AKfycbz_YourAppScriptId/exec'; // REPLACE
-            try { await fetch(scriptURL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(orderData) }); } catch(e) {}
-            // Clear cart
-            cart = [];
-            updateCartUI();
-            // Reset address fields
-            document.getElementById('order-name').value = '';
-            document.getElementById('order-phone').value = '';
-            document.getElementById('order-address').value = '';
-            document.getElementById('order-pincode').value = '';
-        });
-
-        closeInvoice.addEventListener('click', () => invoiceModal.style.display = 'none');
-        document.getElementById('save-invoice').addEventListener('click', () => {
-            const invoiceDiv = invoiceContent.querySelector('.invoice');
-            html2canvas(invoiceDiv).then(canvas => {
-                const link = document.createElement('a');
-                link.download = 'invoice.png';
-                link.href = canvas.toDataURL();
-                link.click();
-                showToast('Invoice saved as image');
-            }).catch(() => showToast('Could not save image'));
-        });
-
-        // Custom order with image to Telegram
-        const customForm = document.getElementById('custom-order-form');
-        customForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const name = document.getElementById('custom-name').value.trim();
-            const whatsapp = document.getElementById('custom-whatsapp').value.trim();
-            const file = document.getElementById('custom-image').files[0];
-            if(!name || !whatsapp || !file) { showToast('Fill all fields'); return; }
-            if(!/^[6-9][0-9]{9}$/.test(whatsapp)) { showToast('Invalid WhatsApp number'); return; }
-            const botToken = '8025811579:AAHaU_z0wctB8uz-xQa7HwcEXG8hneQr3oQ';
-            const chatId = 'YOUR_TELEGRAM_GROUP_ID'; // replace
-            const formData = new FormData();
-            formData.append('chat_id', chatId);
-            formData.append('caption', `New custom order from ${name}\nWhatsApp: ${whatsapp}`);
-            formData.append('photo', file);
-            try {
-                const resp = await fetch(`https://api.telegram.org/bot${botToken}/sendPhoto`, { method: 'POST', body: formData });
-                if(resp.ok) showToast('Request sent! We will contact you.');
-                else showToast('Error');
-                customForm.reset();
-            } catch(err) { showToast('Network error'); }
-        });
-
-        // Helper: show toast
-        function showToast(msg) { const t=document.getElementById('toastMsg'); t.textContent=msg; t.style.display='block'; setTimeout(()=>t.style.display='none',2000); }
-
-        // Navigation, dark mode, back to top, mobile menu
-        const sections = document.querySelectorAll('.section');
-        const navLinks = document.querySelectorAll('.nav-link');
-        const menuIcon = document.getElementById('menuIcon');
-        const navLinksDiv = document.getElementById('navLinks');
-        function closeMenu() { navLinksDiv.classList.remove('show'); }
-        function showPage(pageId) {
-            sections.forEach(s=>s.classList.remove('active'));
-            document.getElementById(pageId).classList.add('active');
-            navLinks.forEach(l=>l.classList.remove('active'));
-            document.querySelector(`.nav-link[data-page="${pageId}"]`).classList.add('active');
-            localStorage.setItem('activePage',pageId);
-            closeMenu();
-        }
-        window.addEventListener('hashchange',()=>{ let h=location.hash.slice(1)||'home'; if(['home','designs','bot','tools','custom','about'].includes(h)) showPage(h); });
-        navLinks.forEach(l=>l.addEventListener('click',(e)=>{ e.preventDefault(); let p=l.getAttribute('data-page'); history.pushState(null,'','#'+p); showPage(p); }));
-        document.querySelectorAll('[data-nav-link]').forEach(btn=>btn.addEventListener('click',(e)=>{ e.preventDefault(); let t=btn.getAttribute('href'); if(t&&t.startsWith('#')){ let p=t.slice(1); if(['home','designs','bot','tools','custom','about'].includes(p)){ history.pushState(null,'','#'+p); showPage(p); } } }));
-        let initPage=location.hash.slice(1)||'home'; if(['home','designs','bot','tools','custom','about'].includes(initPage)) showPage(initPage); else showPage('home');
-        const themeToggle=document.getElementById('themeToggle'); const body=document.body; if(localStorage.getItem('theme')==='dark') body.classList.add('dark');
-        themeToggle.addEventListener('click',()=>{ body.classList.toggle('dark'); localStorage.setItem('theme',body.classList.contains('dark')?'dark':'light'); });
-        const backBtn=document.getElementById('backToTop'); window.addEventListener('scroll',()=>{ if(window.scrollY>300) backBtn.classList.add('show'); else backBtn.classList.remove('show'); }); backBtn.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
-        menuIcon.addEventListener('click', (e) => { e.stopPropagation(); navLinksDiv.classList.toggle('show'); });
-        document.addEventListener('click', (e) => { if (!navLinksDiv.contains(e.target) && e.target !== menuIcon) closeMenu(); });
-    </script>
+    });
+</script>
 </body>
 </html>
