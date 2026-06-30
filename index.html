@@ -43,7 +43,6 @@
             border-radius: 10px;
         }
 
-        /* 3D Viewport — Full screen */
         #viewport {
             position: absolute;
             inset: 0;
@@ -56,7 +55,6 @@
             height: 100% !important;
         }
 
-        /* Top Bar */
         #topbar {
             position: absolute;
             top: 0;
@@ -144,7 +142,6 @@
             text-transform: uppercase;
         }
 
-        /* Bottom Panel — More compact on mobile */
         #panel {
             position: absolute;
             bottom: 0;
@@ -162,7 +159,7 @@
             flex-direction: column;
         }
         #panel.collapsed {
-            transform: translateY(calc(100% - 50px));
+            transform: translateY(calc(100% - 52px));
         }
         #panel.collapsed .panel-body {
             opacity: 0;
@@ -173,11 +170,14 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 8px 0 2px 0;
+            padding: 6px 0 4px 0;
             cursor: pointer;
             flex-shrink: 0;
             user-select: none;
             touch-action: none;
+            flex-direction: column;
+            gap: 2px;
+            min-height: 44px;
         }
         .panel-handle .bar {
             width: 40px;
@@ -186,12 +186,35 @@
             border-radius: 2px;
             transition: background 0.3s;
         }
+        .panel-handle .handle-label {
+            font-size: 8px;
+            color: var(--text-muted);
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            font-weight: 600;
+            transition: color 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .panel-handle .handle-label .icon {
+            font-size: 10px;
+        }
+        .panel-handle .handle-label .gold {
+            color: var(--accent);
+        }
         .panel-handle:hover .bar {
             background: var(--accent);
+        }
+        .panel-handle:hover .handle-label {
+            color: rgba(255, 255, 255, 0.5);
         }
         .panel-handle:active .bar {
             background: var(--accent);
             opacity: 0.7;
+        }
+        .panel-handle:active .handle-label {
+            color: var(--accent);
         }
 
         .panel-body {
@@ -202,7 +225,6 @@
             -webkit-overflow-scrolling: touch;
         }
 
-        /* Desktop */
         @media (min-width: 820px) {
             #panel {
                 top: 0;
@@ -238,7 +260,6 @@
             }
         }
 
-        /* Form Elements — Compact */
         .section-title {
             font-size: 9px;
             text-transform: uppercase;
@@ -304,7 +325,6 @@
             color: var(--text-primary);
         }
 
-        /* Ratio lock button */
         .ratio-btn {
             background: rgba(255, 255, 255, 0.04);
             border: 1px solid rgba(255, 255, 255, 0.06);
@@ -337,7 +357,6 @@
             flex: 1;
         }
 
-        /* File Drop */
         .file-drop {
             border: 2px dashed rgba(201, 168, 76, 0.08);
             border-radius: 8px;
@@ -403,7 +422,6 @@
             background: rgba(200, 50, 50, 0.2);
         }
 
-        /* Tool Chips */
         .tool-chips {
             display: flex;
             flex-wrap: wrap;
@@ -434,7 +452,6 @@
             color: var(--accent);
         }
 
-        /* Buttons */
         .btn {
             display: inline-flex;
             align-items: center;
@@ -471,9 +488,6 @@
             color: #fff;
             box-shadow: 0 3px 16px rgba(45, 143, 90, 0.1);
         }
-        .btn-success:active {
-            box-shadow: 0 2px 8px rgba(45, 143, 90, 0.06);
-        }
         .btn-success:disabled {
             opacity: 0.25;
             pointer-events: none;
@@ -491,12 +505,6 @@
             font-size: 8px;
             border-radius: 5px;
         }
-        .btn-xs {
-            padding: 3px 8px;
-            font-size: 8px;
-            border-radius: 4px;
-            width: auto;
-        }
         .btn-group {
             display: flex;
             gap: 4px;
@@ -513,12 +521,6 @@
         }
         .mt-3 {
             margin-top: 12px;
-        }
-        .mt-4 {
-            margin-top: 16px;
-        }
-        .mb-1 {
-            margin-bottom: 4px;
         }
         .text-gold {
             color: var(--accent);
@@ -547,14 +549,10 @@
         .gap-2 {
             gap: 6px;
         }
-        .gap-3 {
-            gap: 10px;
-        }
         .w-full {
             width: 100%;
         }
 
-        /* Viewport controls — Always visible, bigger touch targets */
         #viewport-controls {
             position: absolute;
             bottom: 78px;
@@ -597,7 +595,6 @@
             background: rgba(201, 168, 76, 0.06);
         }
 
-        /* Zoom controls — Bigger touch targets */
         #zoom-controls {
             position: absolute;
             right: 12px;
@@ -633,7 +630,6 @@
             color: var(--accent);
         }
 
-        /* Toast */
         #toast {
             position: fixed;
             bottom: 90px;
@@ -674,7 +670,6 @@
             opacity: 0.6;
         }
 
-        /* Loader overlay */
         #loader {
             display: none;
             position: absolute;
@@ -724,7 +719,6 @@
             border: 1px solid rgba(255, 255, 255, 0.04);
         }
 
-        /* Mobile extra compact */
         @media (max-width: 420px) {
             #panel {
                 max-height: 65vh;
@@ -793,6 +787,9 @@
             .file-drop .label {
                 font-size: 8px;
             }
+            .panel-handle .handle-label {
+                font-size: 7px;
+            }
         }
 
         @media (min-width: 820px) {
@@ -826,7 +823,6 @@
             }
         }
 
-        /* Image preview hint */
         .image-preview-hint {
             font-size: 8px;
             color: var(--text-muted);
@@ -840,28 +836,26 @@
             opacity: 1;
         }
 
-        /* Strategy badge */
-        .style-badge {
-            font-size: 8px;
-            padding: 2px 10px;
-            border-radius: 12px;
-            background: rgba(201, 168, 76, 0.04);
-            color: var(--text-muted);
-            border: 1px solid rgba(201, 168, 76, 0.04);
-        }
-
-        /* Drag handle touch area */
         .panel-handle {
             touch-action: none;
+        }
+
+        /* Simulation badge on handle */
+        .sim-badge-dot {
+            display: inline-block;
+            width: 5px;
+            height: 5px;
+            background: var(--accent);
+            border-radius: 50%;
+            margin-right: 2px;
+            animation: pulse-dot 1.8s ease-in-out infinite;
         }
     </style>
 </head>
 <body>
 
-    <!-- 3D Viewport -->
     <div id="viewport"></div>
 
-    <!-- Top Bar -->
     <div id="topbar">
         <div class="brand">DY Tech<span>Pro</span></div>
         <div class="topbar-right">
@@ -874,14 +868,17 @@
         </div>
     </div>
 
-    <!-- Bottom Panel -->
     <div id="panel">
         <div class="panel-handle" id="panelHandle">
             <div class="bar"></div>
+            <div class="handle-label" id="handleLabel">
+                <span class="icon">▼</span>
+                <span>View <span class="gold">Simulation</span></span>
+                <span class="sim-badge-dot"></span>
+            </div>
         </div>
         <div class="panel-body" id="panelBody">
 
-            <!-- Model Size with Ratio Lock -->
             <div class="section-title">Model Setup</div>
             <div class="form-grid">
                 <div class="input-group half-left">
@@ -909,7 +906,6 @@
                 </div>
             </div>
 
-            <!-- Depthmap Import -->
             <div class="section-title">Depthmap</div>
             <div class="file-drop" id="fileDrop">
                 <span class="icon">📁</span>
@@ -929,7 +925,6 @@
                 <span class="highlight">✓</span> Model renders exactly as imported image
             </div>
 
-            <!-- Z Height -->
             <div class="section-title">Depth (Z)</div>
             <div class="form-grid">
                 <div class="input-group full">
@@ -939,7 +934,6 @@
                 </div>
             </div>
 
-            <!-- Tool -->
             <div class="section-title">Tool</div>
             <div class="input-group">
                 <label>Ball Nose Diameter</label>
@@ -958,7 +952,6 @@
                 </div>
             </div>
 
-            <!-- Strategy -->
             <div class="section-title">Strategy</div>
             <div class="btn-group">
                 <button class="btn btn-primary" id="styleRaster">Raster</button>
@@ -966,7 +959,6 @@
             </div>
             <div id="styleDesc" class="text-xs text-muted mt-1">Zigzag raster pattern across model.</div>
 
-            <!-- Actions -->
             <div class="flex gap-2 mt-2">
                 <button class="btn btn-outline btn-sm" id="applyBtn" style="flex:0 0 auto;width:auto;padding:4px 14px;">
                     <i class="fas fa-check"></i> Apply
@@ -977,13 +969,11 @@
             </div>
             <div id="calcStatus" class="text-xs text-muted mt-1 text-center" style="min-height:16px;"></div>
 
-            <!-- Point info -->
             <div id="pointInfo" class="flex items-center justify-between mt-1" style="display:none;">
                 <span class="text-xs text-muted">Points generated</span>
                 <span id="pointCount" class="point-badge">0</span>
             </div>
 
-            <!-- Export -->
             <div class="section-title mt-3">Export</div>
             <div class="form-grid">
                 <div class="input-group full">
@@ -999,7 +989,6 @@
             </button>
             <div id="exportStatus" class="text-xs text-muted mt-1 text-center" style="min-height:14px;"></div>
 
-            <!-- Footer -->
             <div class="text-center mt-3 pt-2 border-t border-gray-800/40">
                 <p class="text-xs text-gray-700 uppercase tracking-widest">Owner: Dinesh</p>
             </div>
@@ -1007,11 +996,10 @@
         </div>
     </div>
 
-    <!-- Viewport Controls -->
     <div id="viewport-controls">
         <button class="btn active" id="viewSurface">Surface</button>
         <button class="btn" id="viewToolpath">Toolpath</button>
-        <button class="btn" id="viewSim">Simulation</button>
+        <button class="btn" id="viewSim">Sim</button>
     </div>
 
     <div id="zoom-controls">
@@ -1020,17 +1008,14 @@
         <button class="btn" id="fitView">⊡</button>
     </div>
 
-    <!-- Toast -->
     <div id="toast"><span id="toastMsg"></span><span class="toast-close" id="toastClose">✕</span></div>
 
-    <!-- Loader -->
     <div id="loader">
         <div class="loader-spinner"></div>
         <div id="loader-text">Processing depthmap...</div>
         <div id="loader-progress"></div>
     </div>
 
-    <!-- Three.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js">
     </script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js">
@@ -1039,20 +1024,21 @@
     <script>
         // ============================================================
         //  DY Tech Pro — Full Implementation
-        //  High-Resolution 7M+ Point Processing
-        //  Ratio Lock · Exact Image Rendering · Mobile Optimized
+        //  Fixed: Y-axis flip for correct orientation
+        //  Panel handle with "View Simulation" label
+        //  No dedicated mobile sim button
         // ============================================================
 
         (function() {
             'use strict';
 
-            // ---- DOM refs ----
             const $ = id => document.getElementById(id);
             const qs = (sel, ctx) => (ctx || document).querySelector(sel);
             const qsa = (sel, ctx) => (ctx || document).querySelectorAll(sel);
 
             const panel = $('panel');
             const panelHandle = $('panelHandle');
+            const handleLabel = $('handleLabel');
             const panelBody = $('panelBody');
             const statusText = $('statusText');
             const toast = $('toast');
@@ -1062,7 +1048,6 @@
             const loaderText = $('loader-text');
             const loaderProgress = $('loader-progress');
 
-            // ---- State ----
             let toolDiameter = 5;
             let stepover = 0.5;
             let toolpathStyle = 'raster';
@@ -1076,9 +1061,7 @@
             let meshResolution = 200;
             let ratioLocked = true;
             let aspectRatio = 1;
-            let isUpdating = false;
 
-            // Three.js
             let scene, camera, renderer, controls;
             let surfaceMesh = null;
             let toolpathLine = null;
@@ -1094,12 +1077,44 @@
             }
             toastClose.addEventListener('click', () => toast.classList.remove('show'));
 
-            // ---- Panel toggle ----
+            // ---- Panel toggle with simulation ----
             let panelCollapsed = false;
-            panelHandle.addEventListener('click', () => {
+
+            function togglePanel(goToSim = true) {
                 panelCollapsed = !panelCollapsed;
                 panel.classList.toggle('collapsed', panelCollapsed);
                 localStorage.setItem('dcam_panel_collapsed', panelCollapsed);
+
+                if (panelCollapsed && goToSim) {
+                    // Switch to simulation mode and fit view
+                    simulationMode = 'sim';
+                    applyViewMode();
+                    setTimeout(fitView, 200);
+                    showToast('📱 Simulation view — drag to orbit', 1500);
+                }
+
+                // Update handle label
+                updateHandleLabel();
+            }
+
+            function updateHandleLabel() {
+                if (panelCollapsed) {
+                    handleLabel.innerHTML = `
+                        <span class="icon">▲</span>
+                        <span>Show <span class="gold">Settings</span></span>
+                    `;
+                } else {
+                    handleLabel.innerHTML = `
+                        <span class="icon">▼</span>
+                        <span>View <span class="gold">Simulation</span></span>
+                        <span class="sim-badge-dot"></span>
+                    `;
+                }
+            }
+
+            panelHandle.addEventListener('click', (e) => {
+                e.stopPropagation();
+                togglePanel(true);
             });
 
             // ---- Status ----
@@ -1115,13 +1130,11 @@
             const exportName = $('exportName');
             const ratioLockBtn = $('ratioLock');
 
-            // ---- Ratio Lock ----
             ratioLockBtn.addEventListener('click', function() {
                 ratioLocked = !ratioLocked;
                 this.classList.toggle('active', ratioLocked);
                 this.innerHTML = ratioLocked ? '<i class="fas fa-link"></i>' : '<i class="fas fa-unlink"></i>';
                 if (ratioLocked && imageLoaded && depthmapData) {
-                    // Set aspect ratio from image
                     const ar = depthmapData.width / depthmapData.height;
                     const w = parseFloat(mWidth.value) || 200;
                     mHeight.value = (w / ar).toFixed(1);
@@ -1137,7 +1150,6 @@
                 }
             });
 
-            // Auto-adjust height when width changes and ratio is locked
             mWidth.addEventListener('input', function() {
                 if (ratioLocked) {
                     const w = parseFloat(this.value) || 200;
@@ -1156,7 +1168,7 @@
                 autoApply();
             });
 
-            // ---- File import with auto-smooth 15% ----
+            // ---- File import ----
             const fileInput = $('fileInput');
             const fileDrop = $('fileDrop');
             const fileInfo = $('fileInfo');
@@ -1226,7 +1238,6 @@
                         depthmapData = { width: w, height: h, pixels: smoothed };
                         imageLoaded = true;
 
-                        // Set aspect ratio from image
                         aspectRatio = w / h;
                         if (ratioLocked) {
                             const wVal = parseFloat(mWidth.value) || 200;
@@ -1325,7 +1336,7 @@
             styleOffset.addEventListener('click', () => setStyle('offset'));
             setStyle('raster');
 
-            // ---- Apply button ----
+            // ---- Apply ----
             $('applyBtn').addEventListener('click', () => {
                 if (viewportInitialized) {
                     update3DScene();
@@ -1334,7 +1345,6 @@
                 }
             });
 
-            // Auto-apply with debounce
             let debounceTimer = null;
 
             function autoApply() {
@@ -1389,7 +1399,6 @@
                 controls.target.set(0, 0, 0);
                 controls.update();
 
-                // Lighting
                 const ambient = new THREE.AmbientLight(0x223355, 0.2);
                 scene.add(ambient);
 
@@ -1418,7 +1427,6 @@
                 const hemi = new THREE.HemisphereLight(0x4488ff, 0x884422, 0.4);
                 scene.add(hemi);
 
-                // Ground
                 const gridHelper = new THREE.GridHelper(400, 28, 0x333355, 0x222244);
                 gridHelper.position.y = -0.5;
                 scene.add(gridHelper);
@@ -1442,7 +1450,7 @@
                 renderer.render(scene, camera);
             }
 
-            // ---- Build Surface Mesh (exact image rendering with Y flip) ----
+            // ---- Build Surface Mesh (WITH Y-flip for correct orientation) ----
             function buildSurfaceMesh() {
                 if (!depthmapData) return;
                 const dw = depthmapData.width;
@@ -1462,7 +1470,6 @@
                     oy = 0; } else if (origin === 'bottom-right') { ox = -w;
                     oy = 0; }
 
-                // Use high resolution for exact image rendering
                 const res = Math.min(meshResolution, Math.floor(Math.min(dw, dh) / 1.2));
                 const cols = Math.min(res, dw);
                 const rows = Math.min(res, dh);
@@ -1473,12 +1480,12 @@
                 const colors = [];
                 const indices = [];
 
-                // Build height map with Y-axis flip so image renders correctly
+                // Y-flip: py = 1 - (r / rows) so top of image = top of model
                 const heightMap = new Float32Array(cols * rows);
                 for (let r = 0; r < rows; r++) {
                     for (let c = 0; c < cols; c++) {
                         const px = c / cols;
-                        const py = 1 - (r / rows); // FLIP Y
+                        const py = 1 - (r / rows);
                         const pi = Math.floor(Math.min(1, Math.max(0, px)) * (dw - 1));
                         const pj = Math.floor(Math.min(1, Math.max(0, py)) * (dh - 1));
                         const idx = pj * dw + pi;
@@ -1495,7 +1502,6 @@
                         const y = oy + py * h;
                         positions.push(x, y, z);
 
-                        // ArtCAM-style gradient
                         const t = Math.min(1, Math.max(0, z / (zMax || 1)));
                         let rCol, gCol, bCol;
                         if (t < 0.25) {
@@ -1553,7 +1559,7 @@
                 scene.add(surfaceMesh);
             }
 
-            // ---- Build Simulation Mesh ----
+            // ---- Build Simulation Mesh (WITH Y-flip) ----
             function buildSimulationMesh() {
                 if (!depthmapData) return;
                 const dw = depthmapData.width;
@@ -1636,7 +1642,7 @@
                 scene.add(simMesh);
             }
 
-            // ---- Build Toolpath Line ----
+            // ---- Build Toolpath Line (WITH Y-flip) ----
             function buildToolpathLine() {
                 if (!toolpathPoints || toolpathPoints.length < 2) return;
                 const pts = toolpathPoints;
@@ -1746,17 +1752,22 @@
                 applyViewMode();
                 showToast('🔮 Surface view');
             });
+
             $('viewToolpath').addEventListener('click', function() {
                 simulationMode = 'toolpath';
                 applyViewMode();
                 showToast('📐 Toolpath view');
             });
+
             $('viewSim').addEventListener('click', function() {
                 simulationMode = 'sim';
                 applyViewMode();
+                // Fit view for simulation
+                setTimeout(fitView, 100);
                 showToast('🔮 Simulation — carved material');
             });
 
+            // ---- Fit View ----
             function fitView() {
                 const w = parseFloat(mWidth.value) || 200;
                 const h = parseFloat(mHeight.value) || 150;
@@ -1766,10 +1777,12 @@
                 camera.position.set(dist * 0.7, dist * 0.5, dist);
                 controls.target.set(0, 0, 0);
                 controls.update();
-                showToast('⊡ View fit', 600);
             }
 
-            $('fitView').addEventListener('click', fitView);
+            $('fitView').addEventListener('click', function() {
+                fitView();
+                showToast('⊡ View fit', 600);
+            });
 
             $('zoomIn').addEventListener('click', () => {
                 const dir = new THREE.Vector3();
@@ -1790,7 +1803,7 @@
             });
 
             // ============================================================
-            //  HIGH-RES TOOLPATH GENERATOR
+            //  TOOLPATH GENERATOR (WITH Y-flip)
             // ============================================================
             function generateToolpath() {
                 if (!imageLoaded || !depthmapData) {
@@ -1818,7 +1831,6 @@
                     oy = 0; } else if (origin === 'bottom-right') { ox = -w;
                     oy = 0; }
 
-                // Target ~7M points
                 const targetPoints = 7000000;
                 const area = w * h;
                 const avgSpacing = Math.sqrt(area / targetPoints);
@@ -1849,6 +1861,7 @@
                 let pointCount = 0;
                 const previewPoints = [];
 
+                // Y-flip: use (1 - py) for correct orientation
                 if (style === 'raster') {
                     let goingRight = true;
                     for (let y = 0; y <= h; y += step) {
@@ -1857,9 +1870,9 @@
                             for (let x = 0; x <= w; x += spacing) {
                                 const xPos = Math.min(w, x);
                                 const px = xPos / w;
-                                const py = yPos / h;
+                                const py = 1 - (yPos / h);
                                 const pi = Math.floor(Math.min(1, Math.max(0, px)) * (dw - 1));
-                                const pj = Math.floor(Math.min(1, Math.max(0, 1 - py)) * (dh - 1));
+                                const pj = Math.floor(Math.min(1, Math.max(0, py)) * (dh - 1));
                                 const idx = pj * dw + pi;
                                 const z = (pixels[idx] || 0) * zMax;
                                 const mx = ox + xPos;
@@ -1872,9 +1885,9 @@
                             for (let x = w; x >= 0; x -= spacing) {
                                 const xPos = Math.max(0, x);
                                 const px = xPos / w;
-                                const py = yPos / h;
+                                const py = 1 - (yPos / h);
                                 const pi = Math.floor(Math.min(1, Math.max(0, px)) * (dw - 1));
-                                const pj = Math.floor(Math.min(1, Math.max(0, 1 - py)) * (dh - 1));
+                                const pj = Math.floor(Math.min(1, Math.max(0, py)) * (dh - 1));
                                 const idx = pj * dw + pi;
                                 const z = (pixels[idx] || 0) * zMax;
                                 const mx = ox + xPos;
@@ -1900,9 +1913,9 @@
                         for (let x = minX; x <= maxX; x += spacing) {
                             const xPos = Math.min(maxX, x);
                             const px = xPos / w;
-                            const py = maxY / h;
+                            const py = 1 - (maxY / h);
                             const pi = Math.floor(Math.min(1, Math.max(0, px)) * (dw - 1));
-                            const pj = Math.floor(Math.min(1, Math.max(0, 1 - py)) * (dh - 1));
+                            const pj = Math.floor(Math.min(1, Math.max(0, py)) * (dh - 1));
                             const idx = pj * dw + pi;
                             const z = (pixels[idx] || 0) * zMax;
                             const mx = ox + xPos;
@@ -1914,9 +1927,9 @@
                         for (let y = maxY; y >= minY; y -= spacing) {
                             const yPos = Math.max(minY, y);
                             const px = maxX / w;
-                            const py = yPos / h;
+                            const py = 1 - (yPos / h);
                             const pi = Math.floor(Math.min(1, Math.max(0, px)) * (dw - 1));
-                            const pj = Math.floor(Math.min(1, Math.max(0, 1 - py)) * (dh - 1));
+                            const pj = Math.floor(Math.min(1, Math.max(0, py)) * (dh - 1));
                             const idx = pj * dw + pi;
                             const z = (pixels[idx] || 0) * zMax;
                             const mx = ox + maxX;
@@ -1928,9 +1941,9 @@
                         for (let x = maxX; x >= minX; x -= spacing) {
                             const xPos = Math.max(minX, x);
                             const px = xPos / w;
-                            const py = minY / h;
+                            const py = 1 - (minY / h);
                             const pi = Math.floor(Math.min(1, Math.max(0, px)) * (dw - 1));
-                            const pj = Math.floor(Math.min(1, Math.max(0, 1 - py)) * (dh - 1));
+                            const pj = Math.floor(Math.min(1, Math.max(0, py)) * (dh - 1));
                             const idx = pj * dw + pi;
                             const z = (pixels[idx] || 0) * zMax;
                             const mx = ox + xPos;
@@ -1942,9 +1955,9 @@
                         for (let y = minY; y <= maxY; y += spacing) {
                             const yPos = Math.min(maxY, y);
                             const px = minX / w;
-                            const py = yPos / h;
+                            const py = 1 - (yPos / h);
                             const pi = Math.floor(Math.min(1, Math.max(0, px)) * (dw - 1));
-                            const pj = Math.floor(Math.min(1, Math.max(0, 1 - py)) * (dh - 1));
+                            const pj = Math.floor(Math.min(1, Math.max(0, py)) * (dh - 1));
                             const idx = pj * dw + pi;
                             const z = (pixels[idx] || 0) * zMax;
                             const mx = ox + minX;
@@ -1988,6 +2001,7 @@
                 update3DScene();
                 simulationMode = 'sim';
                 applyViewMode();
+                setTimeout(fitView, 200);
 
                 return toolpathPoints;
             }
@@ -2012,12 +2026,12 @@
                     try {
                         const result = generateToolpath();
                         if (result) {
-                            setTimeout(fitView, 300);
                             // Auto-collapse panel on mobile after generation
                             if (window.innerWidth < 820) {
                                 panelCollapsed = true;
                                 panel.classList.add('collapsed');
                                 localStorage.setItem('dcam_panel_collapsed', true);
+                                updateHandleLabel();
                             }
                         }
                     } catch (err) {
@@ -2068,8 +2082,8 @@
                     panelCollapsed = true;
                     panel.classList.add('collapsed');
                 }
+                updateHandleLabel();
 
-                // Set initial aspect ratio
                 const w = parseFloat(mWidth.value) || 200;
                 const h = parseFloat(mHeight.value) || 150;
                 aspectRatio = w / h;
@@ -2091,7 +2105,7 @@
                 showToast('✨ DY Tech Pro — High-Resolution CAM', 2800);
             }
 
-            // ---- Keyboard shortcuts ----
+            // ---- Keyboard ----
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'Enter' && e.ctrlKey) {
                     e.preventDefault();
@@ -2099,6 +2113,9 @@
                 } else if (e.key === 'f' || e.key === 'F') {
                     e.preventDefault();
                     fitView();
+                } else if (e.key === 's' || e.key === 'S') {
+                    e.preventDefault();
+                    togglePanel(true);
                 }
             });
 
@@ -2120,7 +2137,6 @@
                 init();
             }
 
-            // Expose for debugging
             window.__dcam = {
                 generateToolpath,
                 toolpathPoints: () => toolpathPoints,
