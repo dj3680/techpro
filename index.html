@@ -9,14 +9,14 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
     <style>
         :root {
-            --bg-dark: #080a0e;
-            --panel-bg: #0d1016;
-            --accent: #c9a84c;
-            --accent-glow: rgba(201, 168, 76, 0.15);
-            --border-gold: rgba(201, 168, 76, 0.12);
-            --text-primary: #f0ede8;
-            --text-muted: rgba(255, 255, 255, 0.35);
-            --card-bg: rgba(255, 255, 255, 0.025);
+            --bg-main: #f5f5f7;
+            --panel-bg: #ffffff;
+            --text-primary: #1a1a1e;
+            --text-muted: #6b6b70;
+            --accent: #3b82f6;
+            --accent-glow: rgba(59, 130, 246, 0.15);
+            --border-light: #e0e0e0;
+            --card-bg: #fafafa;
         }
         * {
             margin: 0;
@@ -24,7 +24,7 @@
             box-sizing: border-box;
         }
         body {
-            background: var(--bg-dark);
+            background: var(--bg-main);
             color: var(--text-primary);
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             overflow: hidden;
@@ -37,19 +37,18 @@
             width: 3px;
         }
         ::-webkit-scrollbar-track {
-            background: #12151c;
+            background: #e0e0e0;
         }
         ::-webkit-scrollbar-thumb {
             background: var(--accent);
             border-radius: 10px;
         }
 
-        /* 3D Viewport */
         #viewport {
             position: absolute;
             inset: 0;
             z-index: 1;
-            background: var(--bg-dark);
+            background: var(--bg-main);
         }
         #viewport canvas {
             display: block;
@@ -57,7 +56,6 @@
             height: 100% !important;
         }
 
-        /* Top Bar */
         #topbar {
             position: absolute;
             top: 0;
@@ -68,10 +66,10 @@
             align-items: center;
             justify-content: space-between;
             padding: 8px 14px;
-            background: rgba(8, 10, 14, 0.82);
+            background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
-            border-bottom: 1px solid var(--border-gold);
+            border-bottom: 1px solid var(--border-light);
             pointer-events: none;
             height: 52px;
         }
@@ -81,14 +79,12 @@
         .brand {
             font-size: 20px;
             font-weight: 700;
-            background: linear-gradient(135deg, #f5d77b, #b8860b, #8a6a0a);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: var(--text-primary);
             letter-spacing: -0.5px;
         }
         .brand span {
             font-weight: 300;
-            -webkit-text-fill-color: rgba(255, 255, 255, 0.15);
+            color: var(--text-muted);
             font-size: 10px;
             margin-left: 2px;
             letter-spacing: 2px;
@@ -96,7 +92,15 @@
         .topbar-center {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 12px;
+            flex: 1;
+            justify-content: center;
+        }
+        @media (min-width: 820px) {
+            .topbar-center {
+                justify-content: flex-start;
+                padding-left: 20px;
+            }
         }
         .topbar-right {
             display: flex;
@@ -108,7 +112,7 @@
             height: 6px;
             border-radius: 50%;
             background: var(--accent);
-            box-shadow: 0 0 14px rgba(201, 168, 76, 0.25);
+            box-shadow: 0 0 14px rgba(59, 130, 246, 0.25);
             animation: pulse-dot 2s ease-in-out infinite;
         }
         @keyframes pulse-dot {
@@ -122,26 +126,26 @@
                 transform: scale(1.1);
             }
         }
-        .telegram-link {
+        .telegram-link, .bot-link {
             display: flex;
             align-items: center;
             gap: 3px;
             font-size: 9px;
             color: var(--accent);
-            background: rgba(201, 168, 76, 0.08);
+            background: rgba(59, 130, 246, 0.08);
             padding: 2px 10px;
             border-radius: 20px;
-            border: 1px solid rgba(201, 168, 76, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.1);
             cursor: pointer;
             transition: all 0.25s ease;
             text-decoration: none;
             font-weight: 500;
             pointer-events: auto;
         }
-        .telegram-link:active {
+        .telegram-link:active, .bot-link:active {
             transform: scale(0.95);
         }
-        .telegram-link .icon {
+        .telegram-link .icon, .bot-link .icon {
             font-size: 12px;
         }
         #statusText {
@@ -151,12 +155,11 @@
             text-transform: uppercase;
         }
 
-        /* Header Buttons */
         .header-btn {
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.06);
+            background: rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(0, 0, 0, 0.06);
             color: var(--text-muted);
-            padding: 4px 12px;
+            padding: 4px 14px;
             border-radius: 16px;
             font-size: 9px;
             font-weight: 500;
@@ -170,32 +173,46 @@
             white-space: nowrap;
         }
         .header-btn:hover {
-            background: rgba(255, 255, 255, 0.06);
-            border-color: rgba(255, 255, 255, 0.1);
+            background: rgba(0, 0, 0, 0.06);
+            border-color: rgba(0, 0, 0, 0.1);
         }
         .header-btn:active {
             transform: scale(0.95);
         }
         .header-btn.active {
-            background: rgba(201, 168, 76, 0.08);
+            background: rgba(59, 130, 246, 0.08);
             border-color: var(--accent);
             color: var(--accent);
         }
         .header-btn .icon {
             font-size: 11px;
         }
+        .header-btn-left {
+            margin-right: auto;
+        }
+        .header-btn-right {
+            margin-left: auto;
+        }
+        @media (min-width: 820px) {
+            .header-btn {
+                font-size: 11px;
+                padding: 5px 18px;
+            }
+            .header-btn .icon {
+                font-size: 13px;
+            }
+        }
 
-        /* Settings Panel */
         #panel {
             position: absolute;
             bottom: 0;
             left: 0;
             right: 0;
             z-index: 15;
-            background: rgba(13, 16, 22, 0.94);
+            background: rgba(255, 255, 255, 0.94);
             backdrop-filter: blur(24px);
             -webkit-backdrop-filter: blur(24px);
-            border-top: 1px solid var(--border-gold);
+            border-top: 1px solid var(--border-light);
             border-radius: 20px 20px 0 0;
             max-height: 70vh;
             transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.3s ease;
@@ -208,7 +225,6 @@
             opacity: 0;
             pointer-events: none;
         }
-        /* On desktop, slide from left */
         @media (min-width: 820px) {
             #panel {
                 top: 0;
@@ -219,7 +235,7 @@
                 max-height: 100vh;
                 border-radius: 0;
                 border-top: none;
-                border-right: 1px solid var(--border-gold);
+                border-right: 1px solid var(--border-light);
                 transform: translateX(0);
                 opacity: 1;
             }
@@ -244,7 +260,6 @@
             border-radius: 10px;
         }
 
-        /* Sections inside panel */
         .section-title {
             font-size: 10px;
             text-transform: uppercase;
@@ -274,8 +289,8 @@
         }
         .input-field {
             width: 100%;
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.06);
+            background: rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(0, 0, 0, 0.06);
             color: var(--text-primary);
             padding: 6px 10px;
             border-radius: 6px;
@@ -286,27 +301,27 @@
         }
         .input-field:focus {
             border-color: var(--accent);
-            box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.06);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.06);
         }
         .input-field::placeholder {
-            color: rgba(255, 255, 255, 0.1);
+            color: rgba(0, 0, 0, 0.2);
         }
         select.input-field {
             appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23c9a84c'/%3E%3C/svg%3E");
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%233b82f6'/%3E%3C/svg%3E");
             background-repeat: no-repeat;
             background-position: right 10px center;
             padding-right: 28px;
             cursor: pointer;
         }
         select.input-field option {
-            background: #12151c;
+            background: #fff;
             color: var(--text-primary);
         }
 
         .ratio-btn {
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.06);
+            background: rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(0, 0, 0, 0.06);
             border-radius: 6px;
             color: var(--text-muted);
             padding: 6px 10px;
@@ -322,7 +337,7 @@
         .ratio-btn.active {
             border-color: var(--accent);
             color: var(--accent);
-            background: rgba(201, 168, 76, 0.06);
+            background: rgba(59, 130, 246, 0.06);
         }
         .ratio-btn:active {
             transform: scale(0.92);
@@ -337,7 +352,7 @@
         }
 
         .file-drop {
-            border: 2px dashed rgba(201, 168, 76, 0.08);
+            border: 2px dashed rgba(59, 130, 246, 0.08);
             border-radius: 8px;
             padding: 14px 12px;
             text-align: center;
@@ -347,8 +362,8 @@
             position: relative;
         }
         .file-drop:hover {
-            border-color: rgba(201, 168, 76, 0.15);
-            background: rgba(201, 168, 76, 0.01);
+            border-color: rgba(59, 130, 246, 0.15);
+            background: rgba(59, 130, 246, 0.01);
         }
         .file-drop .icon {
             font-size: 20px;
@@ -411,15 +426,15 @@
             border-radius: 16px;
             font-size: 10px;
             font-weight: 500;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(0, 0, 0, 0.03);
+            border: 1px solid rgba(0, 0, 0, 0.05);
             color: var(--text-muted);
             cursor: pointer;
             transition: all 0.2s ease;
             font-family: inherit;
         }
         .tool-chip.active {
-            background: rgba(201, 168, 76, 0.08);
+            background: rgba(59, 130, 246, 0.08);
             border-color: var(--accent);
             color: var(--text-primary);
         }
@@ -451,21 +466,21 @@
             transform: scale(0.96);
         }
         .btn-primary {
-            background: linear-gradient(135deg, #c9a84c, #a8892a);
+            background: var(--accent);
             color: #fff;
-            box-shadow: 0 3px 16px rgba(201, 168, 76, 0.1);
+            box-shadow: 0 3px 16px rgba(59, 130, 246, 0.15);
         }
         .btn-primary:active {
-            box-shadow: 0 2px 8px rgba(201, 168, 76, 0.06);
+            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.08);
         }
         .btn-primary:disabled {
             opacity: 0.25;
             pointer-events: none;
         }
         .btn-success {
-            background: linear-gradient(135deg, #2d8f5a, #1f7a47);
+            background: #22c55e;
             color: #fff;
-            box-shadow: 0 3px 16px rgba(45, 143, 90, 0.1);
+            box-shadow: 0 3px 16px rgba(34, 197, 94, 0.15);
         }
         .btn-success:disabled {
             opacity: 0.25;
@@ -473,11 +488,11 @@
         }
         .btn-outline {
             background: transparent;
-            border: 1px solid rgba(201, 168, 76, 0.15);
+            border: 1px solid rgba(59, 130, 246, 0.15);
             color: var(--accent);
         }
         .btn-outline:active {
-            background: rgba(201, 168, 76, 0.04);
+            background: rgba(59, 130, 246, 0.04);
         }
         .btn-sm {
             padding: 4px 12px;
@@ -532,7 +547,6 @@
             width: 100%;
         }
 
-        /* Viewport Controls */
         #viewport-controls {
             position: absolute;
             bottom: 80px;
@@ -541,12 +555,12 @@
             z-index: 12;
             display: flex;
             gap: 4px;
-            background: rgba(8, 10, 14, 0.7);
+            background: rgba(255, 255, 255, 0.7);
             backdrop-filter: blur(14px);
             -webkit-backdrop-filter: blur(14px);
             padding: 3px 10px;
             border-radius: 24px;
-            border: 1px solid rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-light);
             pointer-events: none;
         }
         #viewport-controls>* {
@@ -565,15 +579,14 @@
             min-height: 28px;
         }
         #viewport-controls .btn.active {
-            border-color: rgba(201, 168, 76, 0.15);
+            border-color: var(--accent);
             color: var(--accent);
-            background: rgba(201, 168, 76, 0.04);
+            background: rgba(59, 130, 246, 0.04);
         }
         #viewport-controls .btn:active {
-            background: rgba(201, 168, 76, 0.06);
+            background: rgba(59, 130, 246, 0.06);
         }
 
-        /* Zoom Controls */
         #zoom-controls {
             position: absolute;
             right: 14px;
@@ -593,10 +606,10 @@
             padding: 0;
             font-size: 16px;
             border-radius: 10px;
-            background: rgba(8, 10, 14, 0.65);
+            background: rgba(255, 255, 255, 0.65);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-light);
             color: var(--text-muted);
             display: flex;
             align-items: center;
@@ -605,22 +618,21 @@
             min-width: 38px;
         }
         #zoom-controls .btn:active {
-            background: rgba(201, 168, 76, 0.08);
+            background: rgba(59, 130, 246, 0.08);
             color: var(--accent);
         }
 
-        /* Toast */
         #toast {
             position: fixed;
-            bottom: 94px;
+            top: 56px;
             left: 50%;
-            transform: translateX(-50%) translateY(12px);
-            background: rgba(13, 16, 22, 0.96);
+            transform: translateX(-50%) translateY(-12px);
+            background: rgba(255, 255, 255, 0.96);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             padding: 5px 16px;
             border-radius: 10px;
-            border: 1px solid rgba(201, 168, 76, 0.06);
+            border: 1px solid var(--border-light);
             color: var(--text-primary);
             font-size: 10px;
             font-weight: 500;
@@ -628,7 +640,7 @@
             opacity: 0;
             pointer-events: none;
             transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.08);
             text-align: center;
             max-width: 86%;
             display: flex;
@@ -650,13 +662,12 @@
             opacity: 0.6;
         }
 
-        /* Loader */
         #loader {
             display: none;
             position: absolute;
             inset: 0;
             z-index: 50;
-            background: rgba(8, 10, 14, 0.82);
+            background: rgba(255, 255, 255, 0.82);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             flex-direction: column;
@@ -670,7 +681,7 @@
         .loader-spinner {
             width: 32px;
             height: 32px;
-            border: 3px solid rgba(201, 168, 76, 0.08);
+            border: 3px solid rgba(59, 130, 246, 0.08);
             border-top-color: var(--accent);
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
@@ -694,10 +705,10 @@
         .point-badge {
             font-size: 8px;
             color: var(--text-muted);
-            background: rgba(255, 255, 255, 0.03);
+            background: rgba(0, 0, 0, 0.03);
             padding: 2px 10px;
             border-radius: 10px;
-            border: 1px solid rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(0, 0, 0, 0.04);
         }
 
         .image-preview-hint {
@@ -757,7 +768,7 @@
                 min-width: 32px;
             }
             #toast {
-                bottom: 80px;
+                top: 48px;
                 font-size: 9px;
                 padding: 4px 12px;
                 max-width: 94%;
@@ -781,6 +792,10 @@
             }
             .header-btn .icon {
                 font-size: 10px;
+            }
+            .telegram-link, .bot-link {
+                font-size: 8px;
+                padding: 2px 8px;
             }
         }
 
@@ -806,7 +821,7 @@
                 min-width: 40px;
             }
             #toast {
-                bottom: 30px;
+                top: 64px;
                 font-size: 11px;
                 padding: 6px 20px;
             }
@@ -816,13 +831,6 @@
             #topbar {
                 padding: 10px 24px;
                 height: 60px;
-            }
-            .header-btn {
-                font-size: 11px;
-                padding: 5px 16px;
-            }
-            .header-btn .icon {
-                font-size: 13px;
             }
         }
     </style>
@@ -836,17 +844,21 @@
     <div id="topbar">
         <div class="brand">DCam<span>Pro</span></div>
         <div class="topbar-center">
-            <button class="header-btn active" id="settingsToggle">
+            <button class="header-btn header-btn-left active" id="settingsToggle">
                 <i class="fas fa-sliders-h icon"></i> Settings
             </button>
-            <button class="header-btn" id="simToggle">
+            <button class="header-btn header-btn-right" id="simToggle">
                 <i class="fas fa-cubes icon"></i> Simulation
             </button>
         </div>
         <div class="topbar-right">
+            <a class="bot-link" href="https://t.me/Image_2_3D_Bot" target="_blank" rel="noopener">
+                <span class="icon">🤖</span>
+                <span>Image to Rlf</span>
+            </a>
             <a class="telegram-link" href="https://t.me/dj3680" target="_blank" rel="noopener">
-                <span class="icon">✈️</span>
-                <span>@dj3680</span>
+                <span class="icon">🧑🏻‍💻</span>
+                <span>Owner</span>
             </a>
             <span class="status-dot"></span>
             <span id="statusText">Ready</span>
@@ -869,7 +881,7 @@
                 <div class="input-group half-right">
                     <label>Height (mm)</label>
                     <div class="ratio-group">
-                        <input type="number" id="mHeight" value="150" min="1" max="1000" step="1" class="input-field" />
+                        <input type="number" id="mHeight" value="200" min="1" max="1000" step="1" class="input-field" />
                         <button class="ratio-btn" id="ratioLock" title="Lock aspect ratio">
                             <i class="fas fa-unlink"></i>
                         </button>
@@ -889,8 +901,8 @@
             <div class="section-title">Depthmap</div>
             <div class="file-drop" id="fileDrop">
                 <span class="icon">📁</span>
-                <div class="label">Drop or tap to import <br /><strong>PNG · BMP · TIFF · RLF</strong></div>
-                <input type="file" id="fileInput" accept=".png,.bmp,.tiff,.tif,.rlf,image/*" />
+                <div class="label">Drop or tap to import <br /><strong>PNG · BMP · TIFF</strong></div>
+                <input type="file" id="fileInput" accept=".png,.bmp,.tiff,.tif" />
             </div>
             <div class="file-info" id="fileInfo">
                 <span id="fileName">image.png</span>
@@ -976,8 +988,10 @@
             <div id="exportStatus" class="text-xs text-muted mt-1 text-center" style="min-height:14px;"></div>
 
             <!-- Footer -->
-            <div class="text-center mt-3 pt-2 border-t border-gray-800/40">
-                <p class="text-xs text-gray-700 uppercase tracking-widest">Owner: Dinesh</p>
+            <div class="text-center mt-3 pt-2 border-t border-gray-200/40">
+                <p class="text-xs text-gray-400 tracking-widest">Use proper depthmaps for high quality toolpaths.</p>
+                <p class="text-xs text-gray-400 tracking-widest">Try our bot which converts any image into 3d depthmaps and artcam reliefs.</p>
+                <p class="text-xs text-gray-400 uppercase tracking-widest">Developer: Dinesh</p>
             </div>
 
         </div>
@@ -997,7 +1011,7 @@
         <button class="btn" id="fitView">⊡</button>
     </div>
 
-    <!-- Toast -->
+    <!-- Toast (top) -->
     <div id="toast"><span id="toastMsg"></span><span class="toast-close" id="toastClose">✕</span></div>
 
     <!-- Loader -->
@@ -1014,8 +1028,9 @@
 
     <script>
         // ============================================================
-        //  DCam Pro — Simplified Professional Interface
-        //  Default: ratio unlocked, settings visible, simulation toggle
+        //  DCam Pro — Professional CNC Toolpath Studio
+        //  Light UI, fixed left-right orientation, no ground plane
+        //  Supported: PNG, BMP, TIFF
         // ============================================================
 
         (function() {
@@ -1049,7 +1064,7 @@
             let gcodeChunks = [];
             let totalPoints = 0;
             let meshResolution = 200;
-            let ratioLocked = false; // default unlocked
+            let ratioLocked = false;
             let aspectRatio = 1;
             let settingsVisible = true;
             let isSimulationActive = false;
@@ -1059,6 +1074,7 @@
             let surfaceMesh = null;
             let toolpathLine = null;
             let simMesh = null;
+            let axisHelper = null;
             let viewportInitialized = false;
 
             // ---- Toast ----
@@ -1081,14 +1097,9 @@
                 settingsVisible = show;
                 panel.classList.toggle('hidden', !show);
                 settingsToggle.classList.toggle('active', show);
-                if (show) {
-                    // If showing settings, we might want to switch to surface view? Keep current mode.
-                    // But we should not override simulation mode.
-                }
-                // Update button text
                 settingsToggle.innerHTML = show ?
                     '<i class="fas fa-sliders-h icon"></i> Settings' :
-                    '<i class="fas fa-sliders-h icon"></i> Show Settings';
+                    '<i class="fas fa-sliders-h icon"></i> Settings';
             }
 
             // ---- Simulation toggle ----
@@ -1098,25 +1109,17 @@
                 simToggle.classList.toggle('active', active);
 
                 if (active) {
-                    // Switch to simulation mode
                     simulationMode = 'sim';
                     applyViewMode();
-                    // Hide settings panel on mobile
                     if (window.innerWidth < 820) {
                         toggleSettings(false);
-                    } else {
-                        // On desktop, we can keep settings visible or not, but we want to focus on sim
-                        // We'll keep settings visible but switch mode
                     }
                     setTimeout(fitView, 200);
                     showToast('🔮 Simulation view — drag to orbit', 1500);
-                    // Update button text
-                    simToggle.innerHTML = '<i class="fas fa-cubes icon"></i> Hide Sim';
+                    simToggle.innerHTML = '<i class="fas fa-cubes icon"></i> Sim';
                 } else {
-                    // Switch back to surface view
                     simulationMode = 'surface';
                     applyViewMode();
-                    // Show settings panel on mobile if hidden
                     if (window.innerWidth < 820 && !settingsVisible) {
                         toggleSettings(true);
                     }
@@ -1128,10 +1131,6 @@
             // ---- Header button events ----
             settingsToggle.addEventListener('click', () => {
                 toggleSettings(!settingsVisible);
-                // If we are in simulation mode and we show settings, we might want to stay in simulation?
-                // We'll keep current mode but if settings shown, we could switch to surface? Let's keep mode.
-                // But if simulation is active, and we open settings, we don't want to lose sim view.
-                // We'll keep as is.
             });
 
             simToggle.addEventListener('click', () => {
@@ -1146,7 +1145,9 @@
             const exportName = $('exportName');
             const ratioLockBtn = $('ratioLock');
 
-            // Ratio lock default false
+            // Default 200x200, ratio unlocked
+            mWidth.value = 200;
+            mHeight.value = 200;
             ratioLockBtn.classList.remove('active');
             ratioLockBtn.innerHTML = '<i class="fas fa-unlink"></i>';
 
@@ -1162,7 +1163,7 @@
                     showToast('🔗 Ratio locked to image aspect', 1200);
                 } else if (ratioLocked) {
                     const w = parseFloat(mWidth.value) || 200;
-                    const h = parseFloat(mHeight.value) || 150;
+                    const h = parseFloat(mHeight.value) || 200;
                     aspectRatio = w / h;
                     showToast('🔗 Ratio locked', 1200);
                 } else {
@@ -1181,14 +1182,14 @@
 
             mHeight.addEventListener('input', function() {
                 if (ratioLocked) {
-                    const h = parseFloat(this.value) || 150;
+                    const h = parseFloat(this.value) || 200;
                     const w = h * aspectRatio;
                     mWidth.value = w.toFixed(1);
                 }
                 autoApply();
             });
 
-            // ---- File import ----
+            // ---- File import (only PNG, BMP, TIFF) ----
             const fileInput = $('fileInput');
             const fileDrop = $('fileDrop');
             const fileInfo = $('fileInfo');
@@ -1233,6 +1234,12 @@
             }
 
             function loadImageAsDepthmap(file) {
+                // Check file extension
+                const ext = file.name.split('.').pop().toLowerCase();
+                if (!['png', 'bmp', 'tiff', 'tif'].includes(ext)) {
+                    showToast('❌ Please import PNG, BMP, or TIFF files only.');
+                    return;
+                }
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     const img = new Image();
@@ -1278,7 +1285,7 @@
                         if (viewportInitialized) update3DScene();
                     };
                     img.onerror = function() {
-                        showToast('❌ Failed to load image. Try PNG or BMP.');
+                        showToast('❌ Failed to load image. Try PNG, BMP, or TIFF.');
                     };
                     img.src = e.target.result;
                 };
@@ -1293,14 +1300,14 @@
 
             fileDrop.addEventListener('dragover', (e) => {
                 e.preventDefault();
-                fileDrop.style.borderColor = 'rgba(201,168,76,0.25)';
+                fileDrop.style.borderColor = 'rgba(59,130,246,0.25)';
             });
             fileDrop.addEventListener('dragleave', () => {
-                fileDrop.style.borderColor = 'rgba(201,168,76,0.08)';
+                fileDrop.style.borderColor = 'rgba(59,130,246,0.08)';
             });
             fileDrop.addEventListener('drop', (e) => {
                 e.preventDefault();
-                fileDrop.style.borderColor = 'rgba(201,168,76,0.08)';
+                fileDrop.style.borderColor = 'rgba(59,130,246,0.08)';
                 if (e.dataTransfer.files && e.dataTransfer.files[0]) {
                     loadImageAsDepthmap(e.dataTransfer.files[0]);
                 }
@@ -1385,7 +1392,7 @@
                 const rect = container.getBoundingClientRect();
 
                 scene = new THREE.Scene();
-                scene.background = new THREE.Color(0x080a0e);
+                scene.background = new THREE.Color(0xf5f5f7);
 
                 const aspect = rect.width / rect.height || 1;
                 camera = new THREE.PerspectiveCamera(35, aspect, 0.1, 3000);
@@ -1420,10 +1427,10 @@
                 controls.update();
 
                 // Lighting
-                const ambient = new THREE.AmbientLight(0x223355, 0.2);
+                const ambient = new THREE.AmbientLight(0xffffff, 0.5);
                 scene.add(ambient);
 
-                const key = new THREE.DirectionalLight(0xffeedd, 1.0);
+                const key = new THREE.DirectionalLight(0xffffff, 0.8);
                 key.position.set(150, 300, 180);
                 key.castShadow = true;
                 key.shadow.mapSize.width = 1024;
@@ -1437,28 +1444,20 @@
                 key.shadow.bias = -0.0005;
                 scene.add(key);
 
-                const fill = new THREE.DirectionalLight(0x4488ff, 0.3);
+                const fill = new THREE.DirectionalLight(0xccddff, 0.3);
                 fill.position.set(-180, 60, -120);
                 scene.add(fill);
 
-                const rim = new THREE.DirectionalLight(0xffaa55, 0.15);
+                const rim = new THREE.DirectionalLight(0xffeedd, 0.15);
                 rim.position.set(-80, -40, 250);
                 scene.add(rim);
 
-                const hemi = new THREE.HemisphereLight(0x4488ff, 0x884422, 0.4);
+                const hemi = new THREE.HemisphereLight(0xffffff, 0x444444, 0.5);
                 scene.add(hemi);
 
-                const gridHelper = new THREE.GridHelper(400, 28, 0x333355, 0x222244);
-                gridHelper.position.y = -0.5;
-                scene.add(gridHelper);
-
-                const groundGeo = new THREE.PlaneGeometry(500, 500);
-                const groundMat = new THREE.ShadowMaterial({ opacity: 0.08, color: 0x000000 });
-                const ground = new THREE.Mesh(groundGeo, groundMat);
-                ground.rotation.x = -Math.PI / 2;
-                ground.position.y = -0.5;
-                ground.receiveShadow = true;
-                scene.add(ground);
+                // Axis lines only, no ground plane
+                axisHelper = new THREE.AxesHelper(120);
+                scene.add(axisHelper);
 
                 viewportInitialized = true;
                 animate3D();
@@ -1471,7 +1470,7 @@
                 renderer.render(scene, camera);
             }
 
-            // ---- Build Surface Mesh (WITH Y-flip for correct orientation) ----
+            // ---- Build Surface Mesh (Y-flip only, no X flip) ----
             function buildSurfaceMesh() {
                 if (!depthmapData) return;
                 const dw = depthmapData.width;
@@ -1480,7 +1479,7 @@
                 if (!pixels) return;
 
                 const w = parseFloat(mWidth.value) || 200;
-                const h = parseFloat(mHeight.value) || 150;
+                const h = parseFloat(mHeight.value) || 200;
                 const zMax = parseFloat(mZ.value) || 5;
                 const origin = mOrigin.value;
 
@@ -1513,13 +1512,18 @@
                     }
                 }
 
+                // Only flip Y around center (top-bottom)
+                const centerY = oy + h / 2;
+
                 for (let r = 0; r < rows; r++) {
                     for (let c = 0; c < cols; c++) {
                         const px = c / cols;
                         const py = 1 - (r / rows);
                         const z = heightMap[r * cols + c];
                         const x = ox + px * w;
-                        const y = oy + py * h;
+                        let y = oy + py * h;
+                        // Flip Y only
+                        y = 2 * centerY - y;
                         positions.push(x, y, z);
 
                         const t = Math.min(1, Math.max(0, z / (zMax || 1)));
@@ -1579,7 +1583,7 @@
                 scene.add(surfaceMesh);
             }
 
-            // ---- Build Simulation Mesh ----
+            // ---- Build Simulation Mesh (Y-flip only) ----
             function buildSimulationMesh() {
                 if (!depthmapData) return;
                 const dw = depthmapData.width;
@@ -1588,7 +1592,7 @@
                 if (!pixels) return;
 
                 const w = parseFloat(mWidth.value) || 200;
-                const h = parseFloat(mHeight.value) || 150;
+                const h = parseFloat(mHeight.value) || 200;
                 const zMax = parseFloat(mZ.value) || 5;
                 const origin = mOrigin.value;
 
@@ -1620,13 +1624,16 @@
                     }
                 }
 
+                const centerY = oy + h / 2;
+
                 for (let r = 0; r < rows; r++) {
                     for (let c = 0; c < cols; c++) {
                         const px = c / cols;
                         const py = 1 - (r / rows);
                         const z = heightMap[r * cols + c];
                         const x = ox + px * w;
-                        const y = oy + py * h;
+                        let y = oy + py * h;
+                        y = 2 * centerY - y;
                         positions.push(x, y, z);
                     }
                 }
@@ -1662,7 +1669,7 @@
                 scene.add(simMesh);
             }
 
-            // ---- Build Toolpath Line ----
+            // ---- Build Toolpath Line (no flip, already correct) ----
             function buildToolpathLine() {
                 if (!toolpathPoints || toolpathPoints.length < 2) return;
                 const pts = toolpathPoints;
@@ -1713,11 +1720,12 @@
                     buildSurfaceMesh();
                     buildSimulationMesh();
                 } else {
-                    const geo = new THREE.PlaneGeometry(200, 150, 1, 1);
+                    // Placeholder surface (very subtle)
+                    const geo = new THREE.PlaneGeometry(200, 200, 1, 1);
                     const mat = new THREE.MeshStandardMaterial({
-                        color: 0x181c28,
+                        color: 0xd0d0d0,
                         transparent: true,
-                        opacity: 0.12,
+                        opacity: 0.08,
                         side: THREE.DoubleSide,
                         roughness: 0.6,
                         metalness: 0.1,
@@ -1725,7 +1733,7 @@
                     surfaceMesh = new THREE.Mesh(geo, mat);
                     surfaceMesh.rotation.x = -Math.PI / 2;
                     surfaceMesh.position.y = -0.5;
-                    surfaceMesh.receiveShadow = true;
+                    surfaceMesh.receiveShadow = false;
                     scene.add(surfaceMesh);
                 }
 
@@ -1737,7 +1745,7 @@
 
                 if (!toolpathGenerated && imageLoaded) {
                     const w = parseFloat(mWidth.value) || 200;
-                    const h = parseFloat(mHeight.value) || 150;
+                    const h = parseFloat(mHeight.value) || 200;
                     const maxDim = Math.max(w, h, 50);
                     const dist = maxDim * 1.6;
                     camera.position.set(dist * 0.7, dist * 0.5, dist);
@@ -1748,12 +1756,16 @@
 
             // ---- View Mode ----
             function applyViewMode() {
-                if (surfaceMesh) surfaceMesh.visible = (simulationMode === 'surface' || simulationMode === 'sim');
-                if (simMesh) simMesh.visible = (simulationMode === 'sim');
-                if (toolpathLine) toolpathLine.visible = (simulationMode === 'toolpath' || simulationMode === 'sim');
-
-                if (simulationMode === 'sim') {
+                if (simulationMode === 'surface') {
                     if (surfaceMesh) surfaceMesh.visible = true;
+                    if (simMesh) simMesh.visible = false;
+                    if (toolpathLine) toolpathLine.visible = false;
+                } else if (simulationMode === 'toolpath') {
+                    if (surfaceMesh) surfaceMesh.visible = false;
+                    if (simMesh) simMesh.visible = false;
+                    if (toolpathLine) toolpathLine.visible = true;
+                } else if (simulationMode === 'sim') {
+                    if (surfaceMesh) surfaceMesh.visible = false;
                     if (simMesh) simMesh.visible = true;
                     if (toolpathLine) toolpathLine.visible = true;
                 }
@@ -1764,6 +1776,12 @@
                     qsa('#viewport-controls .btn').forEach(b => b.classList.remove('active'));
                     btn.classList.add('active');
                 }
+
+                if (simulationMode === 'sim') {
+                    if (!isSimulationActive) toggleSimulation(true);
+                } else {
+                    if (isSimulationActive) toggleSimulation(false);
+                }
             }
 
             // ---- Viewport controls ----
@@ -1771,15 +1789,12 @@
                 simulationMode = 'surface';
                 applyViewMode();
                 showToast('🔮 Surface view');
-                // If simulation was active, deactivate it
-                if (isSimulationActive) toggleSimulation(false);
             });
 
             $('viewToolpath').addEventListener('click', function() {
                 simulationMode = 'toolpath';
                 applyViewMode();
                 showToast('📐 Toolpath view');
-                if (isSimulationActive) toggleSimulation(false);
             });
 
             $('viewSim').addEventListener('click', function() {
@@ -1787,14 +1802,12 @@
                 applyViewMode();
                 setTimeout(fitView, 100);
                 showToast('🔮 Simulation — carved material');
-                // Activate simulation toggle
-                if (!isSimulationActive) toggleSimulation(true);
             });
 
             // ---- Fit View ----
             function fitView() {
                 const w = parseFloat(mWidth.value) || 200;
-                const h = parseFloat(mHeight.value) || 150;
+                const h = parseFloat(mHeight.value) || 200;
                 const z = parseFloat(mZ.value) || 5;
                 const maxDim = Math.max(w, h, z * 2, 50);
                 const dist = maxDim * 1.7;
@@ -1836,7 +1849,7 @@
                 }
 
                 const w = parseFloat(mWidth.value) || 200;
-                const h = parseFloat(mHeight.value) || 150;
+                const h = parseFloat(mHeight.value) || 200;
                 const zMax = parseFloat(mZ.value) || 5;
                 const diam = toolDiameter;
                 const step = stepover;
@@ -1885,6 +1898,7 @@
                 let pointCount = 0;
                 const previewPoints = [];
 
+                // Y-flip for correct orientation (same as mesh flip)
                 if (style === 'raster') {
                     let goingRight = true;
                     for (let y = 0; y <= h; y += step) {
@@ -2026,9 +2040,6 @@
                 applyViewMode();
                 setTimeout(fitView, 200);
 
-                // Activate simulation toggle
-                if (!isSimulationActive) toggleSimulation(true);
-
                 return toolpathPoints;
             }
 
@@ -2052,8 +2063,9 @@
                     try {
                         const result = generateToolpath();
                         if (result) {
-                            // Auto-collapse settings on mobile after generation? We'll keep as is.
-                            // But we want simulation view, so we already toggle.
+                            if (window.innerWidth < 820) {
+                                toggleSettings(false);
+                            }
                         }
                     } catch (err) {
                         console.error(err);
@@ -2098,13 +2110,11 @@
             //  INIT
             // ============================================================
             function init() {
-                // Default: settings visible, ratio unlocked, simulation off
                 toggleSettings(true);
                 toggleSimulation(false);
 
-                // Set initial aspect ratio
                 const w = parseFloat(mWidth.value) || 200;
-                const h = parseFloat(mHeight.value) || 150;
+                const h = parseFloat(mHeight.value) || 200;
                 aspectRatio = w / h;
 
                 setTimeout(() => {
@@ -2119,7 +2129,7 @@
                 exportName.value = `dcam_${dateStr}`;
 
                 setStatus('Ready');
-                showToast('✨ DCam Pro — Professional CNC Toolpath Studio', 3000);
+                showToast('✨ DCam Pro — Light & Professional', 3000);
             }
 
             // ---- Keyboard shortcuts ----
@@ -2148,7 +2158,6 @@
                     camera.updateProjectionMatrix();
                     renderer.setSize(rect.width, rect.height);
                 }
-                // On mobile, if simulation is active and screen width changes, we might adjust
             });
 
             // ---- Run ----
