@@ -32,6 +32,7 @@
             width: 100vw;
             position: relative;
             -webkit-tap-highlight-color: transparent;
+            touch-action: none; /* disable page zoom */
         }
         ::-webkit-scrollbar {
             width: 3px;
@@ -189,9 +190,6 @@
         }
         .header-btn-left {
             margin-right: auto;
-        }
-        .header-btn-right {
-            margin-left: auto;
         }
         @media (min-width: 820px) {
             .header-btn {
@@ -415,6 +413,22 @@
         .file-info .clear-btn:active {
             background: rgba(200, 50, 50, 0.2);
         }
+        .file-info .crop-btn {
+            background: rgba(59, 130, 246, 0.08);
+            color: var(--accent);
+            border: 1px solid rgba(59, 130, 246, 0.15);
+            border-radius: 4px;
+            padding: 1px 8px;
+            font-size: 9px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            transition: background 0.2s;
+        }
+        .file-info .crop-btn:active {
+            background: rgba(59, 130, 246, 0.15);
+        }
 
         .tool-chips {
             display: flex;
@@ -596,6 +610,11 @@
             flex-direction: column;
             gap: 4px;
             pointer-events: none;
+            transition: opacity 0.3s;
+        }
+        #zoom-controls.hidden-zoom {
+            opacity: 0;
+            pointer-events: none;
         }
         #zoom-controls>* {
             pointer-events: auto;
@@ -724,6 +743,111 @@
             opacity: 1;
         }
 
+        /* Floating toggle button */
+        #floatingToggle {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 30;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            box-shadow: 0 4px 20px rgba(59, 130, 246, 0.4);
+            font-size: 24px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+            touch-action: manipulation;
+        }
+        #floatingToggle:active {
+            transform: scale(0.9);
+        }
+        #floatingToggle .icon {
+            font-size: 24px;
+        }
+        @media (max-width: 420px) {
+            #floatingToggle {
+                width: 48px;
+                height: 48px;
+                font-size: 20px;
+                bottom: 16px;
+                right: 16px;
+            }
+            #floatingToggle .icon {
+                font-size: 20px;
+            }
+        }
+
+        /* Crop Modal */
+        #cropModal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 60;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        #cropModal.active {
+            display: flex;
+        }
+        #cropModal .crop-container {
+            background: #fff;
+            border-radius: 12px;
+            padding: 16px;
+            max-width: 90%;
+            max-height: 90%;
+            overflow: auto;
+            position: relative;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        #cropModal .crop-image-wrapper {
+            position: relative;
+            display: inline-block;
+            cursor: crosshair;
+        }
+        #cropModal .crop-image-wrapper img {
+            display: block;
+            max-width: 80vw;
+            max-height: 60vh;
+            user-select: none;
+            -webkit-user-drag: none;
+        }
+        #cropModal .crop-selection {
+            position: absolute;
+            border: 2px solid var(--accent);
+            background: rgba(59, 130, 246, 0.1);
+            pointer-events: none;
+            display: none;
+        }
+        #cropModal .crop-controls {
+            display: flex;
+            gap: 10px;
+            margin-top: 12px;
+            justify-content: flex-end;
+        }
+        #cropModal .crop-controls .btn {
+            width: auto;
+            padding: 6px 18px;
+        }
+        @media (max-width: 420px) {
+            #cropModal .crop-container {
+                padding: 12px;
+            }
+            #cropModal .crop-image-wrapper img {
+                max-width: 90vw;
+                max-height: 50vh;
+            }
+        }
+
         @media (max-width: 420px) {
             #panel .panel-body {
                 padding: 12px 14px 14px 14px;
@@ -847,9 +971,7 @@
             <button class="header-btn header-btn-left active" id="settingsToggle">
                 <i class="fas fa-sliders-h icon"></i> Settings
             </button>
-            <button class="header-btn header-btn-right" id="simToggle">
-                <i class="fas fa-cubes icon"></i> Simulation
-            </button>
+            <!-- Simulation button removed from header -->
         </div>
         <div class="topbar-right">
             <a class="bot-link" href="https://t.me/Image_2_3D_Bot" target="_blank" rel="noopener">
@@ -864,6 +986,11 @@
             <span id="statusText">Ready</span>
         </div>
     </div>
+
+    <!-- Floating Toggle Button -->
+    <button id="floatingToggle" title="Toggle Simulation / Settings">
+        <i class="fas fa-cubes icon"></i>
+    </button>
 
     <!-- Settings Panel -->
     <div id="panel">
@@ -912,6 +1039,7 @@
                 <span class="text-muted">·</span>
                 <span id="smoothLabel">smoothed 15%</span>
                 <button class="clear-btn" id="clearFileBtn">✕</button>
+                <button class="crop-btn" id="cropBtn"><i class="fas fa-crop-alt"></i> Crop</button>
             </div>
             <div class="image-preview-hint" id="previewHint">
                 <span class="highlight">✓</span> Model renders exactly as imported
@@ -1004,8 +1132,8 @@
         <button class="btn" id="viewSim">Sim</button>
     </div>
 
-    <!-- Zoom Controls -->
-    <div id="zoom-controls">
+    <!-- Zoom Controls (hidden when not in simulation) -->
+    <div id="zoom-controls" class="hidden-zoom">
         <button class="btn" id="zoomIn">➕</button>
         <button class="btn" id="zoomOut">➖</button>
         <button class="btn" id="fitView">⊡</button>
@@ -1019,6 +1147,20 @@
         <div class="loader-spinner"></div>
         <div id="loader-text">Processing depthmap...</div>
         <div id="loader-progress"></div>
+    </div>
+
+    <!-- Crop Modal -->
+    <div id="cropModal">
+        <div class="crop-container">
+            <div class="crop-image-wrapper" id="cropWrapper">
+                <img id="cropImage" src="" alt="Crop image" />
+                <div class="crop-selection" id="cropSelection"></div>
+            </div>
+            <div class="crop-controls">
+                <button class="btn btn-outline" id="cropCancel">Cancel</button>
+                <button class="btn btn-primary" id="cropApply">Apply Crop</button>
+            </div>
+        </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js">
@@ -1043,7 +1185,7 @@
 
             const panel = $('panel');
             const settingsToggle = $('settingsToggle');
-            const simToggle = $('simToggle');
+            const floatingToggle = $('floatingToggle');
             const statusText = $('statusText');
             const toast = $('toast');
             const toastMsg = $('toastMsg');
@@ -1051,6 +1193,7 @@
             const loader = $('loader');
             const loaderText = $('loader-text');
             const loaderProgress = $('loader-progress');
+            const zoomControls = $('zoom-controls');
 
             // ---- State ----
             let toolDiameter = 5;
@@ -1077,6 +1220,14 @@
             let axisHelper = null;
             let viewportInitialized = false;
 
+            // Crop state
+            let cropImageObj = null; // HTMLImageElement
+            let cropStartX = 0,
+                cropStartY = 0,
+                cropEndX = 0,
+                cropEndY = 0;
+            let cropDragging = false;
+
             // ---- Toast ----
             function showToast(msg, duration = 2400) {
                 toastMsg.textContent = msg;
@@ -1100,13 +1251,16 @@
                 settingsToggle.innerHTML = show ?
                     '<i class="fas fa-sliders-h icon"></i> Settings' :
                     '<i class="fas fa-sliders-h icon"></i> Settings';
+                // Update floating button icon
+                updateFloatingButton();
             }
 
             // ---- Simulation toggle ----
             function toggleSimulation(active) {
                 if (typeof active === 'undefined') active = !isSimulationActive;
                 isSimulationActive = active;
-                simToggle.classList.toggle('active', active);
+                // Update floating button icon
+                updateFloatingButton();
 
                 if (active) {
                     simulationMode = 'sim';
@@ -1116,7 +1270,8 @@
                     }
                     setTimeout(fitView, 200);
                     showToast('🔮 Simulation view — drag to orbit', 1500);
-                    simToggle.innerHTML = '<i class="fas fa-cubes icon"></i> Sim';
+                    // Show zoom controls
+                    zoomControls.classList.remove('hidden-zoom');
                 } else {
                     simulationMode = 'surface';
                     applyViewMode();
@@ -1124,17 +1279,41 @@
                         toggleSettings(true);
                     }
                     showToast('🔮 Surface view');
-                    simToggle.innerHTML = '<i class="fas fa-cubes icon"></i> Simulation';
+                    // Hide zoom controls
+                    zoomControls.classList.add('hidden-zoom');
                 }
             }
 
-            // ---- Header button events ----
-            settingsToggle.addEventListener('click', () => {
-                toggleSettings(!settingsVisible);
+            // ---- Floating button ----
+            function updateFloatingButton() {
+                if (isSimulationActive) {
+                    floatingToggle.innerHTML = '<i class="fas fa-sliders-h icon"></i>';
+                    floatingToggle.title = 'Go to Settings';
+                } else {
+                    floatingToggle.innerHTML = '<i class="fas fa-cubes icon"></i>';
+                    floatingToggle.title = 'Go to Simulation';
+                }
+            }
+
+            floatingToggle.addEventListener('click', function() {
+                if (isSimulationActive) {
+                    // Currently in simulation, go to settings
+                    toggleSimulation(false);
+                    // Ensure settings are shown
+                    if (!settingsVisible) toggleSettings(true);
+                } else {
+                    // Currently in settings, go to simulation
+                    toggleSimulation(true);
+                }
             });
 
-            simToggle.addEventListener('click', () => {
-                toggleSimulation(!isSimulationActive);
+            // ---- Header button events (settings toggle) ----
+            settingsToggle.addEventListener('click', () => {
+                toggleSettings(!settingsVisible);
+                // If we are in simulation and we show settings, we might want to stay in simulation? 
+                // But the floating button handles the mode switch. We'll let the user manage.
+                // If we show settings while in simulation, we keep simulation mode but show panel.
+                // That's fine.
             });
 
             // ---- Model inputs ----
@@ -1189,7 +1368,7 @@
                 autoApply();
             });
 
-            // ---- File import (only PNG, BMP, TIFF) ----
+            // ---- File import (only PNG, BMP) ----
             const fileInput = $('fileInput');
             const fileDrop = $('fileDrop');
             const fileInfo = $('fileInfo');
@@ -1198,6 +1377,7 @@
             const fileDims = $('fileDims');
             const smoothLabel = $('smoothLabel');
             const clearFileBtn = $('clearFileBtn');
+            const cropBtn = $('cropBtn');
             const previewHint = $('previewHint');
 
             function smoothDepthmap(pixels, w, h, strength) {
@@ -1233,8 +1413,211 @@
                 return result;
             }
 
+            // Crop logic
+            function initCrop() {
+                if (!imageLoaded || !depthmapData) {
+                    showToast('⚠️ Please import an image first.');
+                    return;
+                }
+                // Show modal with image
+                const img = new Image();
+                img.onload = function() {
+                    cropImageObj = img;
+                    const cropImg = $('cropImage');
+                    cropImg.src = img.src;
+                    // Reset selection
+                    const sel = $('cropSelection');
+                    sel.style.display = 'none';
+                    sel.style.left = '0px';
+                    sel.style.top = '0px';
+                    sel.style.width = '0px';
+                    sel.style.height = '0px';
+                    cropStartX = cropStartY = cropEndX = cropEndY = 0;
+                    $('cropModal').classList.add('active');
+                };
+                // Need to recreate image from depthmap data? We have the original file? We can use the canvas from load.
+                // We'll store the image data URL when loading. Let's modify loadImageAsDepthmap to store the data URL.
+                // But we already have the file; we can read it again. Simpler: store the data URL in a global.
+                // We'll add a global variable for the image data URL.
+                if (window._cropImageDataURL) {
+                    img.src = window._cropImageDataURL;
+                } else {
+                    showToast('❌ No image data available for cropping.');
+                }
+            }
+
+            // Crop selection events
+            const cropWrapper = $('cropWrapper');
+            const cropSelection = $('cropSelection');
+            let isCropping = false;
+            let startX = 0,
+                startY = 0;
+
+            cropWrapper.addEventListener('mousedown', function(e) {
+                const rect = this.getBoundingClientRect();
+                startX = e.clientX - rect.left;
+                startY = e.clientY - rect.top;
+                isCropping = true;
+                cropSelection.style.display = 'block';
+                cropSelection.style.left = startX + 'px';
+                cropSelection.style.top = startY + 'px';
+                cropSelection.style.width = '0px';
+                cropSelection.style.height = '0px';
+                cropStartX = startX;
+                cropStartY = startY;
+            });
+
+            cropWrapper.addEventListener('mousemove', function(e) {
+                if (!isCropping) return;
+                const rect = this.getBoundingClientRect();
+                let curX = e.clientX - rect.left;
+                let curY = e.clientY - rect.top;
+                // Clamp
+                curX = Math.max(0, Math.min(curX, rect.width));
+                curY = Math.max(0, Math.min(curY, rect.height));
+                const left = Math.min(startX, curX);
+                const top = Math.min(startY, curY);
+                const width = Math.abs(curX - startX);
+                const height = Math.abs(curY - startY);
+                cropSelection.style.left = left + 'px';
+                cropSelection.style.top = top + 'px';
+                cropSelection.style.width = width + 'px';
+                cropSelection.style.height = height + 'px';
+                cropEndX = curX;
+                cropEndY = curY;
+            });
+
+            cropWrapper.addEventListener('mouseup', function(e) {
+                isCropping = false;
+            });
+
+            cropWrapper.addEventListener('mouseleave', function(e) {
+                isCropping = false;
+            });
+
+            // Touch support
+            cropWrapper.addEventListener('touchstart', function(e) {
+                e.preventDefault();
+                const touch = e.touches[0];
+                const rect = this.getBoundingClientRect();
+                startX = touch.clientX - rect.left;
+                startY = touch.clientY - rect.top;
+                isCropping = true;
+                cropSelection.style.display = 'block';
+                cropSelection.style.left = startX + 'px';
+                cropSelection.style.top = startY + 'px';
+                cropSelection.style.width = '0px';
+                cropSelection.style.height = '0px';
+                cropStartX = startX;
+                cropStartY = startY;
+            }, { passive: false });
+
+            cropWrapper.addEventListener('touchmove', function(e) {
+                e.preventDefault();
+                if (!isCropping) return;
+                const touch = e.touches[0];
+                const rect = this.getBoundingClientRect();
+                let curX = touch.clientX - rect.left;
+                let curY = touch.clientY - rect.top;
+                curX = Math.max(0, Math.min(curX, rect.width));
+                curY = Math.max(0, Math.min(curY, rect.height));
+                const left = Math.min(startX, curX);
+                const top = Math.min(startY, curY);
+                const width = Math.abs(curX - startX);
+                const height = Math.abs(curY - startY);
+                cropSelection.style.left = left + 'px';
+                cropSelection.style.top = top + 'px';
+                cropSelection.style.width = width + 'px';
+                cropSelection.style.height = height + 'px';
+                cropEndX = curX;
+                cropEndY = curY;
+            }, { passive: false });
+
+            cropWrapper.addEventListener('touchend', function(e) {
+                isCropping = false;
+            });
+
+            // Crop buttons
+            $('cropCancel').addEventListener('click', function() {
+                $('cropModal').classList.remove('active');
+            });
+
+            $('cropApply').addEventListener('click', function() {
+                if (!cropImageObj) return;
+                // Get the crop region relative to the displayed image
+                const wrapperRect = cropWrapper.getBoundingClientRect();
+                const imgRect = $('cropImage').getBoundingClientRect();
+                // We need the scale factor between displayed image and actual image
+                const naturalWidth = cropImageObj.naturalWidth;
+                const naturalHeight = cropImageObj.naturalHeight;
+                const displayWidth = imgRect.width;
+                const displayHeight = imgRect.height;
+                const scaleX = naturalWidth / displayWidth;
+                const scaleY = naturalHeight / displayHeight;
+
+                // Get selection coordinates in display space
+                const selRect = cropSelection.getBoundingClientRect();
+                const selLeft = selRect.left - wrapperRect.left;
+                const selTop = selRect.top - wrapperRect.top;
+                const selWidth = selRect.width;
+                const selHeight = selRect.height;
+
+                // Convert to image coordinates
+                const cropX = Math.round(selLeft * scaleX);
+                const cropY = Math.round(selTop * scaleY);
+                const cropW = Math.round(selWidth * scaleX);
+                const cropH = Math.round(selHeight * scaleY);
+
+                if (cropW < 2 || cropH < 2) {
+                    showToast('❌ Selection too small. Please select a larger area.');
+                    return;
+                }
+
+                // Crop the image using canvas
+                const canvas = document.createElement('canvas');
+                canvas.width = cropW;
+                canvas.height = cropH;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(cropImageObj, cropX, cropY, cropW, cropH, 0, 0, cropW, cropH);
+                const imageData = ctx.getImageData(0, 0, cropW, cropH);
+                const data = imageData.data;
+                const pixels = new Float32Array(cropW * cropH);
+                for (let i = 0; i < cropW * cropH; i++) {
+                    const idx = i * 4;
+                    const r = data[idx],
+                        g = data[idx + 1],
+                        b = data[idx + 2];
+                    pixels[i] = (r + g + b) / 3 / 255;
+                }
+                // Apply smoothing (optional) - we'll keep the same 15% smoothing as before
+                const smoothed = smoothDepthmap(pixels, cropW, cropH, 0.15);
+                depthmapData = { width: cropW, height: cropH, pixels: smoothed };
+                imageLoaded = true;
+                // Update file info
+                fileName.textContent = 'cropped.png';
+                fileSize.textContent = '--';
+                fileDims.textContent = `${cropW}×${cropH}`;
+                smoothLabel.textContent = 'smoothed 15%';
+                previewHint.innerHTML = `<span class="highlight">✓</span> Cropped (${cropW}×${cropH})`;
+
+                // Update aspect ratio if locked
+                aspectRatio = cropW / cropH;
+                if (ratioLocked) {
+                    const w = parseFloat(mWidth.value) || 200;
+                    mHeight.value = (w / aspectRatio).toFixed(1);
+                }
+
+                // Update 3D scene
+                if (viewportInitialized) update3DScene();
+                showToast(`✅ Cropped to ${cropW}×${cropH}`);
+                $('cropModal').classList.remove('active');
+                // Reset selection
+                cropSelection.style.display = 'none';
+            });
+
+            cropBtn.addEventListener('click', initCrop);
+
             function loadImageAsDepthmap(file) {
-                // Check file extension
                 const ext = file.name.split('.').pop().toLowerCase();
                 if (!['png', 'bmp', 'tiff', 'tif'].includes(ext)) {
                     showToast('❌ Please import PNG, BMP, or TIFF files only.');
@@ -1242,6 +1625,9 @@
                 }
                 const reader = new FileReader();
                 reader.onload = function(e) {
+                    const dataURL = e.target.result;
+                    // Store for crop
+                    window._cropImageDataURL = dataURL;
                     const img = new Image();
                     img.onload = function() {
                         const canvas = document.createElement('canvas');
@@ -1287,7 +1673,7 @@
                     img.onerror = function() {
                         showToast('❌ Failed to load image. Try PNG, BMP, or TIFF.');
                     };
-                    img.src = e.target.result;
+                    img.src = dataURL;
                 };
                 reader.readAsDataURL(file);
             }
@@ -1777,6 +2163,17 @@
                     btn.classList.add('active');
                 }
 
+                // Update floating button
+                updateFloatingButton();
+
+                // Show/hide zoom controls
+                if (simulationMode === 'sim') {
+                    zoomControls.classList.remove('hidden-zoom');
+                } else {
+                    zoomControls.classList.add('hidden-zoom');
+                }
+
+                // Sync simulation active state
                 if (simulationMode === 'sim') {
                     if (!isSimulationActive) toggleSimulation(true);
                 } else {
@@ -2091,15 +2488,17 @@
                 const filename = `${name}_${ts}.tap`;
 
                 const fullGcode = gcodeChunks.join('');
-                const blob = new Blob([fullGcode], { type: 'text/plain' });
+                // Force download using Blob with application/octet-stream
+                const blob = new Blob([fullGcode], { type: 'application/octet-stream' });
                 const url = URL.createObjectURL(blob);
                 const a = document.createElement('a');
                 a.href = url;
-                a.download = filename;
+                a.download = filename; // .tap extension
                 document.body.appendChild(a);
                 a.click();
                 document.body.removeChild(a);
-                URL.revokeObjectURL(url);
+                // Revoke after a short delay
+                setTimeout(() => URL.revokeObjectURL(url), 5000);
 
                 const sizeKB = (blob.size / 1024).toFixed(1);
                 $('exportStatus').textContent = `✅ ${filename} (${sizeKB} KB)`;
@@ -2130,6 +2529,9 @@
 
                 setStatus('Ready');
                 showToast('✨ DCam Pro — Light & Professional', 3000);
+
+                // By default, zoom controls hidden
+                zoomControls.classList.add('hidden-zoom');
             }
 
             // ---- Keyboard shortcuts ----
