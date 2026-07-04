@@ -32,7 +32,7 @@
             width: 100vw;
             position: relative;
             -webkit-tap-highlight-color: transparent;
-            touch-action: none; /* disable page zoom */
+            touch-action: none;
         }
         ::-webkit-scrollbar {
             width: 3px;
@@ -127,7 +127,8 @@
                 transform: scale(1.1);
             }
         }
-        .telegram-link, .bot-link {
+        .telegram-link,
+        .bot-link {
             display: flex;
             align-items: center;
             gap: 3px;
@@ -143,10 +144,12 @@
             font-weight: 500;
             pointer-events: auto;
         }
-        .telegram-link:active, .bot-link:active {
+        .telegram-link:active,
+        .bot-link:active {
             transform: scale(0.95);
         }
-        .telegram-link .icon, .bot-link .icon {
+        .telegram-link .icon,
+        .bot-link .icon {
             font-size: 12px;
         }
         #statusText {
@@ -414,20 +417,23 @@
             background: rgba(200, 50, 50, 0.2);
         }
         .file-info .crop-btn {
-            background: rgba(59, 130, 246, 0.08);
-            color: var(--accent);
-            border: 1px solid rgba(59, 130, 246, 0.15);
+            background: var(--accent);
+            color: #fff;
+            border: none;
             border-radius: 4px;
-            padding: 1px 8px;
+            padding: 2px 12px;
             font-size: 9px;
+            font-weight: 600;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
             gap: 4px;
             transition: background 0.2s;
+            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
         }
         .file-info .crop-btn:active {
-            background: rgba(59, 130, 246, 0.15);
+            background: #2563eb;
+            transform: scale(0.95);
         }
 
         .tool-chips {
@@ -743,7 +749,6 @@
             opacity: 1;
         }
 
-        /* Floating toggle button */
         #floatingToggle {
             position: fixed;
             bottom: 24px;
@@ -789,7 +794,7 @@
             position: fixed;
             inset: 0;
             z-index: 60;
-            background: rgba(0,0,0,0.6);
+            background: rgba(0, 0, 0, 0.6);
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
             align-items: center;
@@ -803,16 +808,18 @@
             background: #fff;
             border-radius: 12px;
             padding: 16px;
-            max-width: 90%;
-            max-height: 90%;
+            max-width: 92%;
+            max-height: 92%;
             overflow: auto;
             position: relative;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
         }
         #cropModal .crop-image-wrapper {
             position: relative;
             display: inline-block;
-            cursor: crosshair;
+            cursor: default;
+            user-select: none;
+            -webkit-user-drag: none;
         }
         #cropModal .crop-image-wrapper img {
             display: block;
@@ -820,13 +827,76 @@
             max-height: 60vh;
             user-select: none;
             -webkit-user-drag: none;
+            pointer-events: none;
         }
         #cropModal .crop-selection {
             position: absolute;
             border: 2px solid var(--accent);
-            background: rgba(59, 130, 246, 0.1);
+            background: rgba(59, 130, 246, 0.08);
             pointer-events: none;
             display: none;
+            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.3);
+        }
+        #cropModal .crop-handle {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: #fff;
+            border: 2px solid var(--accent);
+            border-radius: 50%;
+            pointer-events: auto;
+            cursor: pointer;
+            z-index: 5;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+            transition: transform 0.15s;
+            touch-action: none;
+        }
+        #cropModal .crop-handle:active {
+            transform: scale(1.2);
+        }
+        #cropModal .crop-handle.nw {
+            top: -6px;
+            left: -6px;
+            cursor: nw-resize;
+        }
+        #cropModal .crop-handle.ne {
+            top: -6px;
+            right: -6px;
+            cursor: ne-resize;
+        }
+        #cropModal .crop-handle.sw {
+            bottom: -6px;
+            left: -6px;
+            cursor: sw-resize;
+        }
+        #cropModal .crop-handle.se {
+            bottom: -6px;
+            right: -6px;
+            cursor: se-resize;
+        }
+        #cropModal .crop-handle.n {
+            top: -6px;
+            left: 50%;
+            transform: translateX(-50%);
+            cursor: n-resize;
+        }
+        #cropModal .crop-handle.s {
+            bottom: -6px;
+            left: 50%;
+            transform: translateX(-50%);
+            cursor: s-resize;
+        }
+        #cropModal .crop-handle.w {
+            top: 50%;
+            left: -6px;
+            transform: translateY(-50%);
+            cursor: w-resize;
+        }
+        #cropModal .crop-handle.e {
+            top: 50%;
+            right: -6px;
+            transform: translateY(-50%);
+            cursor: e-resize;
         }
         #cropModal .crop-controls {
             display: flex;
@@ -838,13 +908,32 @@
             width: auto;
             padding: 6px 18px;
         }
+        #cropModal .crop-info {
+            font-size: 10px;
+            color: var(--text-muted);
+            text-align: center;
+            margin-top: 6px;
+        }
+
         @media (max-width: 420px) {
             #cropModal .crop-container {
                 padding: 12px;
+                max-width: 96%;
             }
             #cropModal .crop-image-wrapper img {
                 max-width: 90vw;
                 max-height: 50vh;
+            }
+            #cropModal .crop-handle {
+                width: 16px;
+                height: 16px;
+            }
+            #cropModal .crop-handle.nw,
+            #cropModal .crop-handle.ne,
+            #cropModal .crop-handle.sw,
+            #cropModal .crop-handle.se {
+                width: 18px;
+                height: 18px;
             }
         }
 
@@ -917,7 +1006,8 @@
             .header-btn .icon {
                 font-size: 10px;
             }
-            .telegram-link, .bot-link {
+            .telegram-link,
+            .bot-link {
                 font-size: 8px;
                 padding: 2px 8px;
             }
@@ -969,9 +1059,8 @@
         <div class="brand">DCam<span>Pro</span></div>
         <div class="topbar-center">
             <button class="header-btn header-btn-left active" id="settingsToggle">
-                <i class="fas fa-sliders-h icon"></i> Settings
+                <i class="fas fa-tools icon"></i> Toolpath
             </button>
-            <!-- Simulation button removed from header -->
         </div>
         <div class="topbar-right">
             <a class="bot-link" href="https://t.me/Image_2_3D_Bot" target="_blank" rel="noopener">
@@ -988,7 +1077,7 @@
     </div>
 
     <!-- Floating Toggle Button -->
-    <button id="floatingToggle" title="Toggle Simulation / Settings">
+    <button id="floatingToggle" title="Toggle Simulation / Toolpath">
         <i class="fas fa-cubes icon"></i>
     </button>
 
@@ -1097,6 +1186,7 @@
             <div id="pointInfo" class="flex items-center justify-between mt-1" style="display:none;">
                 <span class="text-xs text-muted">Points generated</span>
                 <span id="pointCount" class="point-badge">0</span>
+                <span class="text-xs text-muted" id="fileSizeEstimate"></span>
             </div>
 
             <!-- Export -->
@@ -1110,9 +1200,14 @@
                     </div>
                 </div>
             </div>
-            <button class="btn btn-success" id="exportBtn" disabled>
-                <i class="fas fa-download"></i> Download G-Code (.tap)
-            </button>
+            <div class="flex gap-2">
+                <button class="btn btn-success" id="exportBtn" disabled style="flex:2;">
+                    <i class="fas fa-download"></i> Download
+                </button>
+                <button class="btn btn-primary" id="shareBtn" disabled style="flex:1;">
+                    <i class="fas fa-share-alt"></i> Share
+                </button>
+            </div>
             <div id="exportStatus" class="text-xs text-muted mt-1 text-center" style="min-height:14px;"></div>
 
             <!-- Footer -->
@@ -1154,8 +1249,18 @@
         <div class="crop-container">
             <div class="crop-image-wrapper" id="cropWrapper">
                 <img id="cropImage" src="" alt="Crop image" />
-                <div class="crop-selection" id="cropSelection"></div>
+                <div class="crop-selection" id="cropSelection">
+                    <div class="crop-handle nw" data-handle="nw"></div>
+                    <div class="crop-handle n" data-handle="n"></div>
+                    <div class="crop-handle ne" data-handle="ne"></div>
+                    <div class="crop-handle w" data-handle="w"></div>
+                    <div class="crop-handle e" data-handle="e"></div>
+                    <div class="crop-handle sw" data-handle="sw"></div>
+                    <div class="crop-handle s" data-handle="s"></div>
+                    <div class="crop-handle se" data-handle="se"></div>
+                </div>
             </div>
+            <div class="crop-info" id="cropInfo">Drag handles to crop</div>
             <div class="crop-controls">
                 <button class="btn btn-outline" id="cropCancel">Cancel</button>
                 <button class="btn btn-primary" id="cropApply">Apply Crop</button>
@@ -1171,8 +1276,6 @@
     <script>
         // ============================================================
         //  DCam Pro — Professional CNC Toolpath Studio
-        //  Light UI, fixed left-right orientation, no ground plane
-        //  Supported: PNG, BMP, TIFF
         // ============================================================
 
         (function() {
@@ -1194,6 +1297,7 @@
             const loaderText = $('loader-text');
             const loaderProgress = $('loader-progress');
             const zoomControls = $('zoom-controls');
+            const fileSizeEstimate = $('fileSizeEstimate');
 
             // ---- State ----
             let toolDiameter = 5;
@@ -1211,6 +1315,8 @@
             let aspectRatio = 1;
             let settingsVisible = true;
             let isSimulationActive = false;
+            let currentGcodeFull = '';
+            let modelImageDataURL = '';
 
             // Three.js
             let scene, camera, renderer, controls;
@@ -1221,12 +1327,10 @@
             let viewportInitialized = false;
 
             // Crop state
-            let cropImageObj = null; // HTMLImageElement
-            let cropStartX = 0,
-                cropStartY = 0,
-                cropEndX = 0,
-                cropEndY = 0;
+            let cropImageObj = null;
+            let cropBox = { x: 0, y: 0, w: 0, h: 0 };
             let cropDragging = false;
+            let activeHandle = null;
 
             // ---- Toast ----
             function showToast(msg, duration = 2400) {
@@ -1249,9 +1353,8 @@
                 panel.classList.toggle('hidden', !show);
                 settingsToggle.classList.toggle('active', show);
                 settingsToggle.innerHTML = show ?
-                    '<i class="fas fa-sliders-h icon"></i> Settings' :
-                    '<i class="fas fa-sliders-h icon"></i> Settings';
-                // Update floating button icon
+                    '<i class="fas fa-tools icon"></i> Toolpath' :
+                    '<i class="fas fa-tools icon"></i> Toolpath';
                 updateFloatingButton();
             }
 
@@ -1259,7 +1362,6 @@
             function toggleSimulation(active) {
                 if (typeof active === 'undefined') active = !isSimulationActive;
                 isSimulationActive = active;
-                // Update floating button icon
                 updateFloatingButton();
 
                 if (active) {
@@ -1270,7 +1372,6 @@
                     }
                     setTimeout(fitView, 200);
                     showToast('🔮 Simulation view — drag to orbit', 1500);
-                    // Show zoom controls
                     zoomControls.classList.remove('hidden-zoom');
                 } else {
                     simulationMode = 'surface';
@@ -1279,7 +1380,6 @@
                         toggleSettings(true);
                     }
                     showToast('🔮 Surface view');
-                    // Hide zoom controls
                     zoomControls.classList.add('hidden-zoom');
                 }
             }
@@ -1288,7 +1388,7 @@
             function updateFloatingButton() {
                 if (isSimulationActive) {
                     floatingToggle.innerHTML = '<i class="fas fa-sliders-h icon"></i>';
-                    floatingToggle.title = 'Go to Settings';
+                    floatingToggle.title = 'Go to Toolpath Settings';
                 } else {
                     floatingToggle.innerHTML = '<i class="fas fa-cubes icon"></i>';
                     floatingToggle.title = 'Go to Simulation';
@@ -1297,23 +1397,16 @@
 
             floatingToggle.addEventListener('click', function() {
                 if (isSimulationActive) {
-                    // Currently in simulation, go to settings
                     toggleSimulation(false);
-                    // Ensure settings are shown
                     if (!settingsVisible) toggleSettings(true);
                 } else {
-                    // Currently in settings, go to simulation
                     toggleSimulation(true);
                 }
             });
 
-            // ---- Header button events (settings toggle) ----
+            // ---- Header button ----
             settingsToggle.addEventListener('click', () => {
                 toggleSettings(!settingsVisible);
-                // If we are in simulation and we show settings, we might want to stay in simulation? 
-                // But the floating button handles the mode switch. We'll let the user manage.
-                // If we show settings while in simulation, we keep simulation mode but show panel.
-                // That's fine.
             });
 
             // ---- Model inputs ----
@@ -1324,7 +1417,6 @@
             const exportName = $('exportName');
             const ratioLockBtn = $('ratioLock');
 
-            // Default 200x200, ratio unlocked
             mWidth.value = 200;
             mHeight.value = 200;
             ratioLockBtn.classList.remove('active');
@@ -1368,7 +1460,7 @@
                 autoApply();
             });
 
-            // ---- File import (only PNG, BMP) ----
+            // ---- File import ----
             const fileInput = $('fileInput');
             const fileDrop = $('fileDrop');
             const fileInfo = $('fileInfo');
@@ -1413,13 +1505,12 @@
                 return result;
             }
 
-            // Crop logic
+            // ---- Crop with handles ----
             function initCrop() {
                 if (!imageLoaded || !depthmapData) {
                     showToast('⚠️ Please import an image first.');
                     return;
                 }
-                // Show modal with image
                 const img = new Image();
                 img.onload = function() {
                     cropImageObj = img;
@@ -1427,18 +1518,23 @@
                     cropImg.src = img.src;
                     // Reset selection
                     const sel = $('cropSelection');
-                    sel.style.display = 'none';
-                    sel.style.left = '0px';
-                    sel.style.top = '0px';
-                    sel.style.width = '0px';
-                    sel.style.height = '0px';
-                    cropStartX = cropStartY = cropEndX = cropEndY = 0;
+                    sel.style.display = 'block';
+                    const wrapper = $('cropWrapper');
+                    const rect = wrapper.getBoundingClientRect();
+                    const imgRect = cropImg.getBoundingClientRect();
+                    // Default selection: 80% of image
+                    const pad = 0.1;
+                    const iw = imgRect.width,
+                        ih = imgRect.height;
+                    cropBox = {
+                        x: iw * pad,
+                        y: ih * pad,
+                        w: iw * (1 - pad * 2),
+                        h: ih * (1 - pad * 2)
+                    };
+                    updateCropBox();
                     $('cropModal').classList.add('active');
                 };
-                // Need to recreate image from depthmap data? We have the original file? We can use the canvas from load.
-                // We'll store the image data URL when loading. Let's modify loadImageAsDepthmap to store the data URL.
-                // But we already have the file; we can read it again. Simpler: store the data URL in a global.
-                // We'll add a global variable for the image data URL.
                 if (window._cropImageDataURL) {
                     img.src = window._cropImageDataURL;
                 } else {
@@ -1446,96 +1542,193 @@
                 }
             }
 
-            // Crop selection events
-            const cropWrapper = $('cropWrapper');
-            const cropSelection = $('cropSelection');
-            let isCropping = false;
-            let startX = 0,
-                startY = 0;
+            function updateCropBox() {
+                const sel = $('cropSelection');
+                sel.style.left = cropBox.x + 'px';
+                sel.style.top = cropBox.y + 'px';
+                sel.style.width = cropBox.w + 'px';
+                sel.style.height = cropBox.h + 'px';
+                // Update info
+                const img = $('cropImage');
+                const imgRect = img.getBoundingClientRect();
+                const scaleX = cropImageObj ? cropImageObj.naturalWidth / imgRect.width : 1;
+                const scaleY = cropImageObj ? cropImageObj.naturalHeight / imgRect.height : 1;
+                const pw = Math.round(cropBox.w * scaleX);
+                const ph = Math.round(cropBox.h * scaleY);
+                $('cropInfo').textContent = `Selection: ${pw} × ${ph} px`;
+            }
 
-            cropWrapper.addEventListener('mousedown', function(e) {
-                const rect = this.getBoundingClientRect();
-                startX = e.clientX - rect.left;
-                startY = e.clientY - rect.top;
-                isCropping = true;
-                cropSelection.style.display = 'block';
-                cropSelection.style.left = startX + 'px';
-                cropSelection.style.top = startY + 'px';
-                cropSelection.style.width = '0px';
-                cropSelection.style.height = '0px';
-                cropStartX = startX;
-                cropStartY = startY;
-            });
+            // Crop handle events
+            function setupCropHandles() {
+                const handles = qsa('.crop-handle');
+                const wrapper = $('cropWrapper');
 
-            cropWrapper.addEventListener('mousemove', function(e) {
-                if (!isCropping) return;
-                const rect = this.getBoundingClientRect();
-                let curX = e.clientX - rect.left;
-                let curY = e.clientY - rect.top;
-                // Clamp
-                curX = Math.max(0, Math.min(curX, rect.width));
-                curY = Math.max(0, Math.min(curY, rect.height));
-                const left = Math.min(startX, curX);
-                const top = Math.min(startY, curY);
-                const width = Math.abs(curX - startX);
-                const height = Math.abs(curY - startY);
-                cropSelection.style.left = left + 'px';
-                cropSelection.style.top = top + 'px';
-                cropSelection.style.width = width + 'px';
-                cropSelection.style.height = height + 'px';
-                cropEndX = curX;
-                cropEndY = curY;
-            });
+                function getPos(e) {
+                    const rect = wrapper.getBoundingClientRect();
+                    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+                    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+                    return {
+                        x: Math.max(0, Math.min(clientX - rect.left, rect.width)),
+                        y: Math.max(0, Math.min(clientY - rect.top, rect.height))
+                    };
+                }
 
-            cropWrapper.addEventListener('mouseup', function(e) {
-                isCropping = false;
-            });
+                handles.forEach(h => {
+                    const startDrag = function(e) {
+                        e.preventDefault();
+                        activeHandle = h.dataset.handle;
+                        cropDragging = true;
+                        const pos = getPos(e);
+                        // Store the offset from the handle position
+                        const sel = $('cropSelection');
+                        const selRect = sel.getBoundingClientRect();
+                        const wrapperRect = wrapper.getBoundingClientRect();
+                        cropBox._offsetX = pos.x - (selRect.left - wrapperRect.left);
+                        cropBox._offsetY = pos.y - (selRect.top - wrapperRect.top);
+                        // For corner handles, we need to know the opposite corner
+                        const hName = activeHandle;
+                        if (hName.includes('n')) cropBox._fixedY = cropBox.y + cropBox.h;
+                        if (hName.includes('s')) cropBox._fixedY = cropBox.y;
+                        if (hName.includes('w')) cropBox._fixedX = cropBox.x + cropBox.w;
+                        if (hName.includes('e')) cropBox._fixedX = cropBox.x;
+                        // Store original box
+                        cropBox._origX = cropBox.x;
+                        cropBox._origY = cropBox.y;
+                        cropBox._origW = cropBox.w;
+                        cropBox._origH = cropBox.h;
+                    };
 
-            cropWrapper.addEventListener('mouseleave', function(e) {
-                isCropping = false;
-            });
+                    h.addEventListener('mousedown', startDrag);
+                    h.addEventListener('touchstart', startDrag, { passive: false });
+                });
 
-            // Touch support
-            cropWrapper.addEventListener('touchstart', function(e) {
-                e.preventDefault();
-                const touch = e.touches[0];
-                const rect = this.getBoundingClientRect();
-                startX = touch.clientX - rect.left;
-                startY = touch.clientY - rect.top;
-                isCropping = true;
-                cropSelection.style.display = 'block';
-                cropSelection.style.left = startX + 'px';
-                cropSelection.style.top = startY + 'px';
-                cropSelection.style.width = '0px';
-                cropSelection.style.height = '0px';
-                cropStartX = startX;
-                cropStartY = startY;
-            }, { passive: false });
+                // Move handler
+                document.addEventListener('mousemove', function(e) {
+                    if (!cropDragging || !activeHandle) return;
+                    const pos = getPos(e);
+                    const h = activeHandle;
+                    const minSize = 20;
 
-            cropWrapper.addEventListener('touchmove', function(e) {
-                e.preventDefault();
-                if (!isCropping) return;
-                const touch = e.touches[0];
-                const rect = this.getBoundingClientRect();
-                let curX = touch.clientX - rect.left;
-                let curY = touch.clientY - rect.top;
-                curX = Math.max(0, Math.min(curX, rect.width));
-                curY = Math.max(0, Math.min(curY, rect.height));
-                const left = Math.min(startX, curX);
-                const top = Math.min(startY, curY);
-                const width = Math.abs(curX - startX);
-                const height = Math.abs(curY - startY);
-                cropSelection.style.left = left + 'px';
-                cropSelection.style.top = top + 'px';
-                cropSelection.style.width = width + 'px';
-                cropSelection.style.height = height + 'px';
-                cropEndX = curX;
-                cropEndY = curY;
-            }, { passive: false });
+                    if (h === 'nw') {
+                        let newX = Math.min(pos.x, cropBox._fixedX - minSize);
+                        let newY = Math.min(pos.y, cropBox._fixedY - minSize);
+                        cropBox.x = Math.max(0, newX);
+                        cropBox.y = Math.max(0, newY);
+                        cropBox.w = Math.max(minSize, cropBox._fixedX - cropBox.x);
+                        cropBox.h = Math.max(minSize, cropBox._fixedY - cropBox.y);
+                    } else if (h === 'ne') {
+                        let newX = Math.max(pos.x, cropBox._fixedX + minSize);
+                        let newY = Math.min(pos.y, cropBox._fixedY - minSize);
+                        cropBox.y = Math.max(0, newY);
+                        cropBox.w = Math.max(minSize, newX - cropBox.x);
+                        cropBox.h = Math.max(minSize, cropBox._fixedY - cropBox.y);
+                    } else if (h === 'sw') {
+                        let newX = Math.min(pos.x, cropBox._fixedX - minSize);
+                        let newY = Math.max(pos.y, cropBox._fixedY + minSize);
+                        cropBox.x = Math.max(0, newX);
+                        cropBox.w = Math.max(minSize, cropBox._fixedX - cropBox.x);
+                        cropBox.h = Math.max(minSize, newY - cropBox.y);
+                    } else if (h === 'se') {
+                        let newX = Math.max(pos.x, cropBox._fixedX + minSize);
+                        let newY = Math.max(pos.y, cropBox._fixedY + minSize);
+                        cropBox.w = Math.max(minSize, newX - cropBox.x);
+                        cropBox.h = Math.max(minSize, newY - cropBox.y);
+                    } else if (h === 'n') {
+                        let newY = Math.min(pos.y, cropBox._fixedY - minSize);
+                        cropBox.y = Math.max(0, newY);
+                        cropBox.h = Math.max(minSize, cropBox._fixedY - cropBox.y);
+                    } else if (h === 's') {
+                        let newY = Math.max(pos.y, cropBox.y + minSize);
+                        cropBox.h = Math.max(minSize, newY - cropBox.y);
+                    } else if (h === 'w') {
+                        let newX = Math.min(pos.x, cropBox._fixedX - minSize);
+                        cropBox.x = Math.max(0, newX);
+                        cropBox.w = Math.max(minSize, cropBox._fixedX - cropBox.x);
+                    } else if (h === 'e') {
+                        let newX = Math.max(pos.x, cropBox.x + minSize);
+                        cropBox.w = Math.max(minSize, newX - cropBox.x);
+                    }
 
-            cropWrapper.addEventListener('touchend', function(e) {
-                isCropping = false;
-            });
+                    // Clamp
+                    const wrapperRect = wrapper.getBoundingClientRect();
+                    cropBox.x = Math.max(0, Math.min(cropBox.x, wrapperRect.width - minSize));
+                    cropBox.y = Math.max(0, Math.min(cropBox.y, wrapperRect.height - minSize));
+                    cropBox.w = Math.max(minSize, Math.min(cropBox.w, wrapperRect.width - cropBox.x));
+                    cropBox.h = Math.max(minSize, Math.min(cropBox.h, wrapperRect.height - cropBox.y));
+
+                    updateCropBox();
+                });
+
+                document.addEventListener('touchmove', function(e) {
+                    if (!cropDragging || !activeHandle) return;
+                    e.preventDefault();
+                    const pos = getPos(e);
+                    const h = activeHandle;
+                    const minSize = 20;
+
+                    if (h === 'nw') {
+                        let newX = Math.min(pos.x, cropBox._fixedX - minSize);
+                        let newY = Math.min(pos.y, cropBox._fixedY - minSize);
+                        cropBox.x = Math.max(0, newX);
+                        cropBox.y = Math.max(0, newY);
+                        cropBox.w = Math.max(minSize, cropBox._fixedX - cropBox.x);
+                        cropBox.h = Math.max(minSize, cropBox._fixedY - cropBox.y);
+                    } else if (h === 'ne') {
+                        let newX = Math.max(pos.x, cropBox._fixedX + minSize);
+                        let newY = Math.min(pos.y, cropBox._fixedY - minSize);
+                        cropBox.y = Math.max(0, newY);
+                        cropBox.w = Math.max(minSize, newX - cropBox.x);
+                        cropBox.h = Math.max(minSize, cropBox._fixedY - cropBox.y);
+                    } else if (h === 'sw') {
+                        let newX = Math.min(pos.x, cropBox._fixedX - minSize);
+                        let newY = Math.max(pos.y, cropBox._fixedY + minSize);
+                        cropBox.x = Math.max(0, newX);
+                        cropBox.w = Math.max(minSize, cropBox._fixedX - cropBox.x);
+                        cropBox.h = Math.max(minSize, newY - cropBox.y);
+                    } else if (h === 'se') {
+                        let newX = Math.max(pos.x, cropBox._fixedX + minSize);
+                        let newY = Math.max(pos.y, cropBox._fixedY + minSize);
+                        cropBox.w = Math.max(minSize, newX - cropBox.x);
+                        cropBox.h = Math.max(minSize, newY - cropBox.y);
+                    } else if (h === 'n') {
+                        let newY = Math.min(pos.y, cropBox._fixedY - minSize);
+                        cropBox.y = Math.max(0, newY);
+                        cropBox.h = Math.max(minSize, cropBox._fixedY - cropBox.y);
+                    } else if (h === 's') {
+                        let newY = Math.max(pos.y, cropBox.y + minSize);
+                        cropBox.h = Math.max(minSize, newY - cropBox.y);
+                    } else if (h === 'w') {
+                        let newX = Math.min(pos.x, cropBox._fixedX - minSize);
+                        cropBox.x = Math.max(0, newX);
+                        cropBox.w = Math.max(minSize, cropBox._fixedX - cropBox.x);
+                    } else if (h === 'e') {
+                        let newX = Math.max(pos.x, cropBox.x + minSize);
+                        cropBox.w = Math.max(minSize, newX - cropBox.x);
+                    }
+
+                    const wrapperRect = wrapper.getBoundingClientRect();
+                    cropBox.x = Math.max(0, Math.min(cropBox.x, wrapperRect.width - minSize));
+                    cropBox.y = Math.max(0, Math.min(cropBox.y, wrapperRect.height - minSize));
+                    cropBox.w = Math.max(minSize, Math.min(cropBox.w, wrapperRect.width - cropBox.x));
+                    cropBox.h = Math.max(minSize, Math.min(cropBox.h, wrapperRect.height - cropBox.y));
+
+                    updateCropBox();
+                }, { passive: false });
+
+                document.addEventListener('mouseup', function(e) {
+                    if (cropDragging) {
+                        cropDragging = false;
+                        activeHandle = null;
+                    }
+                });
+
+                document.addEventListener('touchend', function(e) {
+                    if (cropDragging) {
+                        cropDragging = false;
+                        activeHandle = null;
+                    }
+                });
+            }
 
             // Crop buttons
             $('cropCancel').addEventListener('click', function() {
@@ -1544,36 +1737,20 @@
 
             $('cropApply').addEventListener('click', function() {
                 if (!cropImageObj) return;
-                // Get the crop region relative to the displayed image
-                const wrapperRect = cropWrapper.getBoundingClientRect();
                 const imgRect = $('cropImage').getBoundingClientRect();
-                // We need the scale factor between displayed image and actual image
-                const naturalWidth = cropImageObj.naturalWidth;
-                const naturalHeight = cropImageObj.naturalHeight;
-                const displayWidth = imgRect.width;
-                const displayHeight = imgRect.height;
-                const scaleX = naturalWidth / displayWidth;
-                const scaleY = naturalHeight / displayHeight;
+                const scaleX = cropImageObj.naturalWidth / imgRect.width;
+                const scaleY = cropImageObj.naturalHeight / imgRect.height;
 
-                // Get selection coordinates in display space
-                const selRect = cropSelection.getBoundingClientRect();
-                const selLeft = selRect.left - wrapperRect.left;
-                const selTop = selRect.top - wrapperRect.top;
-                const selWidth = selRect.width;
-                const selHeight = selRect.height;
+                const cropX = Math.round(cropBox.x * scaleX);
+                const cropY = Math.round(cropBox.y * scaleY);
+                const cropW = Math.round(cropBox.w * scaleX);
+                const cropH = Math.round(cropBox.h * scaleY);
 
-                // Convert to image coordinates
-                const cropX = Math.round(selLeft * scaleX);
-                const cropY = Math.round(selTop * scaleY);
-                const cropW = Math.round(selWidth * scaleX);
-                const cropH = Math.round(selHeight * scaleY);
-
-                if (cropW < 2 || cropH < 2) {
+                if (cropW < 4 || cropH < 4) {
                     showToast('❌ Selection too small. Please select a larger area.');
                     return;
                 }
 
-                // Crop the image using canvas
                 const canvas = document.createElement('canvas');
                 canvas.width = cropW;
                 canvas.height = cropH;
@@ -1589,30 +1766,31 @@
                         b = data[idx + 2];
                     pixels[i] = (r + g + b) / 3 / 255;
                 }
-                // Apply smoothing (optional) - we'll keep the same 15% smoothing as before
                 const smoothed = smoothDepthmap(pixels, cropW, cropH, 0.15);
                 depthmapData = { width: cropW, height: cropH, pixels: smoothed };
                 imageLoaded = true;
-                // Update file info
+                // Store cropped image as data URL for sharing
+                window._cropImageDataURL = canvas.toDataURL('image/png');
+                modelImageDataURL = window._cropImageDataURL;
+
                 fileName.textContent = 'cropped.png';
                 fileSize.textContent = '--';
                 fileDims.textContent = `${cropW}×${cropH}`;
                 smoothLabel.textContent = 'smoothed 15%';
                 previewHint.innerHTML = `<span class="highlight">✓</span> Cropped (${cropW}×${cropH})`;
 
-                // Update aspect ratio if locked
                 aspectRatio = cropW / cropH;
                 if (ratioLocked) {
                     const w = parseFloat(mWidth.value) || 200;
                     mHeight.value = (w / aspectRatio).toFixed(1);
                 }
 
-                // Update 3D scene
                 if (viewportInitialized) update3DScene();
                 showToast(`✅ Cropped to ${cropW}×${cropH}`);
                 $('cropModal').classList.remove('active');
                 // Reset selection
-                cropSelection.style.display = 'none';
+                const sel = $('cropSelection');
+                sel.style.display = 'none';
             });
 
             cropBtn.addEventListener('click', initCrop);
@@ -1626,8 +1804,8 @@
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     const dataURL = e.target.result;
-                    // Store for crop
                     window._cropImageDataURL = dataURL;
+                    modelImageDataURL = dataURL;
                     const img = new Image();
                     img.onload = function() {
                         const canvas = document.createElement('canvas');
@@ -1669,6 +1847,8 @@
                         showToast(`✅ Loaded ${file.name} (${mp}M px) — smoothed 15%`);
                         setStatus(`${mp}M px loaded`);
                         if (viewportInitialized) update3DScene();
+                        // Setup crop handles after loading
+                        setTimeout(setupCropHandles, 100);
                     };
                     img.onerror = function() {
                         showToast('❌ Failed to load image. Try PNG, BMP, or TIFF.');
@@ -1706,6 +1886,7 @@
                 toolpathPoints = null;
                 gcodeChunks = [];
                 totalPoints = 0;
+                currentGcodeFull = '';
                 fileInfo.classList.remove('show');
                 fileDrop.style.display = 'block';
                 fileInput.value = '';
@@ -1713,6 +1894,8 @@
                 setStatus('Ready');
                 $('pointInfo').style.display = 'none';
                 $('exportBtn').disabled = true;
+                $('shareBtn').disabled = true;
+                fileSizeEstimate.textContent = '';
                 showToast('🗑️ Depthmap cleared');
                 if (viewportInitialized) update3DScene();
             });
@@ -1841,7 +2024,6 @@
                 const hemi = new THREE.HemisphereLight(0xffffff, 0x444444, 0.5);
                 scene.add(hemi);
 
-                // Axis lines only, no ground plane
                 axisHelper = new THREE.AxesHelper(120);
                 scene.add(axisHelper);
 
@@ -1856,7 +2038,7 @@
                 renderer.render(scene, camera);
             }
 
-            // ---- Build Surface Mesh (Y-flip only, no X flip) ----
+            // ---- Build Surface Mesh ----
             function buildSurfaceMesh() {
                 if (!depthmapData) return;
                 const dw = depthmapData.width;
@@ -1898,7 +2080,6 @@
                     }
                 }
 
-                // Only flip Y around center (top-bottom)
                 const centerY = oy + h / 2;
 
                 for (let r = 0; r < rows; r++) {
@@ -1908,7 +2089,6 @@
                         const z = heightMap[r * cols + c];
                         const x = ox + px * w;
                         let y = oy + py * h;
-                        // Flip Y only
                         y = 2 * centerY - y;
                         positions.push(x, y, z);
 
@@ -1969,7 +2149,7 @@
                 scene.add(surfaceMesh);
             }
 
-            // ---- Build Simulation Mesh (Y-flip only) ----
+            // ---- Build Simulation Mesh ----
             function buildSimulationMesh() {
                 if (!depthmapData) return;
                 const dw = depthmapData.width;
@@ -2055,7 +2235,7 @@
                 scene.add(simMesh);
             }
 
-            // ---- Build Toolpath Line (no flip, already correct) ----
+            // ---- Build Toolpath Line (Ultra High Quality) ----
             function buildToolpathLine() {
                 if (!toolpathPoints || toolpathPoints.length < 2) return;
                 const pts = toolpathPoints;
@@ -2063,8 +2243,8 @@
                 const colors = [];
                 const zMax = parseFloat(mZ.value) || 5;
 
-                const step = Math.max(1, Math.floor(pts.length / 20000));
-                for (let i = 0; i < pts.length; i += step) {
+                // Use all points for ultra high quality (no decimation)
+                for (let i = 0; i < pts.length; i++) {
                     const p = pts[i];
                     positions.push(p.x, p.y, p.z);
                     const t = Math.min(1, Math.max(0, p.z / (zMax || 1)));
@@ -2075,11 +2255,12 @@
                 geo.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
                 geo.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
 
+                // Use thicker line for better visibility
                 const mat = new THREE.LineBasicMaterial({
                     vertexColors: true,
-                    linewidth: 1,
+                    linewidth: 2,
                     transparent: true,
-                    opacity: 0.7,
+                    opacity: 0.85,
                 });
                 toolpathLine = new THREE.Line(geo, mat);
                 scene.add(toolpathLine);
@@ -2106,7 +2287,6 @@
                     buildSurfaceMesh();
                     buildSimulationMesh();
                 } else {
-                    // Placeholder surface (very subtle)
                     const geo = new THREE.PlaneGeometry(200, 200, 1, 1);
                     const mat = new THREE.MeshStandardMaterial({
                         color: 0xd0d0d0,
@@ -2163,20 +2343,13 @@
                     btn.classList.add('active');
                 }
 
-                // Update floating button
                 updateFloatingButton();
 
-                // Show/hide zoom controls
                 if (simulationMode === 'sim') {
                     zoomControls.classList.remove('hidden-zoom');
-                } else {
-                    zoomControls.classList.add('hidden-zoom');
-                }
-
-                // Sync simulation active state
-                if (simulationMode === 'sim') {
                     if (!isSimulationActive) toggleSimulation(true);
                 } else {
+                    zoomControls.classList.add('hidden-zoom');
                     if (isSimulationActive) toggleSimulation(false);
                 }
             }
@@ -2185,6 +2358,7 @@
             $('viewSurface').addEventListener('click', function() {
                 simulationMode = 'surface';
                 applyViewMode();
+                // Do NOT open settings - floating button controls that
                 showToast('🔮 Surface view');
             });
 
@@ -2237,7 +2411,7 @@
             });
 
             // ============================================================
-            //  TOOLPATH GENERATOR
+            //  TOOLPATH GENERATOR — Optimized for smaller file size
             // ============================================================
             function generateToolpath() {
                 if (!imageLoaded || !depthmapData) {
@@ -2265,10 +2439,15 @@
                     oy = 0; } else if (origin === 'bottom-right') { ox = -w;
                     oy = 0; }
 
-                const targetPoints = 7000000;
-                const area = w * h;
-                const avgSpacing = Math.sqrt(area / targetPoints);
-                const spacing = Math.max(step * 0.08, avgSpacing);
+                // Optimized point spacing for ~1-2 MB file size
+                // For 200x200 with 0.5mm stepover, target ~150k-200k points
+                // spacing = stepover * 0.7 gives ~0.35mm -> ~320k points -> ~9MB
+                // spacing = stepover * 0.9 gives ~0.45mm -> ~200k points -> ~6MB
+                // spacing = stepover * 1.0 gives ~0.5mm -> ~160k points -> ~4.8MB
+                // Use 0.9 for good quality/size balance
+                const spacing = Math.max(step * 0.9, 0.15);
+                // For larger tools, use slightly coarser spacing
+                const adjustedSpacing = spacing * (1 + (diam - 5) * 0.03);
 
                 const pts = [];
                 gcodeChunks = [];
@@ -2295,115 +2474,108 @@
                 let pointCount = 0;
                 const previewPoints = [];
 
-                // Y-flip for correct orientation (same as mesh flip)
+                // Helper to get Z at (x,y) in model coordinates
+                function getZ(x, y) {
+                    const px = (x - ox) / w;
+                    const py = (y - oy) / h;
+                    const pi = Math.floor(Math.min(1, Math.max(0, px)) * (dw - 1));
+                    const pj = Math.floor(Math.min(1, Math.max(0, 1 - py)) * (dh - 1));
+                    const idx = pj * dw + pi;
+                    return (pixels[idx] || 0) * zMax;
+                }
+
                 if (style === 'raster') {
                     let goingRight = true;
-                    for (let y = 0; y <= h; y += step) {
+                    // Use step as the Y step, and spacing for X step
+                    for (let y = 0; y <= h + step * 0.1; y += step) {
                         const yPos = Math.min(h, y);
-                        if (goingRight) {
-                            for (let x = 0; x <= w; x += spacing) {
-                                const xPos = Math.min(w, x);
-                                const px = xPos / w;
-                                const py = 1 - (yPos / h);
-                                const pi = Math.floor(Math.min(1, Math.max(0, px)) * (dw - 1));
-                                const pj = Math.floor(Math.min(1, Math.max(0, py)) * (dh - 1));
-                                const idx = pj * dw + pi;
-                                const z = (pixels[idx] || 0) * zMax;
-                                const mx = ox + xPos;
-                                const my = oy + yPos;
-                                addLine(`G1 X${mx.toFixed(3)} Y${my.toFixed(3)} Z${z.toFixed(3)}`);
-                                if (pointCount % 100 === 0) previewPoints.push({ x: mx, y: my, z: z });
-                                pointCount++;
+                        let xStart = 0,
+                            xEnd = w,
+                            xStep = adjustedSpacing;
+                        if (!goingRight) { xStart = w;
+                            xEnd = 0;
+                            xStep = -adjustedSpacing; }
+                        let xPos = xStart;
+                        let first = true;
+                        while ((goingRight && xPos <= xEnd + adjustedSpacing * 0.1) || (!goingRight && xPos >= xEnd -
+                                adjustedSpacing * 0.1)) {
+                            const xClamped = Math.max(0, Math.min(w, xPos));
+                            const z = getZ(xClamped, yPos);
+                            const mx = ox + xClamped;
+                            const my = oy + yPos;
+                            if (first) {
+                                // Use G0 for first point of each pass
+                                addLine(`G0 X${mx.toFixed(3)} Y${my.toFixed(3)}`);
+                                first = false;
                             }
-                        } else {
-                            for (let x = w; x >= 0; x -= spacing) {
-                                const xPos = Math.max(0, x);
-                                const px = xPos / w;
-                                const py = 1 - (yPos / h);
-                                const pi = Math.floor(Math.min(1, Math.max(0, px)) * (dw - 1));
-                                const pj = Math.floor(Math.min(1, Math.max(0, py)) * (dh - 1));
-                                const idx = pj * dw + pi;
-                                const z = (pixels[idx] || 0) * zMax;
-                                const mx = ox + xPos;
-                                const my = oy + yPos;
-                                addLine(`G1 X${mx.toFixed(3)} Y${my.toFixed(3)} Z${z.toFixed(3)}`);
-                                if (pointCount % 100 === 0) previewPoints.push({ x: mx, y: my, z: z });
-                                pointCount++;
-                            }
+                            addLine(`G1 Z${z.toFixed(3)} F600`);
+                            if (pointCount % 50 === 0) previewPoints.push({ x: mx, y: my, z: z });
+                            pointCount++;
+                            xPos += xStep;
                         }
                         goingRight = !goingRight;
+                        // Progress update
                         if (y % (h / 20) < step) {
                             const pct = Math.min(95, Math.round((y / h) * 100));
                             loaderProgress.textContent = `${pct}%`;
                         }
                     }
                 } else {
+                    // 3D Offset - optimized with fewer points
                     let minX = 0,
                         maxX = w,
                         minY = 0,
                         maxY = h;
                     let loopCount = 0;
+                    const offsetStep = step * 0.8;
                     while (minX <= maxX && minY <= maxY) {
-                        for (let x = minX; x <= maxX; x += spacing) {
+                        // Top
+                        let first = true;
+                        for (let x = minX; x <= maxX; x += adjustedSpacing) {
                             const xPos = Math.min(maxX, x);
-                            const px = xPos / w;
-                            const py = 1 - (maxY / h);
-                            const pi = Math.floor(Math.min(1, Math.max(0, px)) * (dw - 1));
-                            const pj = Math.floor(Math.min(1, Math.max(0, py)) * (dh - 1));
-                            const idx = pj * dw + pi;
-                            const z = (pixels[idx] || 0) * zMax;
+                            const z = getZ(xPos, maxY);
                             const mx = ox + xPos;
                             const my = oy + maxY;
-                            addLine(`G1 X${mx.toFixed(3)} Y${my.toFixed(3)} Z${z.toFixed(3)}`);
-                            if (pointCount % 100 === 0) previewPoints.push({ x: mx, y: my, z: z });
+                            if (first) { addLine(`G0 X${mx.toFixed(3)} Y${my.toFixed(3)}`);
+                                first = false; }
+                            addLine(`G1 Z${z.toFixed(3)} F600`);
+                            if (pointCount % 50 === 0) previewPoints.push({ x: mx, y: my, z: z });
                             pointCount++;
                         }
-                        for (let y = maxY; y >= minY; y -= spacing) {
+                        // Right
+                        for (let y = maxY; y >= minY; y -= adjustedSpacing) {
                             const yPos = Math.max(minY, y);
-                            const px = maxX / w;
-                            const py = 1 - (yPos / h);
-                            const pi = Math.floor(Math.min(1, Math.max(0, px)) * (dw - 1));
-                            const pj = Math.floor(Math.min(1, Math.max(0, py)) * (dh - 1));
-                            const idx = pj * dw + pi;
-                            const z = (pixels[idx] || 0) * zMax;
+                            const z = getZ(maxX, yPos);
                             const mx = ox + maxX;
                             const my = oy + yPos;
-                            addLine(`G1 X${mx.toFixed(3)} Y${my.toFixed(3)} Z${z.toFixed(3)}`);
-                            if (pointCount % 100 === 0) previewPoints.push({ x: mx, y: my, z: z });
+                            addLine(`G1 Z${z.toFixed(3)} F600`);
+                            if (pointCount % 50 === 0) previewPoints.push({ x: mx, y: my, z: z });
                             pointCount++;
                         }
-                        for (let x = maxX; x >= minX; x -= spacing) {
+                        // Bottom
+                        for (let x = maxX; x >= minX; x -= adjustedSpacing) {
                             const xPos = Math.max(minX, x);
-                            const px = xPos / w;
-                            const py = 1 - (minY / h);
-                            const pi = Math.floor(Math.min(1, Math.max(0, px)) * (dw - 1));
-                            const pj = Math.floor(Math.min(1, Math.max(0, py)) * (dh - 1));
-                            const idx = pj * dw + pi;
-                            const z = (pixels[idx] || 0) * zMax;
+                            const z = getZ(xPos, minY);
                             const mx = ox + xPos;
                             const my = oy + minY;
-                            addLine(`G1 X${mx.toFixed(3)} Y${my.toFixed(3)} Z${z.toFixed(3)}`);
-                            if (pointCount % 100 === 0) previewPoints.push({ x: mx, y: my, z: z });
+                            addLine(`G1 Z${z.toFixed(3)} F600`);
+                            if (pointCount % 50 === 0) previewPoints.push({ x: mx, y: my, z: z });
                             pointCount++;
                         }
-                        for (let y = minY; y <= maxY; y += spacing) {
+                        // Left
+                        for (let y = minY; y <= maxY; y += adjustedSpacing) {
                             const yPos = Math.min(maxY, y);
-                            const px = minX / w;
-                            const py = 1 - (yPos / h);
-                            const pi = Math.floor(Math.min(1, Math.max(0, px)) * (dw - 1));
-                            const pj = Math.floor(Math.min(1, Math.max(0, py)) * (dh - 1));
-                            const idx = pj * dw + pi;
-                            const z = (pixels[idx] || 0) * zMax;
+                            const z = getZ(minX, yPos);
                             const mx = ox + minX;
                             const my = oy + yPos;
-                            addLine(`G1 X${mx.toFixed(3)} Y${my.toFixed(3)} Z${z.toFixed(3)}`);
-                            if (pointCount % 100 === 0) previewPoints.push({ x: mx, y: my, z: z });
+                            addLine(`G1 Z${z.toFixed(3)} F600`);
+                            if (pointCount % 50 === 0) previewPoints.push({ x: mx, y: my, z: z });
                             pointCount++;
                         }
-                        minX += step;
-                        maxX -= step;
-                        minY += step;
-                        maxY -= step;
+                        minX += offsetStep;
+                        maxX -= offsetStep;
+                        minY += offsetStep;
+                        maxY -= offsetStep;
                         loopCount++;
                         if (loopCount % 5 === 0) {
                             const pct = Math.min(95, Math.round((loopCount / 50) * 100));
@@ -2423,14 +2595,20 @@
                 totalPoints = pointCount;
                 toolpathPoints = previewPoints;
                 toolpathGenerated = true;
+                currentGcodeFull = gcodeChunks.join('');
+
+                // Estimate file size
+                const estimatedSize = (currentGcodeFull.length / 1024).toFixed(1);
+                fileSizeEstimate.textContent = `~${estimatedSize} KB`;
 
                 setStatus(`${totalPoints.toLocaleString()} points`);
-                $('calcStatus').innerHTML = `✅ Generated ${totalPoints.toLocaleString()} points (${style})`;
+                $('calcStatus').innerHTML = `✅ Generated ${totalPoints.toLocaleString()} points (${style}) ~${estimatedSize} KB`;
                 $('pointInfo').style.display = 'flex';
                 $('pointCount').textContent = totalPoints.toLocaleString();
                 $('exportBtn').disabled = false;
+                $('shareBtn').disabled = false;
 
-                showToast(`✅ Toolpath — ${totalPoints.toLocaleString()} points`);
+                showToast(`✅ Toolpath — ${totalPoints.toLocaleString()} points (${estimatedSize} KB)`);
 
                 update3DScene();
                 simulationMode = 'sim';
@@ -2475,34 +2653,121 @@
                 }, 100);
             });
 
-            // ---- Export ----
-            $('exportBtn').addEventListener('click', function() {
-                if (!toolpathGenerated || gcodeChunks.length === 0) {
-                    showToast('⚠️ Generate toolpath first.');
-                    return;
-                }
+            // ---- Export & Share ----
+            function getTapFile() {
+                if (!toolpathGenerated || gcodeChunks.length === 0) return null;
                 const name = exportName.value.trim() || 'dcam_model';
                 const now = new Date();
                 const ts =
                     `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}_${String(now.getHours()).padStart(2,'0')}-${String(now.getMinutes()).padStart(2,'0')}`;
                 const filename = `${name}_${ts}.tap`;
+                const content = currentGcodeFull || gcodeChunks.join('');
+                return { filename, content };
+            }
 
-                const fullGcode = gcodeChunks.join('');
-                // Force download using Blob with application/octet-stream
-                const blob = new Blob([fullGcode], { type: 'application/octet-stream' });
+            $('exportBtn').addEventListener('click', function() {
+                const fileData = getTapFile();
+                if (!fileData) {
+                    showToast('⚠️ Generate toolpath first.');
+                    return;
+                }
+                const blob = new Blob([fileData.content], { type: 'application/octet-stream' });
                 const url = URL.createObjectURL(blob);
                 const a = document.createElement('a');
                 a.href = url;
-                a.download = filename; // .tap extension
+                a.download = fileData.filename;
                 document.body.appendChild(a);
                 a.click();
                 document.body.removeChild(a);
-                // Revoke after a short delay
                 setTimeout(() => URL.revokeObjectURL(url), 5000);
+                showToast(`💾 Saved ${fileData.filename}`);
+            });
 
-                const sizeKB = (blob.size / 1024).toFixed(1);
-                $('exportStatus').textContent = `✅ ${filename} (${sizeKB} KB)`;
-                showToast(`💾 Saved ${filename}`);
+            $('shareBtn').addEventListener('click', async function() {
+                const fileData = getTapFile();
+                if (!fileData) {
+                    showToast('⚠️ Generate toolpath first.');
+                    return;
+                }
+
+                // Create a blob for the .tap file
+                const tapBlob = new Blob([fileData.content], { type: 'application/octet-stream' });
+                const tapFile = new File([tapBlob], fileData.filename, { type: 'application/octet-stream' });
+
+                // Create a screenshot of the model
+                let screenshotBlob = null;
+                try {
+                    // Use canvas to capture the 3D viewport
+                    if (renderer && renderer.domElement) {
+                        const canvas = renderer.domElement;
+                        // Draw a white background for the screenshot
+                        const tempCanvas = document.createElement('canvas');
+                        tempCanvas.width = canvas.width;
+                        tempCanvas.height = canvas.height;
+                        const ctx = tempCanvas.getContext('2d');
+                        ctx.fillStyle = '#f5f5f7';
+                        ctx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
+                        ctx.drawImage(canvas, 0, 0);
+                        const dataUrl = tempCanvas.toDataURL('image/png');
+                        const response = await fetch(dataUrl);
+                        screenshotBlob = await response.blob();
+                    }
+                } catch (e) {
+                    console.warn('Could not capture screenshot:', e);
+                }
+
+                try {
+                    // Try Web Share API with files
+                    const shareData = {
+                        title: 'DCam Pro - Toolpath',
+                        text: `Toolpath file: ${fileData.filename}\nPoints: ${totalPoints.toLocaleString()}`,
+                        files: [tapFile],
+                    };
+                    // Add screenshot if available
+                    if (screenshotBlob) {
+                        const imgFile = new File([screenshotBlob], 'model_preview.png', { type: 'image/png' });
+                        shareData.files = [tapFile, imgFile];
+                    }
+                    if (navigator.share && navigator.canShare(shareData)) {
+                        await navigator.share(shareData);
+                        showToast('✅ Shared successfully!');
+                        return;
+                    }
+                } catch (e) {
+                    if (e.name !== 'AbortError') {
+                        console.warn('Share API failed:', e);
+                    }
+                }
+
+                // Fallback: download both files
+                try {
+                    // Download tap file
+                    const tapUrl = URL.createObjectURL(tapBlob);
+                    const a = document.createElement('a');
+                    a.href = tapUrl;
+                    a.download = fileData.filename;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    setTimeout(() => URL.revokeObjectURL(tapUrl), 5000);
+
+                    // Download screenshot if available
+                    if (screenshotBlob) {
+                        setTimeout(() => {
+                            const imgUrl = URL.createObjectURL(screenshotBlob);
+                            const imgA = document.createElement('a');
+                            imgA.href = imgUrl;
+                            imgA.download = 'model_preview.png';
+                            document.body.appendChild(imgA);
+                            imgA.click();
+                            document.body.removeChild(imgA);
+                            setTimeout(() => URL.revokeObjectURL(imgUrl), 5000);
+                        }, 500);
+                    }
+                    showToast('📥 Files downloaded (Share not available on this browser)');
+                } catch (e) {
+                    showToast('❌ Could not share or download files.');
+                }
             });
 
             // ============================================================
@@ -2520,6 +2785,8 @@
                     initViewport();
                     update3DScene();
                     setTimeout(fitView, 500);
+                    // Setup crop handles
+                    setTimeout(setupCropHandles, 300);
                 }, 300);
 
                 const now = new Date();
@@ -2530,7 +2797,6 @@
                 setStatus('Ready');
                 showToast('✨ DCam Pro — Light & Professional', 3000);
 
-                // By default, zoom controls hidden
                 zoomControls.classList.add('hidden-zoom');
             }
 
