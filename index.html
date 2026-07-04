@@ -7,7 +7,7 @@
     <script src="https://cdn.tailwindcss.com">
     </script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
-    <style>
+    <style id="themeStyles">
         :root {
             --bg-main: #f5f5f7;
             --panel-bg: #ffffff;
@@ -17,6 +17,34 @@
             --accent-glow: rgba(59, 130, 246, 0.15);
             --border-light: #e0e0e0;
             --card-bg: #fafafa;
+            --shadow-color: rgba(0, 0, 0, 0.08);
+            --toast-bg: rgba(255, 255, 255, 0.96);
+            --loader-bg: rgba(255, 255, 255, 0.82);
+            --handle-bg: rgba(0, 0, 0, 0.04);
+            --input-bg: rgba(0, 0, 0, 0.04);
+            --header-bg: rgba(255, 255, 255, 0.85);
+            --panel-overlay: rgba(255, 255, 255, 0.94);
+            --crop-overlay: rgba(0, 0, 0, 0.6);
+            --crop-bg: #fff;
+        }
+        .dark-theme {
+            --bg-main: #0d0d0f;
+            --panel-bg: #1a1a1e;
+            --text-primary: #e8e6e3;
+            --text-muted: #8a8a8f;
+            --accent: #60a5fa;
+            --accent-glow: rgba(96, 165, 250, 0.15);
+            --border-light: #2a2a2e;
+            --card-bg: #1e1e22;
+            --shadow-color: rgba(0, 0, 0, 0.4);
+            --toast-bg: rgba(26, 26, 30, 0.96);
+            --loader-bg: rgba(26, 26, 30, 0.82);
+            --handle-bg: rgba(255, 255, 255, 0.04);
+            --input-bg: rgba(255, 255, 255, 0.04);
+            --header-bg: rgba(13, 13, 15, 0.85);
+            --panel-overlay: rgba(26, 26, 30, 0.94);
+            --crop-overlay: rgba(0, 0, 0, 0.7);
+            --crop-bg: #1a1a1e;
         }
         * {
             margin: 0;
@@ -33,12 +61,13 @@
             position: relative;
             -webkit-tap-highlight-color: transparent;
             touch-action: none;
+            transition: background 0.3s, color 0.3s;
         }
         ::-webkit-scrollbar {
             width: 3px;
         }
         ::-webkit-scrollbar-track {
-            background: #e0e0e0;
+            background: var(--border-light);
         }
         ::-webkit-scrollbar-thumb {
             background: var(--accent);
@@ -67,12 +96,13 @@
             align-items: center;
             justify-content: space-between;
             padding: 8px 14px;
-            background: rgba(255, 255, 255, 0.85);
+            background: var(--header-bg);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             border-bottom: 1px solid var(--border-light);
             pointer-events: none;
             height: 52px;
+            transition: background 0.3s, border-color 0.3s;
         }
         #topbar>* {
             pointer-events: auto;
@@ -82,6 +112,7 @@
             font-weight: 700;
             color: var(--text-primary);
             letter-spacing: -0.5px;
+            transition: color 0.3s;
         }
         .brand span {
             font-weight: 300;
@@ -93,7 +124,7 @@
         .topbar-center {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
             flex: 1;
             justify-content: center;
         }
@@ -106,26 +137,7 @@
         .topbar-right {
             display: flex;
             align-items: center;
-            gap: 8px;
-        }
-        .status-dot {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: var(--accent);
-            box-shadow: 0 0 14px rgba(59, 130, 246, 0.25);
-            animation: pulse-dot 2s ease-in-out infinite;
-        }
-        @keyframes pulse-dot {
-            0%,
-            100% {
-                opacity: 0.3;
-                transform: scale(0.85);
-            }
-            50% {
-                opacity: 1;
-                transform: scale(1.1);
-            }
+            gap: 6px;
         }
         .telegram-link,
         .bot-link {
@@ -157,11 +169,12 @@
             color: var(--text-muted);
             letter-spacing: 0.5px;
             text-transform: uppercase;
+            transition: color 0.3s;
         }
 
         .header-btn {
-            background: rgba(0, 0, 0, 0.04);
-            border: 1px solid rgba(0, 0, 0, 0.06);
+            background: var(--handle-bg);
+            border: 1px solid var(--border-light);
             color: var(--text-muted);
             padding: 4px 14px;
             border-radius: 16px;
@@ -177,14 +190,14 @@
             white-space: nowrap;
         }
         .header-btn:hover {
-            background: rgba(0, 0, 0, 0.06);
-            border-color: rgba(0, 0, 0, 0.1);
+            background: var(--handle-bg);
+            border-color: var(--text-muted);
         }
         .header-btn:active {
             transform: scale(0.95);
         }
         .header-btn.active {
-            background: rgba(59, 130, 246, 0.08);
+            background: var(--accent-glow);
             border-color: var(--accent);
             color: var(--accent);
         }
@@ -204,19 +217,84 @@
             }
         }
 
+        /* Theme Toggle Switch */
+        .theme-toggle {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            font-size: 9px;
+            color: var(--text-muted);
+            padding: 2px 8px;
+            border-radius: 12px;
+            border: 1px solid var(--border-light);
+            background: var(--handle-bg);
+            transition: all 0.3s;
+        }
+        .theme-toggle:active {
+            transform: scale(0.95);
+        }
+        .theme-toggle .switch {
+            position: relative;
+            width: 28px;
+            height: 16px;
+            background: var(--border-light);
+            border-radius: 10px;
+            transition: background 0.3s;
+            flex-shrink: 0;
+        }
+        .theme-toggle .switch::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 12px;
+            height: 12px;
+            background: #fff;
+            border-radius: 50%;
+            transition: transform 0.3s;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+        }
+        .theme-toggle .switch.active {
+            background: var(--accent);
+        }
+        .theme-toggle .switch.active::after {
+            transform: translateX(12px);
+        }
+        .theme-toggle .icon {
+            font-size: 11px;
+        }
+        @media (max-width: 420px) {
+            .theme-toggle {
+                font-size: 8px;
+                padding: 2px 6px;
+            }
+            .theme-toggle .switch {
+                width: 22px;
+                height: 13px;
+            }
+            .theme-toggle .switch::after {
+                width: 9px;
+                height: 9px;
+            }
+            .theme-toggle .switch.active::after {
+                transform: translateX(9px);
+            }
+        }
+
         #panel {
             position: absolute;
             bottom: 0;
             left: 0;
             right: 0;
             z-index: 15;
-            background: rgba(255, 255, 255, 0.94);
+            background: var(--panel-overlay);
             backdrop-filter: blur(24px);
             -webkit-backdrop-filter: blur(24px);
             border-top: 1px solid var(--border-light);
             border-radius: 20px 20px 0 0;
             max-height: 70vh;
-            transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.3s ease;
+            transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.3s ease, background 0.3s;
             display: flex;
             flex-direction: column;
             opacity: 1;
@@ -268,6 +346,7 @@
             color: var(--text-muted);
             margin: 14px 0 6px 0;
             font-weight: 600;
+            transition: color 0.3s;
         }
         .section-title:first-of-type {
             margin-top: 0;
@@ -287,25 +366,27 @@
             color: var(--text-muted);
             margin-bottom: 3px;
             letter-spacing: 0.3px;
+            transition: color 0.3s;
         }
         .input-field {
             width: 100%;
-            background: rgba(0, 0, 0, 0.04);
-            border: 1px solid rgba(0, 0, 0, 0.06);
+            background: var(--input-bg);
+            border: 1px solid var(--border-light);
             color: var(--text-primary);
             padding: 6px 10px;
             border-radius: 6px;
             font-size: 12px;
             outline: none;
-            transition: border 0.25s, box-shadow 0.25s;
+            transition: border 0.25s, box-shadow 0.25s, background 0.3s, color 0.3s;
             font-family: inherit;
         }
         .input-field:focus {
             border-color: var(--accent);
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.06);
+            box-shadow: 0 0 0 3px var(--accent-glow);
         }
         .input-field::placeholder {
-            color: rgba(0, 0, 0, 0.2);
+            color: var(--text-muted);
+            opacity: 0.4;
         }
         select.input-field {
             appearance: none;
@@ -316,13 +397,13 @@
             cursor: pointer;
         }
         select.input-field option {
-            background: #fff;
+            background: var(--panel-bg);
             color: var(--text-primary);
         }
 
         .ratio-btn {
-            background: rgba(0, 0, 0, 0.04);
-            border: 1px solid rgba(0, 0, 0, 0.06);
+            background: var(--handle-bg);
+            border: 1px solid var(--border-light);
             border-radius: 6px;
             color: var(--text-muted);
             padding: 6px 10px;
@@ -338,7 +419,7 @@
         .ratio-btn.active {
             border-color: var(--accent);
             color: var(--accent);
-            background: rgba(59, 130, 246, 0.06);
+            background: var(--accent-glow);
         }
         .ratio-btn:active {
             transform: scale(0.92);
@@ -353,7 +434,7 @@
         }
 
         .file-drop {
-            border: 2px dashed rgba(59, 130, 246, 0.08);
+            border: 2px dashed var(--accent-glow);
             border-radius: 8px;
             padding: 14px 12px;
             text-align: center;
@@ -363,8 +444,8 @@
             position: relative;
         }
         .file-drop:hover {
-            border-color: rgba(59, 130, 246, 0.15);
-            background: rgba(59, 130, 246, 0.01);
+            border-color: var(--accent);
+            background: var(--accent-glow);
         }
         .file-drop .icon {
             font-size: 20px;
@@ -429,10 +510,10 @@
             align-items: center;
             gap: 4px;
             transition: background 0.2s;
-            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
+            box-shadow: 0 2px 8px var(--accent-glow);
         }
         .file-info .crop-btn:active {
-            background: #2563eb;
+            opacity: 0.8;
             transform: scale(0.95);
         }
 
@@ -446,15 +527,15 @@
             border-radius: 16px;
             font-size: 10px;
             font-weight: 500;
-            background: rgba(0, 0, 0, 0.03);
-            border: 1px solid rgba(0, 0, 0, 0.05);
+            background: var(--handle-bg);
+            border: 1px solid var(--border-light);
             color: var(--text-muted);
             cursor: pointer;
             transition: all 0.2s ease;
             font-family: inherit;
         }
         .tool-chip.active {
-            background: rgba(59, 130, 246, 0.08);
+            background: var(--accent-glow);
             border-color: var(--accent);
             color: var(--text-primary);
         }
@@ -488,10 +569,10 @@
         .btn-primary {
             background: var(--accent);
             color: #fff;
-            box-shadow: 0 3px 16px rgba(59, 130, 246, 0.15);
+            box-shadow: 0 3px 16px var(--accent-glow);
         }
         .btn-primary:active {
-            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.08);
+            box-shadow: 0 2px 8px var(--accent-glow);
         }
         .btn-primary:disabled {
             opacity: 0.25;
@@ -508,11 +589,11 @@
         }
         .btn-outline {
             background: transparent;
-            border: 1px solid rgba(59, 130, 246, 0.15);
+            border: 1px solid var(--accent-glow);
             color: var(--accent);
         }
         .btn-outline:active {
-            background: rgba(59, 130, 246, 0.04);
+            background: var(--accent-glow);
         }
         .btn-sm {
             padding: 4px 12px;
@@ -575,13 +656,14 @@
             z-index: 12;
             display: flex;
             gap: 4px;
-            background: rgba(255, 255, 255, 0.7);
+            background: var(--panel-overlay);
             backdrop-filter: blur(14px);
             -webkit-backdrop-filter: blur(14px);
             padding: 3px 10px;
             border-radius: 24px;
             border: 1px solid var(--border-light);
             pointer-events: none;
+            transition: background 0.3s, border-color 0.3s;
         }
         #viewport-controls>* {
             pointer-events: auto;
@@ -597,14 +679,15 @@
             letter-spacing: 0.5px;
             width: auto;
             min-height: 28px;
+            transition: all 0.2s;
         }
         #viewport-controls .btn.active {
             border-color: var(--accent);
             color: var(--accent);
-            background: rgba(59, 130, 246, 0.04);
+            background: var(--accent-glow);
         }
         #viewport-controls .btn:active {
-            background: rgba(59, 130, 246, 0.06);
+            background: var(--accent-glow);
         }
 
         #zoom-controls {
@@ -631,7 +714,7 @@
             padding: 0;
             font-size: 16px;
             border-radius: 10px;
-            background: rgba(255, 255, 255, 0.65);
+            background: var(--panel-overlay);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             border: 1px solid var(--border-light);
@@ -641,9 +724,10 @@
             justify-content: center;
             min-height: 38px;
             min-width: 38px;
+            transition: background 0.3s, border-color 0.3s, color 0.3s;
         }
         #zoom-controls .btn:active {
-            background: rgba(59, 130, 246, 0.08);
+            background: var(--accent-glow);
             color: var(--accent);
         }
 
@@ -652,7 +736,7 @@
             top: 56px;
             left: 50%;
             transform: translateX(-50%) translateY(-12px);
-            background: rgba(255, 255, 255, 0.96);
+            background: var(--toast-bg);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             padding: 5px 16px;
@@ -664,8 +748,8 @@
             z-index: 100;
             opacity: 0;
             pointer-events: none;
-            transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.08);
+            transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1), background 0.3s, border-color 0.3s, color 0.3s;
+            box-shadow: 0 8px 40px var(--shadow-color);
             text-align: center;
             max-width: 86%;
             display: flex;
@@ -692,13 +776,14 @@
             position: absolute;
             inset: 0;
             z-index: 50;
-            background: rgba(255, 255, 255, 0.82);
+            background: var(--loader-bg);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             flex-direction: column;
             align-items: center;
             justify-content: center;
             gap: 10px;
+            transition: background 0.3s;
         }
         #loader.show {
             display: flex;
@@ -706,7 +791,7 @@
         .loader-spinner {
             width: 32px;
             height: 32px;
-            border: 3px solid rgba(59, 130, 246, 0.08);
+            border: 3px solid var(--accent-glow);
             border-top-color: var(--accent);
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
@@ -730,10 +815,10 @@
         .point-badge {
             font-size: 8px;
             color: var(--text-muted);
-            background: rgba(0, 0, 0, 0.03);
+            background: var(--handle-bg);
             padding: 2px 10px;
             border-radius: 10px;
-            border: 1px solid rgba(0, 0, 0, 0.04);
+            border: 1px solid var(--border-light);
         }
 
         .image-preview-hint {
@@ -743,6 +828,7 @@
             margin-top: 3px;
             opacity: 0.6;
             font-style: italic;
+            transition: color 0.3s;
         }
         .image-preview-hint .highlight {
             color: var(--accent);
@@ -760,7 +846,7 @@
             background: var(--accent);
             color: #fff;
             border: none;
-            box-shadow: 0 4px 20px rgba(59, 130, 246, 0.4);
+            box-shadow: 0 4px 20px var(--accent-glow);
             font-size: 24px;
             cursor: pointer;
             display: flex;
@@ -794,7 +880,7 @@
             position: fixed;
             inset: 0;
             z-index: 60;
-            background: rgba(0, 0, 0, 0.6);
+            background: var(--crop-overlay);
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
             align-items: center;
@@ -805,14 +891,15 @@
             display: flex;
         }
         #cropModal .crop-container {
-            background: #fff;
+            background: var(--crop-bg);
             border-radius: 12px;
             padding: 16px;
             max-width: 92%;
             max-height: 92%;
             overflow: auto;
             position: relative;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 20px 60px var(--shadow-color);
+            transition: background 0.3s;
         }
         #cropModal .crop-image-wrapper {
             position: relative;
@@ -847,7 +934,7 @@
             pointer-events: auto;
             cursor: pointer;
             z-index: 5;
-            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 1px 4px var(--shadow-color);
             transition: transform 0.15s;
             touch-action: none;
         }
@@ -913,6 +1000,7 @@
             color: var(--text-muted);
             text-align: center;
             margin-top: 6px;
+            transition: color 0.3s;
         }
 
         @media (max-width: 420px) {
@@ -1061,6 +1149,11 @@
             <button class="header-btn header-btn-left active" id="settingsToggle">
                 <i class="fas fa-tools icon"></i> Toolpath
             </button>
+            <div class="theme-toggle" id="themeToggle" title="Toggle Dark/Light Theme">
+                <span class="icon">☀️</span>
+                <div class="switch" id="themeSwitch"></div>
+                <span class="icon">🌙</span>
+            </div>
         </div>
         <div class="topbar-right">
             <a class="bot-link" href="https://t.me/Image_2_3D_Bot" target="_blank" rel="noopener">
@@ -1071,7 +1164,6 @@
                 <span class="icon">🧑🏻‍💻</span>
                 <span>Owner</span>
             </a>
-            <span class="status-dot"></span>
             <span id="statusText">Ready</span>
         </div>
     </div>
@@ -1140,7 +1232,7 @@
                 <div class="input-group full">
                     <label>Max Z (mm)</label>
                     <input type="number" id="mZ" value="5" min="0.1" max="20" step="0.1" class="input-field" />
-                    <span class="text-xs text-muted" style="display:block;margin-top:1px;">Material thickness = Z max</span>
+                    <span class="text-xs text-muted" style="display:block;margin-top:1px;">Material thickness = Z + 2 mm</span>
                 </div>
             </div>
 
@@ -1186,7 +1278,6 @@
             <div id="pointInfo" class="flex items-center justify-between mt-1" style="display:none;">
                 <span class="text-xs text-muted">Points generated</span>
                 <span id="pointCount" class="point-badge">0</span>
-                <span class="text-xs text-muted" id="fileSizeEstimate"></span>
             </div>
 
             <!-- Export -->
@@ -1195,7 +1286,7 @@
                 <div class="input-group full">
                     <label>Filename</label>
                     <div class="flex gap-1">
-                        <input type="text" id="exportName" value="dcam_model" class="input-field" style="flex:1;" />
+                        <input type="text" id="exportName" value="" class="input-field" style="flex:1;" placeholder="Auto-generated" />
                         <span class="text-xs text-muted" style="display:flex;align-items:center;">.tap</span>
                     </div>
                 </div>
@@ -1227,14 +1318,14 @@
         <button class="btn" id="viewSim">Sim</button>
     </div>
 
-    <!-- Zoom Controls (hidden when not in simulation) -->
+    <!-- Zoom Controls -->
     <div id="zoom-controls" class="hidden-zoom">
         <button class="btn" id="zoomIn">➕</button>
         <button class="btn" id="zoomOut">➖</button>
         <button class="btn" id="fitView">⊡</button>
     </div>
 
-    <!-- Toast (top) -->
+    <!-- Toast -->
     <div id="toast"><span id="toastMsg"></span><span class="toast-close" id="toastClose">✕</span></div>
 
     <!-- Loader -->
@@ -1297,7 +1388,8 @@
             const loaderText = $('loader-text');
             const loaderProgress = $('loader-progress');
             const zoomControls = $('zoom-controls');
-            const fileSizeEstimate = $('fileSizeEstimate');
+            const themeToggle = $('themeToggle');
+            const themeSwitch = $('themeSwitch');
 
             // ---- State ----
             let toolDiameter = 5;
@@ -1307,7 +1399,7 @@
             let imageLoaded = false;
             let toolpathPoints = null;
             let toolpathGenerated = false;
-            let simulationMode = 'surface';
+            let simulationMode = 'surface'; // 'surface' | 'toolpath' | 'sim'
             let gcodeChunks = [];
             let totalPoints = 0;
             let meshResolution = 200;
@@ -1317,6 +1409,8 @@
             let isSimulationActive = false;
             let currentGcodeFull = '';
             let modelImageDataURL = '';
+            let isDarkTheme = false;
+            let customFilename = '';
 
             // Three.js
             let scene, camera, renderer, controls;
@@ -1346,6 +1440,29 @@
                 statusText.textContent = msg;
             }
 
+            // ---- Theme Toggle ----
+            function toggleTheme() {
+                isDarkTheme = !isDarkTheme;
+                document.documentElement.classList.toggle('dark-theme', isDarkTheme);
+                themeSwitch.classList.toggle('active', isDarkTheme);
+                // Update Three.js background
+                if (scene) {
+                    scene.background = new THREE.Color(isDarkTheme ? 0x0d0d0f : 0xf5f5f7);
+                }
+                localStorage.setItem('dcam_theme', isDarkTheme ? 'dark' : 'light');
+                showToast(isDarkTheme ? '🌙 Dark theme' : '☀️ Light theme', 1200);
+            }
+
+            themeToggle.addEventListener('click', toggleTheme);
+
+            // Load saved theme
+            const savedTheme = localStorage.getItem('dcam_theme');
+            if (savedTheme === 'dark') {
+                isDarkTheme = true;
+                document.documentElement.classList.add('dark-theme');
+                themeSwitch.classList.add('active');
+            }
+
             // ---- Panel visibility ----
             function toggleSettings(show) {
                 if (typeof show === 'undefined') show = !settingsVisible;
@@ -1365,8 +1482,11 @@
                 updateFloatingButton();
 
                 if (active) {
-                    simulationMode = 'sim';
-                    applyViewMode();
+                    // Only change view mode if not already in sim
+                    if (simulationMode !== 'sim') {
+                        simulationMode = 'sim';
+                        applyViewMode();
+                    }
                     if (window.innerWidth < 820) {
                         toggleSettings(false);
                     }
@@ -1374,8 +1494,11 @@
                     showToast('🔮 Simulation view — drag to orbit', 1500);
                     zoomControls.classList.remove('hidden-zoom');
                 } else {
-                    simulationMode = 'surface';
-                    applyViewMode();
+                    // Go back to surface view when exiting simulation
+                    if (simulationMode === 'sim') {
+                        simulationMode = 'surface';
+                        applyViewMode();
+                    }
                     if (window.innerWidth < 820 && !settingsVisible) {
                         toggleSettings(true);
                     }
@@ -1417,10 +1540,46 @@
             const exportName = $('exportName');
             const ratioLockBtn = $('ratioLock');
 
+            // Default 200x200, ratio unlocked
             mWidth.value = 200;
             mHeight.value = 200;
             ratioLockBtn.classList.remove('active');
             ratioLockBtn.innerHTML = '<i class="fas fa-unlink"></i>';
+
+            // Generate default filename
+            function generateDefaultFilename() {
+                const w = parseFloat(mWidth.value) || 200;
+                const h = parseFloat(mHeight.value) || 200;
+                const z = parseFloat(mZ.value) || 5;
+                const tool = toolDiameter;
+                const origin = mOrigin.value;
+                return `DCam_${h}x${w}x${z}x${tool}_Origin:${origin}`;
+            }
+
+            // Set default filename on load
+            setTimeout(() => {
+                exportName.value = generateDefaultFilename();
+                customFilename = exportName.value;
+            }, 100);
+
+            // Update filename when settings change
+            function updateFilename() {
+                if (!exportName.value || exportName.value === customFilename || exportName.value === '') {
+                    const newName = generateDefaultFilename();
+                    exportName.value = newName;
+                    customFilename = newName;
+                }
+            }
+
+            mWidth.addEventListener('change', updateFilename);
+            mHeight.addEventListener('change', updateFilename);
+            mZ.addEventListener('change', updateFilename);
+            mOrigin.addEventListener('change', updateFilename);
+
+            // Track custom filename changes
+            exportName.addEventListener('input', function() {
+                customFilename = this.value;
+            });
 
             ratioLockBtn.addEventListener('click', function() {
                 ratioLocked = !ratioLocked;
@@ -1440,6 +1599,7 @@
                 } else {
                     showToast('🔓 Ratio unlocked', 1000);
                 }
+                updateFilename();
             });
 
             mWidth.addEventListener('input', function() {
@@ -1449,6 +1609,7 @@
                     mHeight.value = h.toFixed(1);
                 }
                 autoApply();
+                updateFilename();
             });
 
             mHeight.addEventListener('input', function() {
@@ -1458,6 +1619,7 @@
                     mWidth.value = w.toFixed(1);
                 }
                 autoApply();
+                updateFilename();
             });
 
             // ---- File import ----
@@ -1516,13 +1678,11 @@
                     cropImageObj = img;
                     const cropImg = $('cropImage');
                     cropImg.src = img.src;
-                    // Reset selection
                     const sel = $('cropSelection');
                     sel.style.display = 'block';
                     const wrapper = $('cropWrapper');
                     const rect = wrapper.getBoundingClientRect();
                     const imgRect = cropImg.getBoundingClientRect();
-                    // Default selection: 80% of image
                     const pad = 0.1;
                     const iw = imgRect.width,
                         ih = imgRect.height;
@@ -1548,7 +1708,6 @@
                 sel.style.top = cropBox.y + 'px';
                 sel.style.width = cropBox.w + 'px';
                 sel.style.height = cropBox.h + 'px';
-                // Update info
                 const img = $('cropImage');
                 const imgRect = img.getBoundingClientRect();
                 const scaleX = cropImageObj ? cropImageObj.naturalWidth / imgRect.width : 1;
@@ -1558,7 +1717,6 @@
                 $('cropInfo').textContent = `Selection: ${pw} × ${ph} px`;
             }
 
-            // Crop handle events
             function setupCropHandles() {
                 const handles = qsa('.crop-handle');
                 const wrapper = $('cropWrapper');
@@ -1579,19 +1737,16 @@
                         activeHandle = h.dataset.handle;
                         cropDragging = true;
                         const pos = getPos(e);
-                        // Store the offset from the handle position
                         const sel = $('cropSelection');
                         const selRect = sel.getBoundingClientRect();
                         const wrapperRect = wrapper.getBoundingClientRect();
                         cropBox._offsetX = pos.x - (selRect.left - wrapperRect.left);
                         cropBox._offsetY = pos.y - (selRect.top - wrapperRect.top);
-                        // For corner handles, we need to know the opposite corner
                         const hName = activeHandle;
                         if (hName.includes('n')) cropBox._fixedY = cropBox.y + cropBox.h;
                         if (hName.includes('s')) cropBox._fixedY = cropBox.y;
                         if (hName.includes('w')) cropBox._fixedX = cropBox.x + cropBox.w;
                         if (hName.includes('e')) cropBox._fixedX = cropBox.x;
-                        // Store original box
                         cropBox._origX = cropBox.x;
                         cropBox._origY = cropBox.y;
                         cropBox._origW = cropBox.w;
@@ -1602,7 +1757,6 @@
                     h.addEventListener('touchstart', startDrag, { passive: false });
                 });
 
-                // Move handler
                 document.addEventListener('mousemove', function(e) {
                     if (!cropDragging || !activeHandle) return;
                     const pos = getPos(e);
@@ -1649,7 +1803,6 @@
                         cropBox.w = Math.max(minSize, newX - cropBox.x);
                     }
 
-                    // Clamp
                     const wrapperRect = wrapper.getBoundingClientRect();
                     cropBox.x = Math.max(0, Math.min(cropBox.x, wrapperRect.width - minSize));
                     cropBox.y = Math.max(0, Math.min(cropBox.y, wrapperRect.height - minSize));
@@ -1769,7 +1922,6 @@
                 const smoothed = smoothDepthmap(pixels, cropW, cropH, 0.15);
                 depthmapData = { width: cropW, height: cropH, pixels: smoothed };
                 imageLoaded = true;
-                // Store cropped image as data URL for sharing
                 window._cropImageDataURL = canvas.toDataURL('image/png');
                 modelImageDataURL = window._cropImageDataURL;
 
@@ -1788,9 +1940,9 @@
                 if (viewportInitialized) update3DScene();
                 showToast(`✅ Cropped to ${cropW}×${cropH}`);
                 $('cropModal').classList.remove('active');
-                // Reset selection
                 const sel = $('cropSelection');
                 sel.style.display = 'none';
+                updateFilename();
             });
 
             cropBtn.addEventListener('click', initCrop);
@@ -1847,8 +1999,8 @@
                         showToast(`✅ Loaded ${file.name} (${mp}M px) — smoothed 15%`);
                         setStatus(`${mp}M px loaded`);
                         if (viewportInitialized) update3DScene();
-                        // Setup crop handles after loading
                         setTimeout(setupCropHandles, 100);
+                        updateFilename();
                     };
                     img.onerror = function() {
                         showToast('❌ Failed to load image. Try PNG, BMP, or TIFF.');
@@ -1866,14 +2018,14 @@
 
             fileDrop.addEventListener('dragover', (e) => {
                 e.preventDefault();
-                fileDrop.style.borderColor = 'rgba(59,130,246,0.25)';
+                fileDrop.style.borderColor = 'var(--accent)';
             });
             fileDrop.addEventListener('dragleave', () => {
-                fileDrop.style.borderColor = 'rgba(59,130,246,0.08)';
+                fileDrop.style.borderColor = 'var(--accent-glow)';
             });
             fileDrop.addEventListener('drop', (e) => {
                 e.preventDefault();
-                fileDrop.style.borderColor = 'rgba(59,130,246,0.08)';
+                fileDrop.style.borderColor = 'var(--accent-glow)';
                 if (e.dataTransfer.files && e.dataTransfer.files[0]) {
                     loadImageAsDepthmap(e.dataTransfer.files[0]);
                 }
@@ -1895,9 +2047,9 @@
                 $('pointInfo').style.display = 'none';
                 $('exportBtn').disabled = true;
                 $('shareBtn').disabled = true;
-                fileSizeEstimate.textContent = '';
                 showToast('🗑️ Depthmap cleared');
                 if (viewportInitialized) update3DScene();
+                updateFilename();
             });
 
             // ---- Tool chips ----
@@ -1912,6 +2064,7 @@
                     stepover = toolDiameter * 0.10;
                     stepoverDisplay.textContent = stepover.toFixed(2) + ' mm';
                     setStatus(`Tool Ø${toolDiameter}mm`);
+                    updateFilename();
                 });
             });
 
@@ -1961,7 +2114,7 @@
                 const rect = container.getBoundingClientRect();
 
                 scene = new THREE.Scene();
-                scene.background = new THREE.Color(0xf5f5f7);
+                scene.background = new THREE.Color(isDarkTheme ? 0x0d0d0f : 0xf5f5f7);
 
                 const aspect = rect.width / rect.height || 1;
                 camera = new THREE.PerspectiveCamera(35, aspect, 0.1, 3000);
@@ -2235,32 +2388,27 @@
                 scene.add(simMesh);
             }
 
-            // ---- Build Toolpath Line (Ultra High Quality) ----
+            // ---- Build Toolpath Line (Clean, light blue, low transparency) ----
             function buildToolpathLine() {
                 if (!toolpathPoints || toolpathPoints.length < 2) return;
                 const pts = toolpathPoints;
                 const positions = [];
-                const colors = [];
-                const zMax = parseFloat(mZ.value) || 5;
 
-                // Use all points for ultra high quality (no decimation)
+                // Use all points for high quality
                 for (let i = 0; i < pts.length; i++) {
                     const p = pts[i];
                     positions.push(p.x, p.y, p.z);
-                    const t = Math.min(1, Math.max(0, p.z / (zMax || 1)));
-                    colors.push(0.9 + t * 0.1, 0.15 + t * 0.6, 0.02 + t * 0.3);
                 }
 
                 const geo = new THREE.BufferGeometry();
                 geo.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
-                geo.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
 
-                // Use thicker line for better visibility
+                // Clean light blue with low transparency
                 const mat = new THREE.LineBasicMaterial({
-                    vertexColors: true,
-                    linewidth: 2,
+                    color: 0x60a5fa,
                     transparent: true,
-                    opacity: 0.85,
+                    opacity: 0.35,
+                    linewidth: 1,
                 });
                 toolpathLine = new THREE.Line(geo, mat);
                 scene.add(toolpathLine);
@@ -2289,7 +2437,7 @@
                 } else {
                     const geo = new THREE.PlaneGeometry(200, 200, 1, 1);
                     const mat = new THREE.MeshStandardMaterial({
-                        color: 0xd0d0d0,
+                        color: isDarkTheme ? 0x222222 : 0xd0d0d0,
                         transparent: true,
                         opacity: 0.08,
                         side: THREE.DoubleSide,
@@ -2347,18 +2495,25 @@
 
                 if (simulationMode === 'sim') {
                     zoomControls.classList.remove('hidden-zoom');
-                    if (!isSimulationActive) toggleSimulation(true);
+                    if (!isSimulationActive) {
+                        // Only toggle if not already in sim mode
+                        isSimulationActive = true;
+                        updateFloatingButton();
+                    }
                 } else {
                     zoomControls.classList.add('hidden-zoom');
-                    if (isSimulationActive) toggleSimulation(false);
+                    if (isSimulationActive) {
+                        isSimulationActive = false;
+                        updateFloatingButton();
+                    }
                 }
             }
 
             // ---- Viewport controls ----
+            // These should ONLY change the view, NOT toggle settings
             $('viewSurface').addEventListener('click', function() {
                 simulationMode = 'surface';
                 applyViewMode();
-                // Do NOT open settings - floating button controls that
                 showToast('🔮 Surface view');
             });
 
@@ -2439,14 +2594,8 @@
                     oy = 0; } else if (origin === 'bottom-right') { ox = -w;
                     oy = 0; }
 
-                // Optimized point spacing for ~1-2 MB file size
-                // For 200x200 with 0.5mm stepover, target ~150k-200k points
-                // spacing = stepover * 0.7 gives ~0.35mm -> ~320k points -> ~9MB
-                // spacing = stepover * 0.9 gives ~0.45mm -> ~200k points -> ~6MB
-                // spacing = stepover * 1.0 gives ~0.5mm -> ~160k points -> ~4.8MB
-                // Use 0.9 for good quality/size balance
+                // Optimized spacing for ~1-2 MB file size
                 const spacing = Math.max(step * 0.9, 0.15);
-                // For larger tools, use slightly coarser spacing
                 const adjustedSpacing = spacing * (1 + (diam - 5) * 0.03);
 
                 const pts = [];
@@ -2469,12 +2618,14 @@
                     if (chunkSize >= maxChunkLines) flushChunk();
                 }
 
-                gcodeChunks.push(`(Generated by DCam Pro)\nG21\nG90\nG0 Z20.000\n`);
+                // Material thickness = Z + 2mm
+                const materialThickness = zMax + 2;
+
+                gcodeChunks.push(`(Generated by DCam Pro)\nG21\nG90\nG0 Z${materialThickness.toFixed(1)}\n`);
 
                 let pointCount = 0;
                 const previewPoints = [];
 
-                // Helper to get Z at (x,y) in model coordinates
                 function getZ(x, y) {
                     const px = (x - ox) / w;
                     const py = (y - oy) / h;
@@ -2486,7 +2637,6 @@
 
                 if (style === 'raster') {
                     let goingRight = true;
-                    // Use step as the Y step, and spacing for X step
                     for (let y = 0; y <= h + step * 0.1; y += step) {
                         const yPos = Math.min(h, y);
                         let xStart = 0,
@@ -2504,7 +2654,6 @@
                             const mx = ox + xClamped;
                             const my = oy + yPos;
                             if (first) {
-                                // Use G0 for first point of each pass
                                 addLine(`G0 X${mx.toFixed(3)} Y${my.toFixed(3)}`);
                                 first = false;
                             }
@@ -2514,14 +2663,12 @@
                             xPos += xStep;
                         }
                         goingRight = !goingRight;
-                        // Progress update
                         if (y % (h / 20) < step) {
                             const pct = Math.min(95, Math.round((y / h) * 100));
                             loaderProgress.textContent = `${pct}%`;
                         }
                     }
                 } else {
-                    // 3D Offset - optimized with fewer points
                     let minX = 0,
                         maxX = w,
                         minY = 0,
@@ -2529,7 +2676,6 @@
                     let loopCount = 0;
                     const offsetStep = step * 0.8;
                     while (minX <= maxX && minY <= maxY) {
-                        // Top
                         let first = true;
                         for (let x = minX; x <= maxX; x += adjustedSpacing) {
                             const xPos = Math.min(maxX, x);
@@ -2542,7 +2688,6 @@
                             if (pointCount % 50 === 0) previewPoints.push({ x: mx, y: my, z: z });
                             pointCount++;
                         }
-                        // Right
                         for (let y = maxY; y >= minY; y -= adjustedSpacing) {
                             const yPos = Math.max(minY, y);
                             const z = getZ(maxX, yPos);
@@ -2552,7 +2697,6 @@
                             if (pointCount % 50 === 0) previewPoints.push({ x: mx, y: my, z: z });
                             pointCount++;
                         }
-                        // Bottom
                         for (let x = maxX; x >= minX; x -= adjustedSpacing) {
                             const xPos = Math.max(minX, x);
                             const z = getZ(xPos, minY);
@@ -2562,7 +2706,6 @@
                             if (pointCount % 50 === 0) previewPoints.push({ x: mx, y: my, z: z });
                             pointCount++;
                         }
-                        // Left
                         for (let y = minY; y <= maxY; y += adjustedSpacing) {
                             const yPos = Math.min(maxY, y);
                             const z = getZ(minX, yPos);
@@ -2585,7 +2728,7 @@
                 }
 
                 flushChunk();
-                gcodeChunks.push(`G0 Z20.000\nM30\n`);
+                gcodeChunks.push(`G0 Z${materialThickness.toFixed(1)}\nM30\n`);
 
                 if (pointCount === 0) {
                     showToast('⚠️ No toolpath generated.');
@@ -2597,18 +2740,14 @@
                 toolpathGenerated = true;
                 currentGcodeFull = gcodeChunks.join('');
 
-                // Estimate file size
-                const estimatedSize = (currentGcodeFull.length / 1024).toFixed(1);
-                fileSizeEstimate.textContent = `~${estimatedSize} KB`;
-
                 setStatus(`${totalPoints.toLocaleString()} points`);
-                $('calcStatus').innerHTML = `✅ Generated ${totalPoints.toLocaleString()} points (${style}) ~${estimatedSize} KB`;
+                $('calcStatus').innerHTML = `✅ Generated ${totalPoints.toLocaleString()} points (${style})`;
                 $('pointInfo').style.display = 'flex';
                 $('pointCount').textContent = totalPoints.toLocaleString();
                 $('exportBtn').disabled = false;
                 $('shareBtn').disabled = false;
 
-                showToast(`✅ Toolpath — ${totalPoints.toLocaleString()} points (${estimatedSize} KB)`);
+                showToast(`✅ Toolpath — ${totalPoints.toLocaleString()} points`);
 
                 update3DScene();
                 simulationMode = 'sim';
@@ -2656,13 +2795,9 @@
             // ---- Export & Share ----
             function getTapFile() {
                 if (!toolpathGenerated || gcodeChunks.length === 0) return null;
-                const name = exportName.value.trim() || 'dcam_model';
-                const now = new Date();
-                const ts =
-                    `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}_${String(now.getHours()).padStart(2,'0')}-${String(now.getMinutes()).padStart(2,'0')}`;
-                const filename = `${name}_${ts}.tap`;
+                const name = exportName.value.trim() || generateDefaultFilename();
                 const content = currentGcodeFull || gcodeChunks.join('');
-                return { filename, content };
+                return { filename: `${name}.tap`, content };
             }
 
             $('exportBtn').addEventListener('click', function() {
@@ -2690,25 +2825,27 @@
                     return;
                 }
 
-                // Create a blob for the .tap file
                 const tapBlob = new Blob([fileData.content], { type: 'application/octet-stream' });
                 const tapFile = new File([tapBlob], fileData.filename, { type: 'application/octet-stream' });
 
-                // Create a screenshot of the model
+                // Capture screenshot as JPEG with compression
                 let screenshotBlob = null;
                 try {
-                    // Use canvas to capture the 3D viewport
                     if (renderer && renderer.domElement) {
                         const canvas = renderer.domElement;
-                        // Draw a white background for the screenshot
                         const tempCanvas = document.createElement('canvas');
-                        tempCanvas.width = canvas.width;
-                        tempCanvas.height = canvas.height;
+                        // Use smaller size for faster sharing
+                        const scale = Math.min(1, 800 / Math.max(canvas.width, canvas.height));
+                        tempCanvas.width = Math.floor(canvas.width * scale);
+                        tempCanvas.height = Math.floor(canvas.height * scale);
                         const ctx = tempCanvas.getContext('2d');
-                        ctx.fillStyle = '#f5f5f7';
+                        // White/light background based on theme
+                        const bgColor = isDarkTheme ? '#0d0d0f' : '#f5f5f7';
+                        ctx.fillStyle = bgColor;
                         ctx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
-                        ctx.drawImage(canvas, 0, 0);
-                        const dataUrl = tempCanvas.toDataURL('image/png');
+                        ctx.drawImage(canvas, 0, 0, tempCanvas.width, tempCanvas.height);
+                        // JPEG with 80% quality for smaller size
+                        const dataUrl = tempCanvas.toDataURL('image/jpeg', 0.8);
                         const response = await fetch(dataUrl);
                         screenshotBlob = await response.blob();
                     }
@@ -2717,15 +2854,13 @@
                 }
 
                 try {
-                    // Try Web Share API with files
                     const shareData = {
                         title: 'DCam Pro - Toolpath',
                         text: `Toolpath file: ${fileData.filename}\nPoints: ${totalPoints.toLocaleString()}`,
                         files: [tapFile],
                     };
-                    // Add screenshot if available
                     if (screenshotBlob) {
-                        const imgFile = new File([screenshotBlob], 'model_preview.png', { type: 'image/png' });
+                        const imgFile = new File([screenshotBlob], 'DCam_Model_Preview.jpg', { type: 'image/jpeg' });
                         shareData.files = [tapFile, imgFile];
                     }
                     if (navigator.share && navigator.canShare(shareData)) {
@@ -2736,12 +2871,13 @@
                 } catch (e) {
                     if (e.name !== 'AbortError') {
                         console.warn('Share API failed:', e);
+                    } else {
+                        return; // User cancelled
                     }
                 }
 
                 // Fallback: download both files
                 try {
-                    // Download tap file
                     const tapUrl = URL.createObjectURL(tapBlob);
                     const a = document.createElement('a');
                     a.href = tapUrl;
@@ -2751,13 +2887,12 @@
                     document.body.removeChild(a);
                     setTimeout(() => URL.revokeObjectURL(tapUrl), 5000);
 
-                    // Download screenshot if available
                     if (screenshotBlob) {
                         setTimeout(() => {
                             const imgUrl = URL.createObjectURL(screenshotBlob);
                             const imgA = document.createElement('a');
                             imgA.href = imgUrl;
-                            imgA.download = 'model_preview.png';
+                            imgA.download = 'DCam_Model_Preview.jpg';
                             document.body.appendChild(imgA);
                             imgA.click();
                             document.body.removeChild(imgA);
@@ -2785,19 +2920,19 @@
                     initViewport();
                     update3DScene();
                     setTimeout(fitView, 500);
-                    // Setup crop handles
                     setTimeout(setupCropHandles, 300);
                 }, 300);
-
-                const now = new Date();
-                const dateStr =
-                    `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
-                exportName.value = `dcam_${dateStr}`;
 
                 setStatus('Ready');
                 showToast('✨ DCam Pro — Light & Professional', 3000);
 
                 zoomControls.classList.add('hidden-zoom');
+
+                // Set initial filename
+                setTimeout(() => {
+                    exportName.value = generateDefaultFilename();
+                    customFilename = exportName.value;
+                }, 200);
             }
 
             // ---- Keyboard shortcuts ----
