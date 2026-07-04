@@ -362,9 +362,6 @@
         .form-grid .full {
             grid-column: 1 / -1;
         }
-        .form-grid .third {
-            grid-column: 1 / 3;
-        }
         .input-group label {
             display: block;
             font-size: 9px;
@@ -1185,34 +1182,6 @@
             width: 100%;
         }
 
-        /* Tooltip */
-        .tooltip-trigger {
-            position: relative;
-            cursor: help;
-        }
-        .tooltip-trigger:hover .tooltip-text {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        .tooltip-text {
-            position: absolute;
-            bottom: 100%;
-            left: 50%;
-            transform: translateX(-50%) translateY(4px);
-            background: var(--panel-bg);
-            color: var(--text-primary);
-            padding: 3px 8px;
-            border-radius: 4px;
-            font-size: 7px;
-            white-space: nowrap;
-            opacity: 0;
-            pointer-events: none;
-            transition: all 0.2s;
-            border: 1px solid var(--border-light);
-            z-index: 10;
-        }
-
-        /* Offset vector input */
         .offset-group {
             display: flex;
             align-items: center;
@@ -1287,7 +1256,7 @@
                 </div>
             </div>
 
-            <!-- Model Size (resize imported image) -->
+            <!-- Model Size -->
             <div class="section-title">Model Size <span class="text-xs text-muted">(resize imported)</span></div>
             <div class="form-grid">
                 <div class="input-group half-left">
@@ -1522,7 +1491,7 @@
             const themeSwitch = $('themeSwitch');
 
             // ---- State ----
-            let toolDiameter = 0; // 0 = no tool selected
+            let toolDiameter = 0;
             let stepover = 0;
             let toolpathStyle = 'raster';
             let depthmapData = null;
@@ -1553,6 +1522,7 @@
             let toolpathLine = null;
             let simMesh = null;
             let offsetLine = null;
+            let layoutBorderLine = null;
             let axisHelper = null;
             let viewportInitialized = false;
 
@@ -2268,13 +2238,11 @@
                     showToast('ℹ️ Offset removed', 1200);
                 } else {
                     offsetApplied = true;
-                    // Generate offset polygon based on layout dimensions
                     const lw = parseFloat(layoutWidth.value) || 300;
                     const lh = parseFloat(layoutHeight.value) || 200;
                     const ox = -lw / 2;
                     const oy = -lh / 2;
                     const d = Math.min(dist, lw / 2, lh / 2);
-                    // Create inward offset rectangle
                     offsetPolygon = [
                         { x: ox + d, y: oy + d },
                         { x: ox + lw - d, y: oy + d },
@@ -2389,6 +2357,39 @@
                 renderer.render(scene, camera);
             }
 
+            // ---- Build Layout Border (White bold rectangle) ----
+            function buildLayoutBorder() {
+                if (layoutBorderLine) { scene.remove(layoutBorderLine);
+                    layoutBorderLine.geometry.dispose();
+                    layoutBorderLine.material.dispose();
+                    layoutBorderLine = null; }
+
+                const lw = parseFloat(layoutWidth.value) || 300;
+                const lh = parseFloat(layoutHeight.value) || 200;
+                const ox = -lw / 2;
+                const oy = -lh / 2;
+
+                const positions = [
+                    ox, oy, 0,
+                    ox + lw, oy, 0,
+                    ox + lw, oy + lh, 0,
+                    ox, oy + lh, 0,
+                    ox, oy, 0
+                ];
+
+                const geo = new THREE.BufferGeometry();
+                geo.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+
+                const mat = new THREE.LineBasicMaterial({
+                    color: 0xffffff,
+                    transparent: true,
+                    opacity: 0.9,
+                    linewidth: 2,
+                });
+                layoutBorderLine = new THREE.Line(geo, mat);
+                scene.add(layoutBorderLine);
+            }
+
             // ---- Build Surface Mesh ----
             function buildSurfaceMesh() {
                 if (!depthmapData) return;
@@ -2402,7 +2403,6 @@
                 const zMax = parseFloat(mZ.value) || 5;
                 const origin = mOrigin.value;
 
-                // Layout dimensions for positioning
                 const lw = parseFloat(layoutWidth.value) || 300;
                 const lh = parseFloat(layoutHeight.value) || 200;
 
@@ -2592,7 +2592,7 @@
                 scene.add(simMesh);
             }
 
-            // ---- Build Offset Line ----
+            // ---- Build Offset Line (Light Red, visible in all views) ----
             function buildOffsetLine() {
                 if (offsetLine) { scene.remove(offsetLine);
                     offsetLine.geometry.dispose();
@@ -2605,14 +2605,13 @@
                 for (let i = 0; i < pts.length; i++) {
                     positions.push(pts[i].x, pts[i].y, 0);
                 }
-                // Close the polygon
                 positions.push(pts[0].x, pts[0].y, 0);
 
                 const geo = new THREE.BufferGeometry();
                 geo.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
 
                 const mat = new THREE.LineBasicMaterial({
-                    color: 0x22dd88,
+                    color: 0xff6666,
                     transparent: true,
                     opacity: 0.7,
                     linewidth: 2,
@@ -2621,13 +2620,12 @@
                 scene.add(offsetLine);
             }
 
-            // ---- Build Toolpath Line (Perfect rendering) ----
+            // ---- Build Toolpath Line ----
             function buildToolpathLine() {
                 if (!toolpathPoints || toolpathPoints.length < 2) return;
                 const pts = toolpathPoints;
                 const positions = [];
 
-                // Use all points for perfect rendering
                 for (let i = 0; i < pts.length; i++) {
                     const p = pts[i];
                     positions.push(p.x, p.y, p.z);
@@ -2663,6 +2661,9 @@
                     toolpathLine.material.dispose();
                     toolpathLine = null; }
 
+                // Always build layout border
+                buildLayoutBorder();
+
                 if (imageLoaded && depthmapData) {
                     buildSurfaceMesh();
                     buildSimulationMesh();
@@ -2683,7 +2684,7 @@
                     scene.add(surfaceMesh);
                 }
 
-                // Build offset line
+                // Build offset line (visible in all views)
                 buildOffsetLine();
 
                 if (toolpathGenerated && toolpathPoints) {
@@ -2708,12 +2709,14 @@
                 const showSurface = (simulationMode === 'surface' || simulationMode === 'sim');
                 const showSim = (simulationMode === 'sim');
                 const showToolpath = (simulationMode === 'toolpath' || simulationMode === 'sim');
-                const showOffset = (simulationMode === 'offset' || simulationMode === 'sim');
+                // Offset is ALWAYS visible in all views
+                const showOffset = true;
 
                 if (surfaceMesh) surfaceMesh.visible = showSurface;
                 if (simMesh) simMesh.visible = showSim;
                 if (toolpathLine) toolpathLine.visible = showToolpath;
                 if (offsetLine) offsetLine.visible = showOffset;
+                if (layoutBorderLine) layoutBorderLine.visible = true;
 
                 const map = { 'surface': 'viewSurface', 'toolpath': 'viewToolpath', 'sim': 'viewSim', 'offset': 'viewOffset' };
                 const btn = $(map[simulationMode]);
@@ -2801,7 +2804,7 @@
             });
 
             // ============================================================
-            //  TOOLPATH GENERATOR — Perfect ArtCAM-style
+            //  TOOLPATH GENERATOR
             // ============================================================
             function generateToolpath() {
                 if (!imageLoaded || !depthmapData) {
@@ -2809,7 +2812,6 @@
                     return null;
                 }
 
-                // Check if tool is selected
                 if (toolDiameter === 0) {
                     showToast('⚠️ Please select a tool first.');
                     return null;
@@ -2831,7 +2833,6 @@
                 const pixels = depthmapData.pixels;
                 if (!pixels) return null;
 
-                // Model position within layout
                 let ox = 0,
                     oy = 0;
                 if (origin === 'center') { ox = -mw / 2;
@@ -2839,7 +2840,6 @@
                     oy = -lh / 2; } else if (origin === 'bottom-right') { ox = lw / 2 - mw;
                     oy = -lh / 2; }
 
-                // Check if we have offset polygon to constrain toolpath
                 let useOffset = offsetApplied && offsetDistance > 0 && offsetPolygon;
                 const spacing = Math.max(step * 0.85, 0.1);
 
@@ -2863,7 +2863,6 @@
                     if (chunkSize >= maxChunkLines) flushChunk();
                 }
 
-                // Material thickness for safe Z
                 const safeZ = Math.max(matThickVal, zMax + 2);
 
                 gcodeChunks.push(`(Generated by DCam Pro)\nG21\nG90\nG0 Z${safeZ.toFixed(1)}\n`);
@@ -2872,7 +2871,6 @@
                 const previewPoints = [];
 
                 function getZ(x, y) {
-                    // Check if point is inside model bounds
                     const relX = (x - ox) / mw;
                     const relY = (y - oy) / mh;
                     if (relX < 0 || relX > 1 || relY < 0 || relY > 1) return 0;
@@ -2882,7 +2880,6 @@
                     return (pixels[idx] || 0) * zMax;
                 }
 
-                // Helper to check if point is inside offset polygon
                 function isInsideOffset(x, y) {
                     if (!useOffset) return true;
                     const poly = offsetPolygon;
@@ -2899,19 +2896,16 @@
                     return inside;
                 }
 
-                // Generate perfect toolpath
                 if (style === 'raster') {
                     let goingRight = true;
                     const yStep = step;
                     const xStep = spacing;
 
-                    // Determine bounds with offset
                     let xMin = 0,
                         xMax = mw,
                         yMin = 0,
                         yMax = mh;
                     if (useOffset) {
-                        // Find min/max of offset polygon relative to model
                         const poly = offsetPolygon;
                         let minX = Infinity,
                             maxX = -Infinity,
@@ -2972,7 +2966,6 @@
                         }
                     }
                 } else {
-                    // 3D Offset - concentric loops
                     let minX = 0,
                         maxX = mw,
                         minY = 0,
@@ -3001,7 +2994,6 @@
 
                     while (minX <= maxX && minY <= maxY && loopCount < maxLoops) {
                         let first = true;
-                        // Top
                         for (let x = minX; x <= maxX; x += spacing) {
                             const xPos = Math.min(maxX, x);
                             const mx = ox + xPos;
@@ -3014,7 +3006,6 @@
                             if (pointCount % 50 === 0) previewPoints.push({ x: mx, y: my, z: z });
                             pointCount++;
                         }
-                        // Right
                         for (let y = maxY; y >= minY; y -= spacing) {
                             const yPos = Math.max(minY, y);
                             const mx = ox + maxX;
@@ -3025,7 +3016,6 @@
                             if (pointCount % 50 === 0) previewPoints.push({ x: mx, y: my, z: z });
                             pointCount++;
                         }
-                        // Bottom
                         for (let x = maxX; x >= minX; x -= spacing) {
                             const xPos = Math.max(minX, x);
                             const mx = ox + xPos;
@@ -3036,7 +3026,6 @@
                             if (pointCount % 50 === 0) previewPoints.push({ x: mx, y: my, z: z });
                             pointCount++;
                         }
-                        // Left
                         for (let y = minY; y <= maxY; y += spacing) {
                             const yPos = Math.min(maxY, y);
                             const mx = ox + minX;
@@ -3166,33 +3155,8 @@
                 const tapBlob = new Blob([fileData.content], { type: 'application/octet-stream' });
                 const tapFile = new File([tapBlob], fileData.filename, { type: 'application/octet-stream' });
 
-                let screenshotBlob = null;
-                try {
-                    if (renderer && renderer.domElement) {
-                        const canvas = renderer.domElement;
-                        const tempCanvas = document.createElement('canvas');
-                        const scale = Math.min(1, 800 / Math.max(canvas.width, canvas.height));
-                        tempCanvas.width = Math.floor(canvas.width * scale);
-                        tempCanvas.height = Math.floor(canvas.height * scale);
-                        const ctx = tempCanvas.getContext('2d');
-                        const bgColor = isDarkTheme ? '#0a0a0e' : '#f0f0f2';
-                        ctx.fillStyle = bgColor;
-                        ctx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
-                        ctx.drawImage(canvas, 0, 0, tempCanvas.width, tempCanvas.height);
-                        const dataUrl = tempCanvas.toDataURL('image/jpeg', 0.85);
-                        const response = await fetch(dataUrl);
-                        screenshotBlob = await response.blob();
-                    }
-                } catch (e) {
-                    console.warn('Could not capture screenshot:', e);
-                }
-
                 try {
                     const shareData = { files: [tapFile] };
-                    if (screenshotBlob) {
-                        const imgFile = new File([screenshotBlob], 'DCam_Model_Preview.jpg', { type: 'image/jpeg' });
-                        shareData.files = [imgFile, tapFile];
-                    }
                     if (navigator.share && navigator.canShare(shareData)) {
                         await navigator.share(shareData);
                         showToast('✅ Shared successfully!');
@@ -3204,7 +3168,7 @@
                     } else return;
                 }
 
-                // Fallback
+                // Fallback - download the file
                 try {
                     const tapUrl = URL.createObjectURL(tapBlob);
                     const a = document.createElement('a');
@@ -3214,20 +3178,7 @@
                     a.click();
                     document.body.removeChild(a);
                     setTimeout(() => URL.revokeObjectURL(tapUrl), 5000);
-
-                    if (screenshotBlob) {
-                        setTimeout(() => {
-                            const imgUrl = URL.createObjectURL(screenshotBlob);
-                            const imgA = document.createElement('a');
-                            imgA.href = imgUrl;
-                            imgA.download = 'DCam_Model_Preview.jpg';
-                            document.body.appendChild(imgA);
-                            imgA.click();
-                            document.body.removeChild(imgA);
-                            setTimeout(() => URL.revokeObjectURL(imgUrl), 5000);
-                        }, 500);
-                    }
-                    showToast('📥 Files downloaded');
+                    showToast('📥 File downloaded (Share not available)');
                 } catch (e) {
                     showToast('❌ Could not share or download.');
                 }
@@ -3240,7 +3191,6 @@
                 toggleSettings(true);
                 toggleSimulation(false);
 
-                // Set default model ratio from layout
                 const lw = parseFloat(layoutWidth.value) || 300;
                 const lh = parseFloat(layoutHeight.value) || 200;
                 aspectRatioLayout = lw / lh;
@@ -3264,7 +3214,6 @@
 
                 updateOffsetDisplay();
 
-                // Auto-apply offset if value changes
                 offsetDist.addEventListener('change', function() {
                     const val = parseFloat(this.value) || 0;
                     if (val === 0) {
