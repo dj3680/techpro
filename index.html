@@ -9,42 +9,46 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
     <style id="themeStyles">
         :root {
-            --bg-main: #0d0d0f;
-            --panel-bg: #1a1a1e;
+            --bg-main: #0a0a0e;
+            --panel-bg: #121216;
             --text-primary: #e8e6e3;
             --text-muted: #8a8a8f;
             --accent: #60a5fa;
-            --accent-glow: rgba(96, 165, 250, 0.15);
-            --border-light: #2a2a2e;
-            --card-bg: #1e1e22;
-            --shadow-color: rgba(0, 0, 0, 0.4);
-            --toast-bg: rgba(26, 26, 30, 0.96);
-            --loader-bg: rgba(26, 26, 30, 0.82);
-            --handle-bg: rgba(255, 255, 255, 0.04);
-            --input-bg: rgba(255, 255, 255, 0.04);
-            --header-bg: rgba(13, 13, 15, 0.85);
-            --panel-overlay: rgba(26, 26, 30, 0.94);
-            --crop-overlay: rgba(0, 0, 0, 0.7);
-            --crop-bg: #1a1a1e;
+            --accent-glow: rgba(96, 165, 250, 0.12);
+            --border-light: #28282e;
+            --card-bg: #1a1a20;
+            --shadow-color: rgba(0, 0, 0, 0.5);
+            --toast-bg: rgba(18, 18, 22, 0.96);
+            --loader-bg: rgba(10, 10, 14, 0.85);
+            --handle-bg: rgba(255, 255, 255, 0.05);
+            --input-bg: rgba(255, 255, 255, 0.05);
+            --header-bg: rgba(10, 10, 14, 0.85);
+            --panel-overlay: rgba(18, 18, 22, 0.94);
+            --crop-overlay: rgba(0, 0, 0, 0.75);
+            --crop-bg: #1a1a20;
+            --progress-bg: #2a2a30;
+            --progress-fill: var(--accent);
         }
         .light-theme {
-            --bg-main: #f5f5f7;
+            --bg-main: #f0f0f2;
             --panel-bg: #ffffff;
             --text-primary: #1a1a1e;
             --text-muted: #6b6b70;
             --accent: #3b82f6;
-            --accent-glow: rgba(59, 130, 246, 0.15);
-            --border-light: #e0e0e0;
-            --card-bg: #fafafa;
+            --accent-glow: rgba(59, 130, 246, 0.12);
+            --border-light: #d0d0d8;
+            --card-bg: #f5f5f7;
             --shadow-color: rgba(0, 0, 0, 0.08);
             --toast-bg: rgba(255, 255, 255, 0.96);
-            --loader-bg: rgba(255, 255, 255, 0.82);
+            --loader-bg: rgba(255, 255, 255, 0.85);
             --handle-bg: rgba(0, 0, 0, 0.04);
             --input-bg: rgba(0, 0, 0, 0.04);
             --header-bg: rgba(255, 255, 255, 0.85);
             --panel-overlay: rgba(255, 255, 255, 0.94);
             --crop-overlay: rgba(0, 0, 0, 0.6);
-            --crop-bg: #fff;
+            --crop-bg: #ffffff;
+            --progress-bg: #e0e0e8;
+            --progress-fill: var(--accent);
         }
         * {
             margin: 0;
@@ -102,20 +106,20 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 8px 14px;
+            padding: 6px 14px;
             background: var(--header-bg);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
             border-bottom: 1px solid var(--border-light);
             pointer-events: none;
-            height: 52px;
+            height: 48px;
             transition: background 0.3s, border-color 0.3s;
         }
         #topbar>* {
             pointer-events: auto;
         }
         .brand {
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 700;
             color: var(--text-primary);
             letter-spacing: -0.5px;
@@ -124,34 +128,34 @@
         .brand span {
             font-weight: 300;
             color: var(--text-muted);
-            font-size: 10px;
+            font-size: 9px;
             margin-left: 2px;
             letter-spacing: 2px;
         }
         .topbar-center {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             flex: 1;
             justify-content: center;
         }
         @media (min-width: 820px) {
             .topbar-center {
                 justify-content: flex-start;
-                padding-left: 20px;
+                padding-left: 16px;
             }
         }
         .topbar-right {
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 5px;
         }
         .telegram-link,
         .bot-link {
             display: flex;
             align-items: center;
             gap: 3px;
-            font-size: 9px;
+            font-size: 8px;
             color: var(--accent);
             background: rgba(96, 165, 250, 0.08);
             padding: 2px 10px;
@@ -169,23 +173,16 @@
         }
         .telegram-link .icon,
         .bot-link .icon {
-            font-size: 12px;
-        }
-        #statusText {
-            font-size: 8px;
-            color: var(--text-muted);
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-            transition: color 0.3s;
+            font-size: 10px;
         }
 
         .header-btn {
             background: var(--handle-bg);
             border: 1px solid var(--border-light);
             color: var(--text-muted);
-            padding: 4px 14px;
-            border-radius: 16px;
-            font-size: 9px;
+            padding: 3px 12px;
+            border-radius: 14px;
+            font-size: 8px;
             font-weight: 500;
             cursor: pointer;
             transition: all 0.25s ease;
@@ -209,31 +206,30 @@
             color: var(--accent);
         }
         .header-btn .icon {
-            font-size: 11px;
+            font-size: 10px;
         }
         .header-btn-left {
             margin-right: auto;
         }
         @media (min-width: 820px) {
             .header-btn {
-                font-size: 11px;
-                padding: 5px 18px;
+                font-size: 10px;
+                padding: 4px 16px;
             }
             .header-btn .icon {
-                font-size: 13px;
+                font-size: 12px;
             }
         }
 
-        /* Theme Toggle Switch */
         .theme-toggle {
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: 3px;
             cursor: pointer;
-            font-size: 9px;
+            font-size: 8px;
             color: var(--text-muted);
-            padding: 2px 8px;
-            border-radius: 12px;
+            padding: 2px 6px;
+            border-radius: 10px;
             border: 1px solid var(--border-light);
             background: var(--handle-bg);
             transition: all 0.3s;
@@ -243,10 +239,10 @@
         }
         .theme-toggle .switch {
             position: relative;
-            width: 28px;
-            height: 16px;
+            width: 22px;
+            height: 13px;
             background: var(--border-light);
-            border-radius: 10px;
+            border-radius: 8px;
             transition: background 0.3s;
             flex-shrink: 0;
         }
@@ -255,8 +251,8 @@
             position: absolute;
             top: 2px;
             left: 2px;
-            width: 12px;
-            height: 12px;
+            width: 9px;
+            height: 9px;
             background: #fff;
             border-radius: 50%;
             transition: transform 0.3s;
@@ -266,26 +262,26 @@
             background: var(--accent);
         }
         .theme-toggle .switch.active::after {
-            transform: translateX(12px);
+            transform: translateX(9px);
         }
         .theme-toggle .icon {
-            font-size: 11px;
+            font-size: 10px;
         }
         @media (max-width: 420px) {
             .theme-toggle {
-                font-size: 8px;
-                padding: 2px 6px;
+                font-size: 7px;
+                padding: 1px 4px;
             }
             .theme-toggle .switch {
-                width: 22px;
-                height: 13px;
+                width: 18px;
+                height: 11px;
             }
             .theme-toggle .switch::after {
-                width: 9px;
-                height: 9px;
+                width: 7px;
+                height: 7px;
             }
             .theme-toggle .switch.active::after {
-                transform: translateX(9px);
+                transform: translateX(7px);
             }
         }
 
@@ -300,7 +296,7 @@
             -webkit-backdrop-filter: blur(24px);
             border-top: 1px solid var(--border-light);
             border-radius: 20px 20px 0 0;
-            max-height: 70vh;
+            max-height: 72vh;
             transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.3s ease, background 0.3s;
             display: flex;
             flex-direction: column;
@@ -317,7 +313,7 @@
                 left: 0;
                 right: auto;
                 bottom: 0;
-                width: 420px;
+                width: 440px;
                 max-height: 100vh;
                 border-radius: 0;
                 border-top: none;
@@ -333,7 +329,7 @@
         }
 
         .panel-body {
-            padding: 16px 18px 18px 18px;
+            padding: 12px 16px 16px 16px;
             overflow-y: auto;
             flex: 1;
             -webkit-overflow-scrolling: touch;
@@ -347,11 +343,11 @@
         }
 
         .section-title {
-            font-size: 10px;
+            font-size: 9px;
             text-transform: uppercase;
             letter-spacing: 1px;
             color: var(--text-muted);
-            margin: 14px 0 6px 0;
+            margin: 10px 0 4px 0;
             font-weight: 600;
             transition: color 0.3s;
         }
@@ -361,17 +357,20 @@
         .form-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 8px;
+            gap: 6px;
         }
         .form-grid .full {
             grid-column: 1 / -1;
         }
+        .form-grid .third {
+            grid-column: 1 / 3;
+        }
         .input-group label {
             display: block;
-            font-size: 10px;
+            font-size: 9px;
             font-weight: 500;
             color: var(--text-muted);
-            margin-bottom: 3px;
+            margin-bottom: 2px;
             letter-spacing: 0.3px;
             transition: color 0.3s;
         }
@@ -380,9 +379,9 @@
             background: var(--input-bg);
             border: 1px solid var(--border-light);
             color: var(--text-primary);
-            padding: 6px 10px;
-            border-radius: 6px;
-            font-size: 12px;
+            padding: 5px 8px;
+            border-radius: 5px;
+            font-size: 11px;
             outline: none;
             transition: border 0.25s, box-shadow 0.25s, background 0.3s, color 0.3s;
             font-family: inherit;
@@ -399,8 +398,8 @@
             appearance: none;
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%2360a5fa'/%3E%3C/svg%3E");
             background-repeat: no-repeat;
-            background-position: right 10px center;
-            padding-right: 28px;
+            background-position: right 8px center;
+            padding-right: 24px;
             cursor: pointer;
         }
         select.input-field option {
@@ -411,17 +410,17 @@
         .ratio-btn {
             background: var(--handle-bg);
             border: 1px solid var(--border-light);
-            border-radius: 6px;
+            border-radius: 5px;
             color: var(--text-muted);
-            padding: 6px 10px;
-            font-size: 13px;
+            padding: 5px 8px;
+            font-size: 12px;
             cursor: pointer;
             transition: all 0.25s ease;
             display: flex;
             align-items: center;
             justify-content: center;
-            height: 34px;
-            min-width: 36px;
+            height: 30px;
+            min-width: 30px;
         }
         .ratio-btn.active {
             border-color: var(--accent);
@@ -434,7 +433,7 @@
         .ratio-group {
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: 3px;
         }
         .ratio-group .input-field {
             flex: 1;
@@ -442,8 +441,8 @@
 
         .file-drop {
             border: 2px dashed var(--accent-glow);
-            border-radius: 8px;
-            padding: 14px 12px;
+            border-radius: 6px;
+            padding: 10px 10px;
             text-align: center;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -455,13 +454,13 @@
             background: var(--accent-glow);
         }
         .file-drop .icon {
-            font-size: 20px;
+            font-size: 18px;
             opacity: 0.3;
             display: block;
-            margin-bottom: 2px;
+            margin-bottom: 1px;
         }
         .file-drop .label {
-            font-size: 10px;
+            font-size: 9px;
             color: var(--text-muted);
         }
         .file-drop .label strong {
@@ -476,13 +475,13 @@
         }
         .file-info {
             display: none;
-            font-size: 9px;
+            font-size: 8px;
             color: var(--accent);
             align-items: center;
             justify-content: center;
-            gap: 6px;
+            gap: 4px;
             flex-wrap: wrap;
-            margin-top: 4px;
+            margin-top: 3px;
         }
         .file-info.show {
             display: flex;
@@ -492,9 +491,9 @@
             color: #e06060;
             border: none;
             border-radius: 50%;
-            width: 18px;
-            height: 18px;
-            font-size: 10px;
+            width: 16px;
+            height: 16px;
+            font-size: 9px;
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -508,14 +507,14 @@
             background: var(--accent);
             color: #fff;
             border: none;
-            border-radius: 4px;
-            padding: 2px 12px;
-            font-size: 9px;
+            border-radius: 3px;
+            padding: 1px 10px;
+            font-size: 8px;
             font-weight: 600;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
-            gap: 4px;
+            gap: 3px;
             transition: background 0.2s;
             box-shadow: 0 2px 8px var(--accent-glow);
         }
@@ -527,12 +526,12 @@
         .tool-chips {
             display: flex;
             flex-wrap: wrap;
-            gap: 4px;
+            gap: 3px;
         }
         .tool-chip {
-            padding: 4px 12px;
-            border-radius: 16px;
-            font-size: 10px;
+            padding: 3px 10px;
+            border-radius: 14px;
+            font-size: 9px;
             font-weight: 500;
             background: var(--handle-bg);
             border: 1px solid var(--border-light);
@@ -553,15 +552,24 @@
             font-weight: 700;
             color: var(--accent);
         }
+        .tool-chip.no-tool {
+            border-color: #e06060;
+            color: #e06060;
+        }
+        .tool-chip.no-tool.active {
+            background: rgba(200, 50, 50, 0.1);
+            border-color: #e06060;
+            color: #e06060;
+        }
 
         .btn {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 5px;
-            padding: 7px 16px;
-            border-radius: 6px;
-            font-size: 11px;
+            gap: 4px;
+            padding: 6px 14px;
+            border-radius: 5px;
+            font-size: 10px;
             font-weight: 600;
             border: none;
             cursor: pointer;
@@ -588,7 +596,7 @@
         .btn-success {
             background: #22c55e;
             color: #fff;
-            box-shadow: 0 3px 16px rgba(34, 197, 94, 0.15);
+            box-shadow: 0 3px 16px rgba(34, 197, 94, 0.12);
         }
         .btn-success:disabled {
             opacity: 0.25;
@@ -603,26 +611,26 @@
             background: var(--accent-glow);
         }
         .btn-sm {
-            padding: 4px 12px;
-            font-size: 9px;
-            border-radius: 5px;
+            padding: 3px 10px;
+            font-size: 8px;
+            border-radius: 4px;
         }
         .btn-group {
             display: flex;
-            gap: 5px;
+            gap: 4px;
         }
         .btn-group .btn {
             flex: 1;
         }
 
         .mt-1 {
-            margin-top: 4px;
+            margin-top: 3px;
         }
         .mt-2 {
-            margin-top: 8px;
+            margin-top: 6px;
         }
         .mt-3 {
-            margin-top: 12px;
+            margin-top: 10px;
         }
         .text-gold {
             color: var(--accent);
@@ -631,10 +639,10 @@
             color: var(--text-muted);
         }
         .text-xs {
-            font-size: 9px;
+            font-size: 8px;
         }
         .text-sm {
-            font-size: 11px;
+            font-size: 10px;
         }
         .flex {
             display: flex;
@@ -646,10 +654,10 @@
             justify-content: space-between;
         }
         .gap-1 {
-            gap: 4px;
+            gap: 3px;
         }
         .gap-2 {
-            gap: 6px;
+            gap: 5px;
         }
         .w-full {
             width: 100%;
@@ -657,17 +665,17 @@
 
         #viewport-controls {
             position: absolute;
-            bottom: 80px;
+            bottom: 76px;
             left: 50%;
             transform: translateX(-50%);
             z-index: 12;
             display: flex;
-            gap: 4px;
+            gap: 3px;
             background: var(--panel-overlay);
             backdrop-filter: blur(14px);
             -webkit-backdrop-filter: blur(14px);
-            padding: 3px 10px;
-            border-radius: 24px;
+            padding: 2px 8px;
+            border-radius: 20px;
             border: 1px solid var(--border-light);
             pointer-events: none;
             transition: background 0.3s, border-color 0.3s;
@@ -676,8 +684,8 @@
             pointer-events: auto;
         }
         #viewport-controls .btn {
-            padding: 4px 14px;
-            font-size: 8px;
+            padding: 3px 12px;
+            font-size: 7px;
             border-radius: 30px;
             background: transparent;
             border: 1px solid transparent;
@@ -685,7 +693,7 @@
             text-transform: uppercase;
             letter-spacing: 0.5px;
             width: auto;
-            min-height: 28px;
+            min-height: 24px;
             transition: all 0.2s;
         }
         #viewport-controls .btn.active {
@@ -699,12 +707,12 @@
 
         #zoom-controls {
             position: absolute;
-            right: 14px;
-            bottom: 92px;
+            right: 10px;
+            bottom: 86px;
             z-index: 12;
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 3px;
             pointer-events: none;
             transition: opacity 0.3s;
         }
@@ -716,11 +724,11 @@
             pointer-events: auto;
         }
         #zoom-controls .btn {
-            width: 38px;
-            height: 38px;
+            width: 32px;
+            height: 32px;
             padding: 0;
-            font-size: 16px;
-            border-radius: 10px;
+            font-size: 13px;
+            border-radius: 8px;
             background: var(--panel-overlay);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
@@ -729,8 +737,8 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            min-height: 38px;
-            min-width: 38px;
+            min-height: 32px;
+            min-width: 32px;
             transition: background 0.3s, border-color 0.3s, color 0.3s;
         }
         #zoom-controls .btn:active {
@@ -740,17 +748,17 @@
 
         #toast {
             position: fixed;
-            top: 56px;
+            top: 52px;
             left: 50%;
             transform: translateX(-50%) translateY(-12px);
             background: var(--toast-bg);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            padding: 5px 16px;
-            border-radius: 10px;
+            padding: 4px 14px;
+            border-radius: 8px;
             border: 1px solid var(--border-light);
             color: var(--text-primary);
-            font-size: 10px;
+            font-size: 9px;
             font-weight: 500;
             z-index: 100;
             opacity: 0;
@@ -761,7 +769,7 @@
             max-width: 86%;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 5px;
         }
         #toast.show {
             opacity: 1;
@@ -771,7 +779,7 @@
         #toast .toast-close {
             cursor: pointer;
             opacity: 0.2;
-            font-size: 12px;
+            font-size: 11px;
             transition: opacity 0.2s;
         }
         #toast .toast-close:active {
@@ -789,15 +797,15 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            gap: 8px;
             transition: background 0.3s;
         }
         #loader.show {
             display: flex;
         }
         .loader-spinner {
-            width: 32px;
-            height: 32px;
+            width: 28px;
+            height: 28px;
             border: 3px solid var(--accent-glow);
             border-top-color: var(--accent);
             border-radius: 50%;
@@ -809,30 +817,45 @@
             }
         }
         #loader-text {
-            font-size: 11px;
+            font-size: 10px;
             color: var(--text-muted);
             letter-spacing: 0.5px;
         }
         #loader-progress {
-            font-size: 13px;
+            font-size: 12px;
             color: var(--accent);
             font-weight: 600;
         }
+        .progress-bar-container {
+            width: 200px;
+            height: 4px;
+            background: var(--progress-bg);
+            border-radius: 2px;
+            overflow: hidden;
+            margin-top: 4px;
+        }
+        .progress-bar-fill {
+            height: 100%;
+            width: 0%;
+            background: var(--progress-fill);
+            border-radius: 2px;
+            transition: width 0.3s ease;
+        }
 
         .point-badge {
-            font-size: 8px;
+            font-size: 7px;
             color: var(--text-muted);
             background: var(--handle-bg);
-            padding: 2px 10px;
-            border-radius: 10px;
+            padding: 1px 8px;
+            border-radius: 8px;
             border: 1px solid var(--border-light);
         }
 
         .image-preview-hint {
-            font-size: 9px;
+            font-size: 8px;
             color: var(--text-muted);
             text-align: center;
-            margin-top: 3px;
+            margin-top: 2px;
             opacity: 0.6;
             font-style: italic;
             transition: color 0.3s;
@@ -842,20 +865,19 @@
             opacity: 1;
         }
 
-        /* Floating Button - Top Right below header */
         #floatingToggle {
             position: fixed;
-            top: 60px;
-            right: 14px;
+            top: 54px;
+            right: 12px;
             z-index: 30;
-            width: 44px;
-            height: 44px;
+            width: 38px;
+            height: 38px;
             border-radius: 50%;
             background: var(--accent);
             color: #fff;
             border: none;
             box-shadow: 0 4px 20px var(--accent-glow);
-            font-size: 18px;
+            font-size: 16px;
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -867,30 +889,30 @@
             transform: scale(0.9);
         }
         #floatingToggle .icon {
-            font-size: 18px;
+            font-size: 16px;
         }
         @media (max-width: 420px) {
             #floatingToggle {
-                width: 38px;
-                height: 38px;
-                font-size: 15px;
-                top: 56px;
-                right: 10px;
+                width: 32px;
+                height: 32px;
+                font-size: 13px;
+                top: 50px;
+                right: 8px;
             }
             #floatingToggle .icon {
-                font-size: 15px;
+                font-size: 13px;
             }
         }
         @media (min-width: 820px) {
             #floatingToggle {
-                width: 48px;
-                height: 48px;
-                font-size: 20px;
-                top: 66px;
-                right: 20px;
+                width: 42px;
+                height: 42px;
+                font-size: 18px;
+                top: 62px;
+                right: 18px;
             }
             #floatingToggle .icon {
-                font-size: 20px;
+                font-size: 18px;
             }
         }
 
@@ -912,8 +934,8 @@
         }
         #cropModal .crop-container {
             background: var(--crop-bg);
-            border-radius: 12px;
-            padding: 16px;
+            border-radius: 10px;
+            padding: 14px;
             max-width: 92%;
             max-height: 92%;
             overflow: auto;
@@ -931,7 +953,7 @@
         #cropModal .crop-image-wrapper img {
             display: block;
             max-width: 80vw;
-            max-height: 60vh;
+            max-height: 55vh;
             user-select: none;
             -webkit-user-drag: none;
             pointer-events: none;
@@ -942,12 +964,12 @@
             background: rgba(96, 165, 250, 0.08);
             pointer-events: none;
             display: none;
-            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.3);
+            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.2);
         }
         #cropModal .crop-handle {
             position: absolute;
-            width: 12px;
-            height: 12px;
+            width: 16px;
+            height: 16px;
             background: #fff;
             border: 2px solid var(--accent);
             border-radius: 50%;
@@ -962,84 +984,78 @@
             transform: scale(1.2);
         }
         #cropModal .crop-handle.nw {
-            top: -6px;
-            left: -6px;
+            top: -8px;
+            left: -8px;
             cursor: nw-resize;
         }
         #cropModal .crop-handle.ne {
-            top: -6px;
-            right: -6px;
+            top: -8px;
+            right: -8px;
             cursor: ne-resize;
         }
         #cropModal .crop-handle.sw {
-            bottom: -6px;
-            left: -6px;
+            bottom: -8px;
+            left: -8px;
             cursor: sw-resize;
         }
         #cropModal .crop-handle.se {
-            bottom: -6px;
-            right: -6px;
+            bottom: -8px;
+            right: -8px;
             cursor: se-resize;
         }
         #cropModal .crop-handle.n {
-            top: -6px;
+            top: -8px;
             left: 50%;
             transform: translateX(-50%);
             cursor: n-resize;
         }
         #cropModal .crop-handle.s {
-            bottom: -6px;
+            bottom: -8px;
             left: 50%;
             transform: translateX(-50%);
             cursor: s-resize;
         }
         #cropModal .crop-handle.w {
             top: 50%;
-            left: -6px;
+            left: -8px;
             transform: translateY(-50%);
             cursor: w-resize;
         }
         #cropModal .crop-handle.e {
             top: 50%;
-            right: -6px;
+            right: -8px;
             transform: translateY(-50%);
             cursor: e-resize;
         }
         #cropModal .crop-controls {
             display: flex;
-            gap: 10px;
-            margin-top: 12px;
+            gap: 8px;
+            margin-top: 10px;
             justify-content: flex-end;
         }
         #cropModal .crop-controls .btn {
             width: auto;
-            padding: 6px 18px;
+            padding: 5px 16px;
+            font-size: 9px;
         }
         #cropModal .crop-info {
-            font-size: 10px;
+            font-size: 9px;
             color: var(--text-muted);
             text-align: center;
-            margin-top: 6px;
+            margin-top: 5px;
             transition: color 0.3s;
         }
 
         @media (max-width: 420px) {
             #cropModal .crop-container {
-                padding: 12px;
+                padding: 10px;
                 max-width: 96%;
             }
             #cropModal .crop-image-wrapper img {
                 max-width: 90vw;
-                max-height: 50vh;
+                max-height: 45vh;
             }
             #cropModal .crop-handle {
-                width: 16px;
-                height: 16px;
-            }
-            #cropModal .crop-handle.nw,
-            #cropModal .crop-handle.ne,
-            #cropModal .crop-handle.sw,
-            #cropModal .crop-handle.se {
                 width: 18px;
                 height: 18px;
             }
@@ -1047,113 +1063,168 @@
 
         @media (max-width: 420px) {
             #panel .panel-body {
-                padding: 12px 14px 14px 14px;
+                padding: 10px 12px 12px 12px;
             }
             .brand {
-                font-size: 17px;
+                font-size: 15px;
             }
             .form-grid {
-                gap: 4px;
+                gap: 3px;
             }
             .input-field {
-                font-size: 11px;
-                padding: 5px 8px;
+                font-size: 10px;
+                padding: 4px 6px;
             }
             .tool-chip {
-                font-size: 9px;
-                padding: 3px 10px;
+                font-size: 8px;
+                padding: 2px 8px;
             }
             .btn {
-                font-size: 10px;
-                padding: 5px 12px;
+                font-size: 9px;
+                padding: 4px 10px;
             }
             #viewport-controls {
-                bottom: 70px;
-                padding: 2px 8px;
+                bottom: 64px;
+                padding: 2px 6px;
                 gap: 2px;
             }
             #viewport-controls .btn {
-                font-size: 7px;
-                padding: 3px 10px;
-                min-height: 24px;
+                font-size: 6px;
+                padding: 2px 8px;
+                min-height: 20px;
             }
             #zoom-controls {
-                right: 8px;
-                bottom: 80px;
+                right: 6px;
+                bottom: 74px;
             }
             #zoom-controls .btn {
-                width: 32px;
-                height: 32px;
-                font-size: 13px;
-                min-height: 32px;
-                min-width: 32px;
+                width: 28px;
+                height: 28px;
+                font-size: 11px;
+                min-height: 28px;
+                min-width: 28px;
             }
             #toast {
-                top: 48px;
-                font-size: 9px;
-                padding: 4px 12px;
+                top: 44px;
+                font-size: 8px;
+                padding: 3px 10px;
                 max-width: 94%;
             }
             .section-title {
-                font-size: 9px;
-                margin: 10px 0 4px 0;
+                font-size: 8px;
+                margin: 8px 0 3px 0;
             }
             .file-drop {
-                padding: 10px 8px;
+                padding: 8px 6px;
             }
             .file-drop .icon {
-                font-size: 16px;
+                font-size: 14px;
             }
             .file-drop .label {
-                font-size: 9px;
+                font-size: 8px;
             }
             .header-btn {
-                font-size: 8px;
-                padding: 3px 10px;
+                font-size: 7px;
+                padding: 2px 8px;
             }
             .header-btn .icon {
-                font-size: 10px;
+                font-size: 9px;
             }
             .telegram-link,
             .bot-link {
-                font-size: 8px;
-                padding: 2px 8px;
+                font-size: 7px;
+                padding: 1px 6px;
             }
         }
 
         @media (min-width: 820px) {
             #viewport-controls {
                 bottom: 24px;
-                padding: 4px 14px;
+                padding: 3px 12px;
             }
             #viewport-controls .btn {
-                font-size: 9px;
-                padding: 4px 18px;
-                min-height: 32px;
+                font-size: 8px;
+                padding: 3px 16px;
+                min-height: 28px;
             }
             #zoom-controls {
-                right: 20px;
-                bottom: 80px;
+                right: 16px;
+                bottom: 76px;
             }
             #zoom-controls .btn {
-                width: 40px;
-                height: 40px;
-                font-size: 18px;
-                min-height: 40px;
-                min-width: 40px;
+                width: 36px;
+                height: 36px;
+                font-size: 15px;
+                min-height: 36px;
+                min-width: 36px;
             }
             #toast {
-                top: 64px;
-                font-size: 11px;
-                padding: 6px 20px;
+                top: 60px;
+                font-size: 10px;
+                padding: 4px 18px;
             }
             .brand {
-                font-size: 24px;
+                font-size: 22px;
             }
             #topbar {
-                padding: 10px 24px;
-                height: 60px;
+                padding: 8px 20px;
+                height: 54px;
             }
+        }
+
+        .owner-footer {
+            font-size: 8px;
+            color: var(--text-muted);
+            opacity: 0.4;
+            text-align: center;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            padding-top: 6px;
+            border-top: 1px solid var(--border-light);
+            margin-top: 8px;
+            width: 100%;
+        }
+
+        /* Tooltip */
+        .tooltip-trigger {
+            position: relative;
+            cursor: help;
+        }
+        .tooltip-trigger:hover .tooltip-text {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .tooltip-text {
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(4px);
+            background: var(--panel-bg);
+            color: var(--text-primary);
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 7px;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.2s;
+            border: 1px solid var(--border-light);
+            z-index: 10;
+        }
+
+        /* Offset vector input */
+        .offset-group {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .offset-group .input-field {
+            flex: 1;
+        }
+        .offset-group .offset-label {
+            font-size: 8px;
+            color: var(--text-muted);
+            white-space: nowrap;
         }
     </style>
 </head>
@@ -1178,7 +1249,7 @@
         <div class="topbar-right">
             <a class="bot-link" href="https://t.me/Image_2_3D_Bot" target="_blank" rel="noopener">
                 <span class="icon">🤖</span>
-                <span>Image to Rlf</span>
+                <span>RLF Bot</span>
             </a>
             <a class="telegram-link" href="https://t.me/dj3680" target="_blank" rel="noopener">
                 <span class="icon">🧑🏻‍💻</span>
@@ -1187,7 +1258,7 @@
         </div>
     </div>
 
-    <!-- Floating Toggle Button - Top Right below header -->
+    <!-- Floating Toggle Button -->
     <button id="floatingToggle" title="Toggle Simulation / Toolpath">
         <i class="fas fa-cubes icon"></i>
     </button>
@@ -1196,20 +1267,38 @@
     <div id="panel">
         <div class="panel-body">
 
-            <!-- Model Size -->
-            <div class="section-title">Model Setup</div>
+            <!-- Layout Size -->
+            <div class="section-title">Layout Size</div>
             <div class="form-grid">
                 <div class="input-group half-left">
                     <label>Width (mm)</label>
                     <div class="ratio-group">
-                        <input type="number" id="mWidth" value="200" min="1" max="1000" step="1" class="input-field" />
+                        <input type="number" id="layoutWidth" value="300" min="10" max="2000" step="1" class="input-field" />
                     </div>
                 </div>
                 <div class="input-group half-right">
                     <label>Height (mm)</label>
                     <div class="ratio-group">
-                        <input type="number" id="mHeight" value="200" min="1" max="1000" step="1" class="input-field" />
-                        <button class="ratio-btn" id="ratioLock" title="Lock aspect ratio">
+                        <input type="number" id="layoutHeight" value="200" min="10" max="2000" step="1" class="input-field" />
+                        <button class="ratio-btn" id="layoutRatioLock" title="Lock aspect ratio">
+                            <i class="fas fa-unlink"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Model Size (resize imported image) -->
+            <div class="section-title">Model Size <span class="text-xs text-muted">(resize imported)</span></div>
+            <div class="form-grid">
+                <div class="input-group half-left">
+                    <label>Width (mm)</label>
+                    <input type="number" id="modelWidth" value="200" min="1" max="2000" step="1" class="input-field" />
+                </div>
+                <div class="input-group half-right">
+                    <label>Height (mm)</label>
+                    <div class="ratio-group">
+                        <input type="number" id="modelHeight" value="200" min="1" max="2000" step="1" class="input-field" />
+                        <button class="ratio-btn" id="modelRatioLock" title="Lock aspect ratio">
                             <i class="fas fa-unlink"></i>
                         </button>
                     </div>
@@ -1224,12 +1313,12 @@
                 </div>
             </div>
 
-            <!-- Depthmap -->
+            <!-- Depthmap Import -->
             <div class="section-title">Depthmap</div>
             <div class="file-drop" id="fileDrop">
                 <span class="icon">📁</span>
-                <div class="label">Drop or tap to import <br /><strong>PNG · BMP</strong></div>
-                <input type="file" id="fileInput" accept=".png,.bmp" />
+                <div class="label">Drop or tap to import <br /><strong>PNG · BMP · TIFF</strong></div>
+                <input type="file" id="fileInput" accept=".png,.bmp,.tiff,.tif" />
             </div>
             <div class="file-info" id="fileInfo">
                 <span id="fileName">image.png</span>
@@ -1245,31 +1334,38 @@
                 <span class="highlight">✓</span> Model renders exactly as imported
             </div>
 
-            <!-- Z Height -->
-            <div class="section-title">Depth (Z)</div>
+            <!-- Z Height & Material Thickness -->
+            <div class="section-title">Depth &amp; Material</div>
             <div class="form-grid">
-                <div class="input-group full">
+                <div class="input-group half-left">
                     <label>Max Z (mm)</label>
-                    <input type="number" id="mZ" value="5" min="0.1" max="20" step="0.1" class="input-field" />
-                    <span class="text-xs text-muted" style="display:block;margin-top:1px;">Material thickness = Z + 2 mm</span>
+                    <input type="number" id="mZ" value="5" min="0.1" max="50" step="0.1" class="input-field" />
+                </div>
+                <div class="input-group half-right">
+                    <label>Material Thickness (mm)</label>
+                    <input type="number" id="matThick" value="8" min="0.1" max="100" step="0.1" class="input-field" />
+                </div>
+                <div class="input-group full">
+                    <span class="text-xs text-muted">Material thickness must be ≥ Z + 2mm for safe clearance</span>
                 </div>
             </div>
 
             <!-- Tool -->
-            <div class="section-title">Tool</div>
+            <div class="section-title">Tool <span class="text-xs text-muted">(select one)</span></div>
             <div class="input-group">
                 <label>Ball Nose Diameter</label>
                 <div class="tool-chips" id="toolChips">
+                    <button class="tool-chip no-tool active" data-diam="0">None</button>
                     <button class="tool-chip" data-diam="3">Ø <span class="diam">3</span></button>
                     <button class="tool-chip" data-diam="4">Ø <span class="diam">4</span></button>
-                    <button class="tool-chip active" data-diam="5">Ø <span class="diam">5</span></button>
+                    <button class="tool-chip" data-diam="5">Ø <span class="diam">5</span></button>
                     <button class="tool-chip" data-diam="6">Ø <span class="diam">6</span></button>
                     <button class="tool-chip" data-diam="8">Ø <span class="diam">8</span></button>
                     <button class="tool-chip" data-diam="10">Ø <span class="diam">10</span></button>
                 </div>
                 <div class="flex items-center gap-2 mt-1">
                     <span class="text-xs text-muted">Stepover:</span>
-                    <span id="stepoverDisplay" class="text-xs text-gold font-medium">0.50 mm</span>
+                    <span id="stepoverDisplay" class="text-xs text-gold font-medium">—</span>
                     <span class="text-xs text-muted">(10% of Ø)</span>
                 </div>
             </div>
@@ -1282,16 +1378,30 @@
             </div>
             <div id="styleDesc" class="text-xs text-muted mt-1">Zigzag raster pattern across model.</div>
 
-            <!-- Actions -->
-            <div class="flex gap-2 mt-2">
-                <button class="btn btn-outline btn-sm" id="applyBtn" style="flex:0 0 auto;width:auto;padding:4px 14px;">
-                    <i class="fas fa-check"></i> Apply
-                </button>
-                <button class="btn btn-primary" id="calcBtn">
-                    <i class="fas fa-cogs"></i> Calculate
-                </button>
+            <!-- Offset Vector -->
+            <div class="section-title">Offset Vector <span class="text-xs text-muted">(inward boundary)</span></div>
+            <div class="form-grid">
+                <div class="input-group full">
+                    <div class="offset-group">
+                        <span class="offset-label">Offset Distance (mm)</span>
+                        <input type="number" id="offsetDist" value="0" min="0" max="500" step="0.5" class="input-field" />
+                        <button class="btn btn-outline btn-sm" id="applyOffsetBtn" style="width:auto;padding:3px 10px;">
+                            <i class="fas fa-vector-square"></i> Apply
+                        </button>
+                    </div>
+                </div>
+                <div class="input-group full">
+                    <span class="text-xs text-muted" id="offsetStatus">No offset applied</span>
+                </div>
             </div>
-            <div id="calcStatus" class="text-xs text-muted mt-1 text-center" style="min-height:16px;"></div>
+
+            <!-- Calculate -->
+            <div class="mt-2">
+                <button class="btn btn-primary" id="calcBtn">
+                    <i class="fas fa-cogs"></i> Calculate Toolpath
+                </button>
+                <div id="calcStatus" class="text-xs text-muted mt-1 text-center" style="min-height:14px;"></div>
+            </div>
 
             <!-- Point info -->
             <div id="pointInfo" class="flex items-center justify-between mt-1" style="display:none;">
@@ -1318,14 +1428,10 @@
                     <i class="fas fa-share-alt"></i> Share
                 </button>
             </div>
-            <div id="exportStatus" class="text-xs text-muted mt-1 text-center" style="min-height:14px;"></div>
+            <div id="exportStatus" class="text-xs text-muted mt-1 text-center" style="min-height:12px;"></div>
 
             <!-- Footer -->
-            <div class="text-center mt-3 pt-2 border-t border-gray-700/40">
-                <p class="text-xs text-gray-500 tracking-widest">Use proper depthmaps for high quality toolpaths.</p>
-                <p class="text-xs text-gray-500 tracking-widest">Try our bot which converts any image into 3d depthmaps and artcam reliefs.</p>
-                <p class="text-xs text-gray-500 uppercase tracking-widest">Developer: Dinesh</p>
-            </div>
+            <div class="owner-footer">Developer: Dinesh</div>
 
         </div>
     </div>
@@ -1335,6 +1441,7 @@
         <button class="btn active" id="viewSurface">Surface</button>
         <button class="btn" id="viewToolpath">Toolpath</button>
         <button class="btn" id="viewSim">Sim</button>
+        <button class="btn" id="viewOffset">Offset</button>
     </div>
 
     <!-- Zoom Controls -->
@@ -1350,8 +1457,11 @@
     <!-- Loader -->
     <div id="loader">
         <div class="loader-spinner"></div>
-        <div id="loader-text">Processing depthmap...</div>
-        <div id="loader-progress"></div>
+        <div id="loader-text">Processing...</div>
+        <div class="progress-bar-container">
+            <div class="progress-bar-fill" id="progressFill"></div>
+        </div>
+        <div id="loader-progress">0%</div>
     </div>
 
     <!-- Crop Modal -->
@@ -1386,6 +1496,7 @@
     <script>
         // ============================================================
         //  DCam Pro — Professional CNC Toolpath Studio
+        //  Complete Redesign with All Features
         // ============================================================
 
         (function() {
@@ -1405,13 +1516,14 @@
             const loader = $('loader');
             const loaderText = $('loader-text');
             const loaderProgress = $('loader-progress');
+            const progressFill = $('progressFill');
             const zoomControls = $('zoom-controls');
             const themeToggle = $('themeToggle');
             const themeSwitch = $('themeSwitch');
 
             // ---- State ----
-            let toolDiameter = 5;
-            let stepover = 0.5;
+            let toolDiameter = 0; // 0 = no tool selected
+            let stepover = 0;
             let toolpathStyle = 'raster';
             let depthmapData = null;
             let imageLoaded = false;
@@ -1421,20 +1533,26 @@
             let gcodeChunks = [];
             let totalPoints = 0;
             let meshResolution = 200;
-            let ratioLocked = false;
-            let aspectRatio = 1;
+            let ratioLockedLayout = false;
+            let ratioLockedModel = false;
+            let aspectRatioLayout = 1;
+            let aspectRatioModel = 1;
             let settingsVisible = true;
             let isSimulationActive = false;
             let currentGcodeFull = '';
             let modelImageDataURL = '';
             let isDarkTheme = true;
             let customFilename = '';
+            let offsetDistance = 0;
+            let offsetApplied = false;
+            let offsetPolygon = null;
 
             // Three.js
             let scene, camera, renderer, controls;
             let surfaceMesh = null;
             let toolpathLine = null;
             let simMesh = null;
+            let offsetLine = null;
             let axisHelper = null;
             let viewportInitialized = false;
 
@@ -1453,14 +1571,14 @@
             }
             toastClose.addEventListener('click', () => toast.classList.remove('show'));
 
-            // ---- Theme Toggle ----
+            // ---- Theme ----
             function toggleTheme() {
                 isDarkTheme = !isDarkTheme;
                 document.documentElement.classList.toggle('light-theme', !isDarkTheme);
                 document.documentElement.classList.toggle('dark-theme', isDarkTheme);
                 themeSwitch.classList.toggle('active', isDarkTheme);
                 if (scene) {
-                    scene.background = new THREE.Color(isDarkTheme ? 0x0d0d0f : 0xf5f5f7);
+                    scene.background = new THREE.Color(isDarkTheme ? 0x0a0a0e : 0xf0f0f2);
                 }
                 localStorage.setItem('dcam_theme', isDarkTheme ? 'dark' : 'light');
                 showToast(isDarkTheme ? '🌙 Dark theme' : '☀️ Light theme', 1200);
@@ -1468,7 +1586,6 @@
 
             themeToggle.addEventListener('click', toggleTheme);
 
-            // Load saved theme — default dark
             const savedTheme = localStorage.getItem('dcam_theme');
             if (savedTheme === 'light') {
                 isDarkTheme = false;
@@ -1476,7 +1593,6 @@
                 document.documentElement.classList.remove('dark-theme');
                 themeSwitch.classList.remove('active');
             } else {
-                // Default dark
                 isDarkTheme = true;
                 document.documentElement.classList.add('dark-theme');
                 document.documentElement.classList.remove('light-theme');
@@ -1545,31 +1661,100 @@
                 }
             });
 
-            // ---- Header button ----
             settingsToggle.addEventListener('click', () => {
                 toggleSettings(!settingsVisible);
             });
 
-            // ---- Model inputs ----
-            const mWidth = $('mWidth');
-            const mHeight = $('mHeight');
+            // ---- Inputs ----
+            const layoutWidth = $('layoutWidth');
+            const layoutHeight = $('layoutHeight');
+            const layoutRatioLock = $('layoutRatioLock');
+            const modelWidth = $('modelWidth');
+            const modelHeight = $('modelHeight');
+            const modelRatioLock = $('modelRatioLock');
             const mOrigin = $('mOrigin');
             const mZ = $('mZ');
+            const matThick = $('matThick');
             const exportName = $('exportName');
-            const ratioLockBtn = $('ratioLock');
+            const offsetDist = $('offsetDist');
 
-            mWidth.value = 200;
-            mHeight.value = 200;
-            ratioLockBtn.classList.remove('active');
-            ratioLockBtn.innerHTML = '<i class="fas fa-unlink"></i>';
+            // Layout ratio
+            layoutRatioLock.classList.remove('active');
+            layoutRatioLock.innerHTML = '<i class="fas fa-unlink"></i>';
+            layoutRatioLock.addEventListener('click', function() {
+                ratioLockedLayout = !ratioLockedLayout;
+                this.classList.toggle('active', ratioLockedLayout);
+                this.innerHTML = ratioLockedLayout ? '<i class="fas fa-link"></i>' : '<i class="fas fa-unlink"></i>';
+                if (ratioLockedLayout) {
+                    const w = parseFloat(layoutWidth.value) || 300;
+                    const h = parseFloat(layoutHeight.value) || 200;
+                    aspectRatioLayout = w / h;
+                    showToast('🔗 Layout ratio locked', 1000);
+                } else {
+                    showToast('🔓 Layout ratio unlocked', 1000);
+                }
+            });
+
+            layoutWidth.addEventListener('input', function() {
+                if (ratioLockedLayout) {
+                    const w = parseFloat(this.value) || 300;
+                    layoutHeight.value = (w / aspectRatioLayout).toFixed(1);
+                }
+                autoApply();
+            });
+            layoutHeight.addEventListener('input', function() {
+                if (ratioLockedLayout) {
+                    const h = parseFloat(this.value) || 200;
+                    layoutWidth.value = (h * aspectRatioLayout).toFixed(1);
+                }
+                autoApply();
+            });
+
+            // Model ratio
+            modelRatioLock.classList.remove('active');
+            modelRatioLock.innerHTML = '<i class="fas fa-unlink"></i>';
+            modelRatioLock.addEventListener('click', function() {
+                ratioLockedModel = !ratioLockedModel;
+                this.classList.toggle('active', ratioLockedModel);
+                this.innerHTML = ratioLockedModel ? '<i class="fas fa-link"></i>' : '<i class="fas fa-unlink"></i>';
+                if (ratioLockedModel && imageLoaded && depthmapData) {
+                    const ar = depthmapData.width / depthmapData.height;
+                    const w = parseFloat(modelWidth.value) || 200;
+                    modelHeight.value = (w / ar).toFixed(1);
+                    aspectRatioModel = ar;
+                    showToast('🔗 Model ratio locked to image', 1000);
+                } else if (ratioLockedModel) {
+                    const w = parseFloat(modelWidth.value) || 200;
+                    const h = parseFloat(modelHeight.value) || 200;
+                    aspectRatioModel = w / h;
+                    showToast('🔗 Model ratio locked', 1000);
+                } else {
+                    showToast('🔓 Model ratio unlocked', 1000);
+                }
+            });
+
+            modelWidth.addEventListener('input', function() {
+                if (ratioLockedModel) {
+                    const w = parseFloat(this.value) || 200;
+                    modelHeight.value = (w / aspectRatioModel).toFixed(1);
+                }
+                autoApply();
+            });
+            modelHeight.addEventListener('input', function() {
+                if (ratioLockedModel) {
+                    const h = parseFloat(this.value) || 200;
+                    modelWidth.value = (h * aspectRatioModel).toFixed(1);
+                }
+                autoApply();
+            });
 
             function generateDefaultFilename() {
-                const w = parseFloat(mWidth.value) || 200;
-                const h = parseFloat(mHeight.value) || 200;
+                const w = parseFloat(modelWidth.value) || 200;
+                const h = parseFloat(modelHeight.value) || 200;
                 const z = parseFloat(mZ.value) || 5;
-                const tool = toolDiameter;
+                const tool = toolDiameter || 0;
                 const origin = mOrigin.value;
-                return `DCam_${h}x${w}x${z}_(Tool ${tool}mm)_(Origin ${origin})`;
+                return `DCam_${h}x${w}x${z}_(Tool${tool}mm)_(Origin${origin})`;
             }
 
             setTimeout(() => {
@@ -1579,61 +1764,16 @@
 
             function updateFilename() {
                 if (!exportName.value || exportName.value === customFilename || exportName.value === '') {
-                    const newName = generateDefaultFilename();
-                    exportName.value = newName;
-                    customFilename = newName;
+                    exportName.value = generateDefaultFilename();
+                    customFilename = exportName.value;
                 }
             }
 
-            mWidth.addEventListener('change', updateFilename);
-            mHeight.addEventListener('change', updateFilename);
+            modelWidth.addEventListener('change', updateFilename);
+            modelHeight.addEventListener('change', updateFilename);
             mZ.addEventListener('change', updateFilename);
             mOrigin.addEventListener('change', updateFilename);
-
-            exportName.addEventListener('input', function() {
-                customFilename = this.value;
-            });
-
-            ratioLockBtn.addEventListener('click', function() {
-                ratioLocked = !ratioLocked;
-                this.classList.toggle('active', ratioLocked);
-                this.innerHTML = ratioLocked ? '<i class="fas fa-link"></i>' : '<i class="fas fa-unlink"></i>';
-                if (ratioLocked && imageLoaded && depthmapData) {
-                    const ar = depthmapData.width / depthmapData.height;
-                    const w = parseFloat(mWidth.value) || 200;
-                    mHeight.value = (w / ar).toFixed(1);
-                    aspectRatio = ar;
-                    showToast('🔗 Ratio locked to image aspect', 1200);
-                } else if (ratioLocked) {
-                    const w = parseFloat(mWidth.value) || 200;
-                    const h = parseFloat(mHeight.value) || 200;
-                    aspectRatio = w / h;
-                    showToast('🔗 Ratio locked', 1200);
-                } else {
-                    showToast('🔓 Ratio unlocked', 1000);
-                }
-                updateFilename();
-            });
-
-            mWidth.addEventListener('input', function() {
-                if (ratioLocked) {
-                    const w = parseFloat(this.value) || 200;
-                    const h = w / aspectRatio;
-                    mHeight.value = h.toFixed(1);
-                }
-                autoApply();
-                updateFilename();
-            });
-
-            mHeight.addEventListener('input', function() {
-                if (ratioLocked) {
-                    const h = parseFloat(this.value) || 200;
-                    const w = h * aspectRatio;
-                    mWidth.value = w.toFixed(1);
-                }
-                autoApply();
-                updateFilename();
-            });
+            exportName.addEventListener('input', function() { customFilename = this.value; });
 
             // ---- File import ----
             const fileInput = $('fileInput');
@@ -1680,7 +1820,7 @@
                 return result;
             }
 
-            // ---- Crop with handles ----
+            // ---- Crop ----
             function initCrop() {
                 if (!imageLoaded || !depthmapData) {
                     showToast('⚠️ Please import an image first.');
@@ -1696,7 +1836,7 @@
                     const wrapper = $('cropWrapper');
                     const rect = wrapper.getBoundingClientRect();
                     const imgRect = cropImg.getBoundingClientRect();
-                    const pad = 0.1;
+                    const pad = 0.05;
                     const iw = imgRect.width,
                         ih = imgRect.height;
                     cropBox = {
@@ -1774,7 +1914,7 @@
                     if (!cropDragging || !activeHandle) return;
                     const pos = getPos(e);
                     const h = activeHandle;
-                    const minSize = 20;
+                    const minSize = 10;
 
                     if (h === 'nw') {
                         let newX = Math.min(pos.x, cropBox._fixedX - minSize);
@@ -1830,7 +1970,7 @@
                     e.preventDefault();
                     const pos = getPos(e);
                     const h = activeHandle;
-                    const minSize = 20;
+                    const minSize = 10;
 
                     if (h === 'nw') {
                         let newX = Math.min(pos.x, cropBox._fixedX - minSize);
@@ -1896,7 +2036,6 @@
                 });
             }
 
-            // Crop buttons
             $('cropCancel').addEventListener('click', function() {
                 $('cropModal').classList.remove('active');
             });
@@ -1913,7 +2052,7 @@
                 const cropH = Math.round(cropBox.h * scaleY);
 
                 if (cropW < 4 || cropH < 4) {
-                    showToast('❌ Selection too small. Please select a larger area.');
+                    showToast('❌ Selection too small.');
                     return;
                 }
 
@@ -1944,10 +2083,10 @@
                 smoothLabel.textContent = 'smoothed 15%';
                 previewHint.innerHTML = `<span class="highlight">✓</span> Cropped (${cropW}×${cropH})`;
 
-                aspectRatio = cropW / cropH;
-                if (ratioLocked) {
-                    const w = parseFloat(mWidth.value) || 200;
-                    mHeight.value = (w / aspectRatio).toFixed(1);
+                aspectRatioModel = cropW / cropH;
+                if (ratioLockedModel) {
+                    const w = parseFloat(modelWidth.value) || 200;
+                    modelHeight.value = (w / aspectRatioModel).toFixed(1);
                 }
 
                 if (viewportInitialized) update3DScene();
@@ -1994,10 +2133,10 @@
                         depthmapData = { width: w, height: h, pixels: smoothed };
                         imageLoaded = true;
 
-                        aspectRatio = w / h;
-                        if (ratioLocked) {
-                            const wVal = parseFloat(mWidth.value) || 200;
-                            mHeight.value = (wVal / aspectRatio).toFixed(1);
+                        aspectRatioModel = w / h;
+                        if (ratioLockedModel) {
+                            const wVal = parseFloat(modelWidth.value) || 200;
+                            modelHeight.value = (wVal / aspectRatioModel).toFixed(1);
                         }
 
                         fileName.textContent = file.name.substring(0, 20) + (file.name.length > 20 ? '...' : '');
@@ -2008,14 +2147,14 @@
                         fileDrop.style.display = 'none';
                         const mp = (w * h / 1e6).toFixed(1);
                         previewHint.innerHTML =
-                            `<span class="highlight">✓</span> Image rendered exactly (${mp}M px) · ${w}×${h}`;
-                        showToast(`✅ Loaded ${file.name} (${mp}M px) — smoothed 15%`);
+                            `<span class="highlight">✓</span> Image (${mp}M px) · ${w}×${h}`;
+                        showToast(`✅ Loaded ${file.name} (${mp}M px)`);
                         if (viewportInitialized) update3DScene();
                         setTimeout(setupCropHandles, 100);
                         updateFilename();
                     };
                     img.onerror = function() {
-                        showToast('❌ Failed to load image. Try PNG, BMP, or TIFF.');
+                        showToast('❌ Failed to load image.');
                     };
                     img.src = dataURL;
                 };
@@ -2054,10 +2193,13 @@
                 fileInfo.classList.remove('show');
                 fileDrop.style.display = 'block';
                 fileInput.value = '';
-                previewHint.innerHTML = `<span class="highlight">✓</span> Model renders exactly as imported`;
+                previewHint.innerHTML = `<span class="highlight">✓</span> No image loaded`;
                 $('pointInfo').style.display = 'none';
                 $('exportBtn').disabled = true;
                 $('shareBtn').disabled = true;
+                offsetApplied = false;
+                offsetPolygon = null;
+                updateOffsetDisplay();
                 showToast('🗑️ Depthmap cleared');
                 if (viewportInitialized) update3DScene();
                 updateFilename();
@@ -2071,9 +2213,15 @@
                 chip.addEventListener('click', function() {
                     toolChips.forEach(c => c.classList.remove('active'));
                     this.classList.add('active');
-                    toolDiameter = parseFloat(this.dataset.diam);
-                    stepover = toolDiameter * 0.10;
-                    stepoverDisplay.textContent = stepover.toFixed(2) + ' mm';
+                    const diam = parseFloat(this.dataset.diam);
+                    toolDiameter = diam;
+                    if (diam === 0) {
+                        stepover = 0;
+                        stepoverDisplay.textContent = '—';
+                    } else {
+                        stepover = diam * 0.10;
+                        stepoverDisplay.textContent = stepover.toFixed(2) + ' mm';
+                    }
                     updateFilename();
                 });
             });
@@ -2095,14 +2243,51 @@
             styleOffset.addEventListener('click', () => setStyle('offset'));
             setStyle('raster');
 
-            // ---- Apply ----
-            $('applyBtn').addEventListener('click', () => {
-                if (viewportInitialized) {
-                    update3DScene();
-                    showToast('✅ Settings applied', 1000);
+            // ---- Offset Vector ----
+            function updateOffsetDisplay() {
+                const status = $('offsetStatus');
+                if (offsetApplied && offsetDistance > 0) {
+                    status.textContent = `✅ Offset applied: ${offsetDistance.toFixed(1)}mm inward`;
+                    status.style.color = 'var(--accent)';
+                } else if (offsetDistance === 0) {
+                    status.textContent = 'ℹ️ No offset (0mm)';
+                    status.style.color = 'var(--text-muted)';
+                } else {
+                    status.textContent = '⚠️ Offset not applied yet';
+                    status.style.color = '#e06060';
                 }
+            }
+
+            $('applyOffsetBtn').addEventListener('click', function() {
+                const dist = parseFloat(offsetDist.value) || 0;
+                if (dist < 0) { showToast('❌ Offset must be positive'); return; }
+                offsetDistance = dist;
+                if (dist === 0) {
+                    offsetApplied = false;
+                    offsetPolygon = null;
+                    showToast('ℹ️ Offset removed', 1200);
+                } else {
+                    offsetApplied = true;
+                    // Generate offset polygon based on layout dimensions
+                    const lw = parseFloat(layoutWidth.value) || 300;
+                    const lh = parseFloat(layoutHeight.value) || 200;
+                    const ox = -lw / 2;
+                    const oy = -lh / 2;
+                    const d = Math.min(dist, lw / 2, lh / 2);
+                    // Create inward offset rectangle
+                    offsetPolygon = [
+                        { x: ox + d, y: oy + d },
+                        { x: ox + lw - d, y: oy + d },
+                        { x: ox + lw - d, y: oy + lh - d },
+                        { x: ox + d, y: oy + lh - d }
+                    ];
+                    showToast(`✅ Offset applied: ${d.toFixed(1)}mm inward`, 1500);
+                }
+                updateOffsetDisplay();
+                if (viewportInitialized) update3DScene();
             });
 
+            // ---- Auto apply ----
             let debounceTimer = null;
 
             function autoApply() {
@@ -2115,6 +2300,11 @@
             }
             mOrigin.addEventListener('change', autoApply);
             mZ.addEventListener('input', autoApply);
+            matThick.addEventListener('input', autoApply);
+            layoutWidth.addEventListener('input', autoApply);
+            layoutHeight.addEventListener('input', autoApply);
+            modelWidth.addEventListener('input', autoApply);
+            modelHeight.addEventListener('input', autoApply);
 
             // ---- 3D Viewport ----
             function initViewport() {
@@ -2122,11 +2312,11 @@
                 const rect = container.getBoundingClientRect();
 
                 scene = new THREE.Scene();
-                scene.background = new THREE.Color(isDarkTheme ? 0x0d0d0f : 0xf5f5f7);
+                scene.background = new THREE.Color(isDarkTheme ? 0x0a0a0e : 0xf0f0f2);
 
                 const aspect = rect.width / rect.height || 1;
                 camera = new THREE.PerspectiveCamera(35, aspect, 0.1, 3000);
-                camera.position.set(250, 200, 320);
+                camera.position.set(300, 220, 350);
                 camera.lookAt(0, 0, 0);
 
                 renderer = new THREE.WebGLRenderer({
@@ -2167,10 +2357,10 @@
                 key.shadow.mapSize.height = 1024;
                 key.shadow.camera.near = 0.5;
                 key.shadow.camera.far = 600;
-                key.shadow.camera.left = -200;
-                key.shadow.camera.right = 200;
-                key.shadow.camera.top = 200;
-                key.shadow.camera.bottom = -200;
+                key.shadow.camera.left = -250;
+                key.shadow.camera.right = 250;
+                key.shadow.camera.top = 250;
+                key.shadow.camera.bottom = -250;
                 key.shadow.bias = -0.0005;
                 scene.add(key);
 
@@ -2207,17 +2397,21 @@
                 const pixels = depthmapData.pixels;
                 if (!pixels) return;
 
-                const w = parseFloat(mWidth.value) || 200;
-                const h = parseFloat(mHeight.value) || 200;
+                const mw = parseFloat(modelWidth.value) || 200;
+                const mh = parseFloat(modelHeight.value) || 200;
                 const zMax = parseFloat(mZ.value) || 5;
                 const origin = mOrigin.value;
 
+                // Layout dimensions for positioning
+                const lw = parseFloat(layoutWidth.value) || 300;
+                const lh = parseFloat(layoutHeight.value) || 200;
+
                 let ox = 0,
                     oy = 0;
-                if (origin === 'center') { ox = -w / 2;
-                    oy = -h / 2; } else if (origin === 'bottom-left') { ox = 0;
-                    oy = 0; } else if (origin === 'bottom-right') { ox = -w;
-                    oy = 0; }
+                if (origin === 'center') { ox = -mw / 2;
+                    oy = -mh / 2; } else if (origin === 'bottom-left') { ox = -lw / 2;
+                    oy = -lh / 2; } else if (origin === 'bottom-right') { ox = lw / 2 - mw;
+                    oy = -lh / 2; }
 
                 const res = Math.min(meshResolution, Math.floor(Math.min(dw, dh) / 1.2));
                 const cols = Math.min(res, dw);
@@ -2241,15 +2435,15 @@
                     }
                 }
 
-                const centerY = oy + h / 2;
+                const centerY = oy + mh / 2;
 
                 for (let r = 0; r < rows; r++) {
                     for (let c = 0; c < cols; c++) {
                         const px = c / cols;
                         const py = 1 - (r / rows);
                         const z = heightMap[r * cols + c];
-                        const x = ox + px * w;
-                        let y = oy + py * h;
+                        const x = ox + px * mw;
+                        let y = oy + py * mh;
                         y = 2 * centerY - y;
                         positions.push(x, y, z);
 
@@ -2318,17 +2512,19 @@
                 const pixels = depthmapData.pixels;
                 if (!pixels) return;
 
-                const w = parseFloat(mWidth.value) || 200;
-                const h = parseFloat(mHeight.value) || 200;
+                const mw = parseFloat(modelWidth.value) || 200;
+                const mh = parseFloat(modelHeight.value) || 200;
                 const zMax = parseFloat(mZ.value) || 5;
                 const origin = mOrigin.value;
+                const lw = parseFloat(layoutWidth.value) || 300;
+                const lh = parseFloat(layoutHeight.value) || 200;
 
                 let ox = 0,
                     oy = 0;
-                if (origin === 'center') { ox = -w / 2;
-                    oy = -h / 2; } else if (origin === 'bottom-left') { ox = 0;
-                    oy = 0; } else if (origin === 'bottom-right') { ox = -w;
-                    oy = 0; }
+                if (origin === 'center') { ox = -mw / 2;
+                    oy = -mh / 2; } else if (origin === 'bottom-left') { ox = -lw / 2;
+                    oy = -lh / 2; } else if (origin === 'bottom-right') { ox = lw / 2 - mw;
+                    oy = -lh / 2; }
 
                 const res = Math.min(meshResolution, Math.floor(Math.min(dw, dh) / 1.2));
                 const cols = Math.min(res, dw);
@@ -2351,15 +2547,15 @@
                     }
                 }
 
-                const centerY = oy + h / 2;
+                const centerY = oy + mh / 2;
 
                 for (let r = 0; r < rows; r++) {
                     for (let c = 0; c < cols; c++) {
                         const px = c / cols;
                         const py = 1 - (r / rows);
                         const z = heightMap[r * cols + c];
-                        const x = ox + px * w;
-                        let y = oy + py * h;
+                        const x = ox + px * mw;
+                        let y = oy + py * mh;
                         y = 2 * centerY - y;
                         positions.push(x, y, z);
                     }
@@ -2396,12 +2592,42 @@
                 scene.add(simMesh);
             }
 
-            // ---- Build Toolpath Line ----
+            // ---- Build Offset Line ----
+            function buildOffsetLine() {
+                if (offsetLine) { scene.remove(offsetLine);
+                    offsetLine.geometry.dispose();
+                    offsetLine.material.dispose();
+                    offsetLine = null; }
+                if (!offsetApplied || !offsetPolygon || offsetPolygon.length < 3) return;
+
+                const pts = offsetPolygon;
+                const positions = [];
+                for (let i = 0; i < pts.length; i++) {
+                    positions.push(pts[i].x, pts[i].y, 0);
+                }
+                // Close the polygon
+                positions.push(pts[0].x, pts[0].y, 0);
+
+                const geo = new THREE.BufferGeometry();
+                geo.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+
+                const mat = new THREE.LineBasicMaterial({
+                    color: 0x22dd88,
+                    transparent: true,
+                    opacity: 0.7,
+                    linewidth: 2,
+                });
+                offsetLine = new THREE.Line(geo, mat);
+                scene.add(offsetLine);
+            }
+
+            // ---- Build Toolpath Line (Perfect rendering) ----
             function buildToolpathLine() {
                 if (!toolpathPoints || toolpathPoints.length < 2) return;
                 const pts = toolpathPoints;
                 const positions = [];
 
+                // Use all points for perfect rendering
                 for (let i = 0; i < pts.length; i++) {
                     const p = pts[i];
                     positions.push(p.x, p.y, p.z);
@@ -2413,7 +2639,7 @@
                 const mat = new THREE.LineBasicMaterial({
                     color: 0x60a5fa,
                     transparent: true,
-                    opacity: 0.35,
+                    opacity: 0.4,
                     linewidth: 1,
                 });
                 toolpathLine = new THREE.Line(geo, mat);
@@ -2441,11 +2667,11 @@
                     buildSurfaceMesh();
                     buildSimulationMesh();
                 } else {
-                    const geo = new THREE.PlaneGeometry(200, 200, 1, 1);
+                    const geo = new THREE.PlaneGeometry(300, 200, 1, 1);
                     const mat = new THREE.MeshStandardMaterial({
                         color: isDarkTheme ? 0x222222 : 0xd0d0d0,
                         transparent: true,
-                        opacity: 0.08,
+                        opacity: 0.06,
                         side: THREE.DoubleSide,
                         roughness: 0.6,
                         metalness: 0.1,
@@ -2457,6 +2683,9 @@
                     scene.add(surfaceMesh);
                 }
 
+                // Build offset line
+                buildOffsetLine();
+
                 if (toolpathGenerated && toolpathPoints) {
                     buildToolpathLine();
                 }
@@ -2464,10 +2693,10 @@
                 applyViewMode();
 
                 if (!toolpathGenerated && imageLoaded) {
-                    const w = parseFloat(mWidth.value) || 200;
-                    const h = parseFloat(mHeight.value) || 200;
-                    const maxDim = Math.max(w, h, 50);
-                    const dist = maxDim * 1.6;
+                    const lw = parseFloat(layoutWidth.value) || 300;
+                    const lh = parseFloat(layoutHeight.value) || 200;
+                    const maxDim = Math.max(lw, lh, 50);
+                    const dist = maxDim * 1.5;
                     camera.position.set(dist * 0.7, dist * 0.5, dist);
                     controls.target.set(0, 0, 0);
                     controls.update();
@@ -2476,21 +2705,17 @@
 
             // ---- View Mode ----
             function applyViewMode() {
-                if (simulationMode === 'surface') {
-                    if (surfaceMesh) surfaceMesh.visible = true;
-                    if (simMesh) simMesh.visible = false;
-                    if (toolpathLine) toolpathLine.visible = false;
-                } else if (simulationMode === 'toolpath') {
-                    if (surfaceMesh) surfaceMesh.visible = false;
-                    if (simMesh) simMesh.visible = false;
-                    if (toolpathLine) toolpathLine.visible = true;
-                } else if (simulationMode === 'sim') {
-                    if (surfaceMesh) surfaceMesh.visible = false;
-                    if (simMesh) simMesh.visible = true;
-                    if (toolpathLine) toolpathLine.visible = true;
-                }
+                const showSurface = (simulationMode === 'surface' || simulationMode === 'sim');
+                const showSim = (simulationMode === 'sim');
+                const showToolpath = (simulationMode === 'toolpath' || simulationMode === 'sim');
+                const showOffset = (simulationMode === 'offset' || simulationMode === 'sim');
 
-                const map = { 'surface': 'viewSurface', 'toolpath': 'viewToolpath', 'sim': 'viewSim' };
+                if (surfaceMesh) surfaceMesh.visible = showSurface;
+                if (simMesh) simMesh.visible = showSim;
+                if (toolpathLine) toolpathLine.visible = showToolpath;
+                if (offsetLine) offsetLine.visible = showOffset;
+
+                const map = { 'surface': 'viewSurface', 'toolpath': 'viewToolpath', 'sim': 'viewSim', 'offset': 'viewOffset' };
                 const btn = $(map[simulationMode]);
                 if (btn) {
                     qsa('#viewport-controls .btn').forEach(b => b.classList.remove('active'));
@@ -2534,13 +2759,19 @@
                 showToast('🔮 Simulation view');
             });
 
+            $('viewOffset').addEventListener('click', function() {
+                simulationMode = 'offset';
+                applyViewMode();
+                showToast('📐 Offset view');
+            });
+
             // ---- Fit View ----
             function fitView() {
-                const w = parseFloat(mWidth.value) || 200;
-                const h = parseFloat(mHeight.value) || 200;
+                const lw = parseFloat(layoutWidth.value) || 300;
+                const lh = parseFloat(layoutHeight.value) || 200;
                 const z = parseFloat(mZ.value) || 5;
-                const maxDim = Math.max(w, h, z * 2, 50);
-                const dist = maxDim * 1.7;
+                const maxDim = Math.max(lw, lh, z * 2, 50);
+                const dist = maxDim * 1.6;
                 camera.position.set(dist * 0.7, dist * 0.5, dist);
                 controls.target.set(0, 0, 0);
                 controls.update();
@@ -2570,7 +2801,7 @@
             });
 
             // ============================================================
-            //  TOOLPATH GENERATOR
+            //  TOOLPATH GENERATOR — Perfect ArtCAM-style
             // ============================================================
             function generateToolpath() {
                 if (!imageLoaded || !depthmapData) {
@@ -2578,28 +2809,39 @@
                     return null;
                 }
 
-                const w = parseFloat(mWidth.value) || 200;
-                const h = parseFloat(mHeight.value) || 200;
+                // Check if tool is selected
+                if (toolDiameter === 0) {
+                    showToast('⚠️ Please select a tool first.');
+                    return null;
+                }
+
+                const lw = parseFloat(layoutWidth.value) || 300;
+                const lh = parseFloat(layoutHeight.value) || 200;
+                const mw = parseFloat(modelWidth.value) || 200;
+                const mh = parseFloat(modelHeight.value) || 200;
                 const zMax = parseFloat(mZ.value) || 5;
                 const diam = toolDiameter;
                 const step = stepover;
                 const origin = mOrigin.value;
                 const style = toolpathStyle;
+                const matThickVal = parseFloat(matThick.value) || 8;
 
                 const dw = depthmapData.width;
                 const dh = depthmapData.height;
                 const pixels = depthmapData.pixels;
                 if (!pixels) return null;
 
+                // Model position within layout
                 let ox = 0,
                     oy = 0;
-                if (origin === 'center') { ox = -w / 2;
-                    oy = -h / 2; } else if (origin === 'bottom-left') { ox = 0;
-                    oy = 0; } else if (origin === 'bottom-right') { ox = -w;
-                    oy = 0; }
+                if (origin === 'center') { ox = -mw / 2;
+                    oy = -mh / 2; } else if (origin === 'bottom-left') { ox = -lw / 2;
+                    oy = -lh / 2; } else if (origin === 'bottom-right') { ox = lw / 2 - mw;
+                    oy = -lh / 2; }
 
-                const spacing = Math.max(step * 0.9, 0.15);
-                const adjustedSpacing = spacing * (1 + (diam - 5) * 0.03);
+                // Check if we have offset polygon to constrain toolpath
+                let useOffset = offsetApplied && offsetDistance > 0 && offsetPolygon;
+                const spacing = Math.max(step * 0.85, 0.1);
 
                 const pts = [];
                 gcodeChunks = [];
@@ -2621,119 +2863,210 @@
                     if (chunkSize >= maxChunkLines) flushChunk();
                 }
 
-                const materialThickness = zMax + 2;
+                // Material thickness for safe Z
+                const safeZ = Math.max(matThickVal, zMax + 2);
 
-                gcodeChunks.push(`(Generated by DCam Pro)\nG21\nG90\nG0 Z${materialThickness.toFixed(1)}\n`);
+                gcodeChunks.push(`(Generated by DCam Pro)\nG21\nG90\nG0 Z${safeZ.toFixed(1)}\n`);
 
                 let pointCount = 0;
                 const previewPoints = [];
 
                 function getZ(x, y) {
-                    const px = (x - ox) / w;
-                    const py = (y - oy) / h;
-                    const pi = Math.floor(Math.min(1, Math.max(0, px)) * (dw - 1));
-                    const pj = Math.floor(Math.min(1, Math.max(0, 1 - py)) * (dh - 1));
+                    // Check if point is inside model bounds
+                    const relX = (x - ox) / mw;
+                    const relY = (y - oy) / mh;
+                    if (relX < 0 || relX > 1 || relY < 0 || relY > 1) return 0;
+                    const pi = Math.floor(Math.min(1, Math.max(0, relX)) * (dw - 1));
+                    const pj = Math.floor(Math.min(1, Math.max(0, 1 - relY)) * (dh - 1));
                     const idx = pj * dw + pi;
                     return (pixels[idx] || 0) * zMax;
                 }
 
+                // Helper to check if point is inside offset polygon
+                function isInsideOffset(x, y) {
+                    if (!useOffset) return true;
+                    const poly = offsetPolygon;
+                    let inside = false;
+                    for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) {
+                        const xi = poly[i].x,
+                            yi = poly[i].y;
+                        const xj = poly[j].x,
+                            yj = poly[j].y;
+                        const intersect = ((yi > y) !== (yj > y)) &&
+                            (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
+                        if (intersect) inside = !inside;
+                    }
+                    return inside;
+                }
+
+                // Generate perfect toolpath
                 if (style === 'raster') {
                     let goingRight = true;
-                    for (let y = 0; y <= h + step * 0.1; y += step) {
-                        const yPos = Math.min(h, y);
-                        let xStart = 0,
-                            xEnd = w,
-                            xStep = adjustedSpacing;
-                        if (!goingRight) { xStart = w;
-                            xEnd = 0;
-                            xStep = -adjustedSpacing; }
-                        let xPos = xStart;
+                    const yStep = step;
+                    const xStep = spacing;
+
+                    // Determine bounds with offset
+                    let xMin = 0,
+                        xMax = mw,
+                        yMin = 0,
+                        yMax = mh;
+                    if (useOffset) {
+                        // Find min/max of offset polygon relative to model
+                        const poly = offsetPolygon;
+                        let minX = Infinity,
+                            maxX = -Infinity,
+                            minY = Infinity,
+                            maxY = -Infinity;
+                        for (const p of poly) {
+                            if (p.x < minX) minX = p.x;
+                            if (p.x > maxX) maxX = p.x;
+                            if (p.y < minY) minY = p.y;
+                            if (p.y > maxY) maxY = p.y;
+                        }
+                        xMin = Math.max(0, minX - ox);
+                        xMax = Math.min(mw, maxX - ox);
+                        yMin = Math.max(0, minY - oy);
+                        yMax = Math.min(mh, maxY - oy);
+                    }
+
+                    for (let y = yMin; y <= yMax + yStep * 0.1; y += yStep) {
+                        const yPos = Math.min(yMax, y);
                         let first = true;
-                        while ((goingRight && xPos <= xEnd + adjustedSpacing * 0.1) || (!goingRight && xPos >= xEnd -
-                                adjustedSpacing * 0.1)) {
-                            const xClamped = Math.max(0, Math.min(w, xPos));
-                            const z = getZ(xClamped, yPos);
-                            const mx = ox + xClamped;
-                            const my = oy + yPos;
-                            if (first) {
-                                addLine(`G0 X${mx.toFixed(3)} Y${my.toFixed(3)}`);
-                                first = false;
+                        if (goingRight) {
+                            for (let x = xMin; x <= xMax + xStep * 0.1; x += xStep) {
+                                const xPos = Math.min(xMax, x);
+                                const mx = ox + xPos;
+                                const my = oy + yPos;
+                                if (!isInsideOffset(mx, my)) continue;
+                                const z = getZ(mx, my);
+                                if (first) {
+                                    addLine(`G0 X${mx.toFixed(3)} Y${my.toFixed(3)}`);
+                                    first = false;
+                                }
+                                addLine(`G1 Z${z.toFixed(3)} F600`);
+                                if (pointCount % 50 === 0) previewPoints.push({ x: mx, y: my, z: z });
+                                pointCount++;
                             }
-                            addLine(`G1 Z${z.toFixed(3)} F600`);
-                            if (pointCount % 50 === 0) previewPoints.push({ x: mx, y: my, z: z });
-                            pointCount++;
-                            xPos += xStep;
+                        } else {
+                            for (let x = xMax; x >= xMin - xStep * 0.1; x -= xStep) {
+                                const xPos = Math.max(xMin, x);
+                                const mx = ox + xPos;
+                                const my = oy + yPos;
+                                if (!isInsideOffset(mx, my)) continue;
+                                const z = getZ(mx, my);
+                                if (first) {
+                                    addLine(`G0 X${mx.toFixed(3)} Y${my.toFixed(3)}`);
+                                    first = false;
+                                }
+                                addLine(`G1 Z${z.toFixed(3)} F600`);
+                                if (pointCount % 50 === 0) previewPoints.push({ x: mx, y: my, z: z });
+                                pointCount++;
+                            }
                         }
                         goingRight = !goingRight;
-                        if (y % (h / 20) < step) {
-                            const pct = Math.min(95, Math.round((y / h) * 100));
-                            loaderProgress.textContent = `${pct}%`;
+
+                        const pct = Math.min(95, Math.round((y - yMin) / (yMax - yMin) * 100));
+                        if (pct % 5 === 0) {
+                            progressFill.style.width = pct + '%';
+                            loaderProgress.textContent = pct + '%';
                         }
                     }
                 } else {
+                    // 3D Offset - concentric loops
                     let minX = 0,
-                        maxX = w,
+                        maxX = mw,
                         minY = 0,
-                        maxY = h;
-                    let loopCount = 0;
+                        maxY = mh;
+                    if (useOffset) {
+                        const poly = offsetPolygon;
+                        let minXp = Infinity,
+                            maxXp = -Infinity,
+                            minYp = Infinity,
+                            maxYp = -Infinity;
+                        for (const p of poly) {
+                            if (p.x < minXp) minXp = p.x;
+                            if (p.x > maxXp) maxXp = p.x;
+                            if (p.y < minYp) minYp = p.y;
+                            if (p.y > maxYp) maxYp = p.y;
+                        }
+                        minX = Math.max(0, minXp - ox);
+                        maxX = Math.min(mw, maxXp - ox);
+                        minY = Math.max(0, minYp - oy);
+                        maxY = Math.min(mh, maxYp - oy);
+                    }
+
                     const offsetStep = step * 0.8;
-                    while (minX <= maxX && minY <= maxY) {
+                    let loopCount = 0;
+                    const maxLoops = Math.ceil(Math.min(maxX - minX, maxY - minY) / offsetStep / 2);
+
+                    while (minX <= maxX && minY <= maxY && loopCount < maxLoops) {
                         let first = true;
-                        for (let x = minX; x <= maxX; x += adjustedSpacing) {
+                        // Top
+                        for (let x = minX; x <= maxX; x += spacing) {
                             const xPos = Math.min(maxX, x);
-                            const z = getZ(xPos, maxY);
                             const mx = ox + xPos;
                             const my = oy + maxY;
+                            if (!isInsideOffset(mx, my)) continue;
+                            const z = getZ(mx, my);
                             if (first) { addLine(`G0 X${mx.toFixed(3)} Y${my.toFixed(3)}`);
                                 first = false; }
                             addLine(`G1 Z${z.toFixed(3)} F600`);
                             if (pointCount % 50 === 0) previewPoints.push({ x: mx, y: my, z: z });
                             pointCount++;
                         }
-                        for (let y = maxY; y >= minY; y -= adjustedSpacing) {
+                        // Right
+                        for (let y = maxY; y >= minY; y -= spacing) {
                             const yPos = Math.max(minY, y);
-                            const z = getZ(maxX, yPos);
                             const mx = ox + maxX;
                             const my = oy + yPos;
+                            if (!isInsideOffset(mx, my)) continue;
+                            const z = getZ(mx, my);
                             addLine(`G1 Z${z.toFixed(3)} F600`);
                             if (pointCount % 50 === 0) previewPoints.push({ x: mx, y: my, z: z });
                             pointCount++;
                         }
-                        for (let x = maxX; x >= minX; x -= adjustedSpacing) {
+                        // Bottom
+                        for (let x = maxX; x >= minX; x -= spacing) {
                             const xPos = Math.max(minX, x);
-                            const z = getZ(xPos, minY);
                             const mx = ox + xPos;
                             const my = oy + minY;
+                            if (!isInsideOffset(mx, my)) continue;
+                            const z = getZ(mx, my);
                             addLine(`G1 Z${z.toFixed(3)} F600`);
                             if (pointCount % 50 === 0) previewPoints.push({ x: mx, y: my, z: z });
                             pointCount++;
                         }
-                        for (let y = minY; y <= maxY; y += adjustedSpacing) {
+                        // Left
+                        for (let y = minY; y <= maxY; y += spacing) {
                             const yPos = Math.min(maxY, y);
-                            const z = getZ(minX, yPos);
                             const mx = ox + minX;
                             const my = oy + yPos;
+                            if (!isInsideOffset(mx, my)) continue;
+                            const z = getZ(mx, my);
                             addLine(`G1 Z${z.toFixed(3)} F600`);
                             if (pointCount % 50 === 0) previewPoints.push({ x: mx, y: my, z: z });
                             pointCount++;
                         }
+
                         minX += offsetStep;
                         maxX -= offsetStep;
                         minY += offsetStep;
                         maxY -= offsetStep;
                         loopCount++;
-                        if (loopCount % 5 === 0) {
-                            const pct = Math.min(95, Math.round((loopCount / 50) * 100));
-                            loaderProgress.textContent = `${pct}%`;
+
+                        const pct = Math.min(95, Math.round((loopCount / maxLoops) * 100));
+                        if (pct % 5 === 0) {
+                            progressFill.style.width = pct + '%';
+                            loaderProgress.textContent = pct + '%';
                         }
                     }
                 }
 
                 flushChunk();
-                gcodeChunks.push(`G0 Z${materialThickness.toFixed(1)}\nM30\n`);
+                gcodeChunks.push(`G0 Z${safeZ.toFixed(1)}\nM30\n`);
 
                 if (pointCount === 0) {
-                    showToast('⚠️ No toolpath generated.');
+                    showToast('⚠️ No toolpath generated. Check offset or settings.');
                     return null;
                 }
 
@@ -2742,7 +3075,7 @@
                 toolpathGenerated = true;
                 currentGcodeFull = gcodeChunks.join('');
 
-                $('calcStatus').innerHTML = `✅ Generated ${totalPoints.toLocaleString()} points (${style})`;
+                $('calcStatus').innerHTML = `✅ ${totalPoints.toLocaleString()} points generated`;
                 $('pointInfo').style.display = 'flex';
                 $('pointCount').textContent = totalPoints.toLocaleString();
                 $('exportBtn').disabled = false;
@@ -2767,20 +3100,24 @@
                     showToast('⚠️ Please import a depthmap first.');
                     return;
                 }
+                if (toolDiameter === 0) {
+                    showToast('⚠️ Please select a tool first.');
+                    return;
+                }
+
                 this.disabled = true;
-                this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+                this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Calculating...';
                 calcStatus.textContent = '';
                 loader.classList.add('show');
                 loaderText.textContent = 'Generating toolpath...';
+                progressFill.style.width = '0%';
                 loaderProgress.textContent = '0%';
 
                 setTimeout(() => {
                     try {
                         const result = generateToolpath();
-                        if (result) {
-                            if (window.innerWidth < 820) {
-                                toggleSettings(false);
-                            }
+                        if (result && window.innerWidth < 820) {
+                            toggleSettings(false);
                         }
                     } catch (err) {
                         console.error(err);
@@ -2788,7 +3125,7 @@
                         calcStatus.textContent = '❌ Error generating toolpath.';
                     }
                     this.disabled = false;
-                    this.innerHTML = '<i class="fas fa-cogs"></i> Calculate';
+                    this.innerHTML = '<i class="fas fa-cogs"></i> Calculate Toolpath';
                     loader.classList.remove('show');
                 }, 100);
             });
@@ -2829,7 +3166,6 @@
                 const tapBlob = new Blob([fileData.content], { type: 'application/octet-stream' });
                 const tapFile = new File([tapBlob], fileData.filename, { type: 'application/octet-stream' });
 
-                // Capture screenshot as JPEG
                 let screenshotBlob = null;
                 try {
                     if (renderer && renderer.domElement) {
@@ -2839,11 +3175,10 @@
                         tempCanvas.width = Math.floor(canvas.width * scale);
                         tempCanvas.height = Math.floor(canvas.height * scale);
                         const ctx = tempCanvas.getContext('2d');
-                        const bgColor = isDarkTheme ? '#0d0d0f' : '#f5f5f7';
+                        const bgColor = isDarkTheme ? '#0a0a0e' : '#f0f0f2';
                         ctx.fillStyle = bgColor;
                         ctx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
                         ctx.drawImage(canvas, 0, 0, tempCanvas.width, tempCanvas.height);
-                        // JPEG with 85% quality
                         const dataUrl = tempCanvas.toDataURL('image/jpeg', 0.85);
                         const response = await fetch(dataUrl);
                         screenshotBlob = await response.blob();
@@ -2853,9 +3188,7 @@
                 }
 
                 try {
-                    const shareData = {
-                        files: [tapFile],
-                    };
+                    const shareData = { files: [tapFile] };
                     if (screenshotBlob) {
                         const imgFile = new File([screenshotBlob], 'DCam_Model_Preview.jpg', { type: 'image/jpeg' });
                         shareData.files = [imgFile, tapFile];
@@ -2868,12 +3201,10 @@
                 } catch (e) {
                     if (e.name !== 'AbortError') {
                         console.warn('Share API failed:', e);
-                    } else {
-                        return;
-                    }
+                    } else return;
                 }
 
-                // Fallback: download both files
+                // Fallback
                 try {
                     const tapUrl = URL.createObjectURL(tapBlob);
                     const a = document.createElement('a');
@@ -2898,7 +3229,7 @@
                     }
                     showToast('📥 Files downloaded');
                 } catch (e) {
-                    showToast('❌ Could not share or download files.');
+                    showToast('❌ Could not share or download.');
                 }
             });
 
@@ -2909,9 +3240,11 @@
                 toggleSettings(true);
                 toggleSimulation(false);
 
-                const w = parseFloat(mWidth.value) || 200;
-                const h = parseFloat(mHeight.value) || 200;
-                aspectRatio = w / h;
+                // Set default model ratio from layout
+                const lw = parseFloat(layoutWidth.value) || 300;
+                const lh = parseFloat(layoutHeight.value) || 200;
+                aspectRatioLayout = lw / lh;
+                aspectRatioModel = 1;
 
                 setTimeout(() => {
                     initViewport();
@@ -2920,7 +3253,7 @@
                     setTimeout(setupCropHandles, 300);
                 }, 300);
 
-                showToast('✨ DCam Pro — Professional CNC Toolpath Studio', 3000);
+                showToast('✨ DCam Pro — Professional CNC Studio', 3000);
 
                 zoomControls.classList.add('hidden-zoom');
 
@@ -2928,6 +3261,19 @@
                     exportName.value = generateDefaultFilename();
                     customFilename = exportName.value;
                 }, 200);
+
+                updateOffsetDisplay();
+
+                // Auto-apply offset if value changes
+                offsetDist.addEventListener('change', function() {
+                    const val = parseFloat(this.value) || 0;
+                    if (val === 0) {
+                        offsetApplied = false;
+                        offsetPolygon = null;
+                        updateOffsetDisplay();
+                        if (viewportInitialized) update3DScene();
+                    }
+                });
             }
 
             // ---- Keyboard shortcuts ----
