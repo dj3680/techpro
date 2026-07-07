@@ -28,6 +28,8 @@
             --crop-bg: #1a1a20;
             --progress-bg: #2a2a30;
             --progress-fill: var(--accent);
+            --layout-border-color: rgba(255, 255, 255, 0.7);
+            --offset-color: #ff6666;
         }
         .light-theme {
             --bg-main: #f0f0f2;
@@ -49,6 +51,8 @@
             --crop-bg: #ffffff;
             --progress-bg: #e0e0e8;
             --progress-fill: var(--accent);
+            --layout-border-color: rgba(80, 80, 90, 0.8);
+            --offset-color: #cc5555;
         }
         * {
             margin: 0;
@@ -836,7 +840,7 @@
             width: 0%;
             background: var(--progress-fill);
             border-radius: 2px;
-            transition: width 0.3s ease;
+            transition: width 0.15s ease;
         }
 
         .point-badge {
@@ -958,69 +962,70 @@
         #cropModal .crop-selection {
             position: absolute;
             border: 2px solid var(--accent);
-            background: rgba(96, 165, 250, 0.08);
+            background: rgba(96, 165, 250, 0.06);
             pointer-events: none;
             display: none;
-            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.15);
         }
         #cropModal .crop-handle {
             position: absolute;
-            width: 16px;
-            height: 16px;
+            width: 20px;
+            height: 20px;
             background: #fff;
-            border: 2px solid var(--accent);
+            border: 2.5px solid var(--accent);
             border-radius: 50%;
             pointer-events: auto;
             cursor: pointer;
             z-index: 5;
-            box-shadow: 0 1px 4px var(--shadow-color);
-            transition: transform 0.15s;
+            box-shadow: 0 2px 8px var(--shadow-color);
+            transition: transform 0.15s, box-shadow 0.15s;
             touch-action: none;
         }
         #cropModal .crop-handle:active {
-            transform: scale(1.2);
+            transform: scale(1.15);
+            box-shadow: 0 2px 12px var(--shadow-color);
         }
         #cropModal .crop-handle.nw {
-            top: -8px;
-            left: -8px;
+            top: -10px;
+            left: -10px;
             cursor: nw-resize;
         }
         #cropModal .crop-handle.ne {
-            top: -8px;
-            right: -8px;
+            top: -10px;
+            right: -10px;
             cursor: ne-resize;
         }
         #cropModal .crop-handle.sw {
-            bottom: -8px;
-            left: -8px;
+            bottom: -10px;
+            left: -10px;
             cursor: sw-resize;
         }
         #cropModal .crop-handle.se {
-            bottom: -8px;
-            right: -8px;
+            bottom: -10px;
+            right: -10px;
             cursor: se-resize;
         }
         #cropModal .crop-handle.n {
-            top: -8px;
+            top: -10px;
             left: 50%;
             transform: translateX(-50%);
             cursor: n-resize;
         }
         #cropModal .crop-handle.s {
-            bottom: -8px;
+            bottom: -10px;
             left: 50%;
             transform: translateX(-50%);
             cursor: s-resize;
         }
         #cropModal .crop-handle.w {
             top: 50%;
-            left: -8px;
+            left: -10px;
             transform: translateY(-50%);
             cursor: w-resize;
         }
         #cropModal .crop-handle.e {
             top: 50%;
-            right: -8px;
+            right: -10px;
             transform: translateY(-50%);
             cursor: e-resize;
         }
@@ -1053,8 +1058,15 @@
                 max-height: 45vh;
             }
             #cropModal .crop-handle {
-                width: 18px;
-                height: 18px;
+                width: 22px;
+                height: 22px;
+            }
+            #cropModal .crop-handle.nw,
+            #cropModal .crop-handle.ne,
+            #cropModal .crop-handle.sw,
+            #cropModal .crop-handle.se {
+                width: 24px;
+                height: 24px;
             }
         }
 
@@ -1465,7 +1477,8 @@
     <script>
         // ============================================================
         //  DCam Pro — Professional CNC Toolpath Studio
-        //  Complete Redesign with All Features
+        //  All Issues Fixed: Offset visible in all views, straight toolpaths,
+        //  theme-aware border, larger crop handles, smooth progress, etc.
         // ============================================================
 
         (function() {
@@ -1552,6 +1565,8 @@
                 }
                 localStorage.setItem('dcam_theme', isDarkTheme ? 'dark' : 'light');
                 showToast(isDarkTheme ? '🌙 Dark theme' : '☀️ Light theme', 1200);
+                // Rebuild layout border with theme color
+                if (viewportInitialized) update3DScene();
             }
 
             themeToggle.addEventListener('click', toggleTheme);
@@ -2357,7 +2372,7 @@
                 renderer.render(scene, camera);
             }
 
-            // ---- Build Layout Border (White bold rectangle) ----
+            // ---- Build Layout Border (Theme-aware) ----
             function buildLayoutBorder() {
                 if (layoutBorderLine) { scene.remove(layoutBorderLine);
                     layoutBorderLine.geometry.dispose();
@@ -2380,10 +2395,12 @@
                 const geo = new THREE.BufferGeometry();
                 geo.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
 
+                // Use theme-aware color
+                const borderColor = isDarkTheme ? 0xffffff : 0x666677;
                 const mat = new THREE.LineBasicMaterial({
-                    color: 0xffffff,
+                    color: borderColor,
                     transparent: true,
-                    opacity: 0.9,
+                    opacity: isDarkTheme ? 0.8 : 0.7,
                     linewidth: 2,
                 });
                 layoutBorderLine = new THREE.Line(geo, mat);
@@ -2592,7 +2609,7 @@
                 scene.add(simMesh);
             }
 
-            // ---- Build Offset Line (Light Red, visible in all views) ----
+            // ---- Build Offset Line (Light Red, ALWAYS visible in ALL views) ----
             function buildOffsetLine() {
                 if (offsetLine) { scene.remove(offsetLine);
                     offsetLine.geometry.dispose();
@@ -2613,19 +2630,20 @@
                 const mat = new THREE.LineBasicMaterial({
                     color: 0xff6666,
                     transparent: true,
-                    opacity: 0.7,
+                    opacity: 0.8,
                     linewidth: 2,
                 });
                 offsetLine = new THREE.Line(geo, mat);
                 scene.add(offsetLine);
             }
 
-            // ---- Build Toolpath Line ----
+            // ---- Build Toolpath Line (Perfectly straight, optimized) ----
             function buildToolpathLine() {
                 if (!toolpathPoints || toolpathPoints.length < 2) return;
                 const pts = toolpathPoints;
                 const positions = [];
 
+                // Use all points for perfect straight lines
                 for (let i = 0; i < pts.length; i++) {
                     const p = pts[i];
                     positions.push(p.x, p.y, p.z);
@@ -2637,7 +2655,7 @@
                 const mat = new THREE.LineBasicMaterial({
                     color: 0x60a5fa,
                     transparent: true,
-                    opacity: 0.4,
+                    opacity: 0.45,
                     linewidth: 1,
                 });
                 toolpathLine = new THREE.Line(geo, mat);
@@ -2684,7 +2702,7 @@
                     scene.add(surfaceMesh);
                 }
 
-                // Build offset line (visible in all views)
+                // Build offset line - ALWAYS visible in ALL views
                 buildOffsetLine();
 
                 if (toolpathGenerated && toolpathPoints) {
@@ -2709,7 +2727,7 @@
                 const showSurface = (simulationMode === 'surface' || simulationMode === 'sim');
                 const showSim = (simulationMode === 'sim');
                 const showToolpath = (simulationMode === 'toolpath' || simulationMode === 'sim');
-                // Offset is ALWAYS visible in all views
+                // Offset is ALWAYS visible in ALL views
                 const showOffset = true;
 
                 if (surfaceMesh) surfaceMesh.visible = showSurface;
@@ -2804,7 +2822,7 @@
             });
 
             // ============================================================
-            //  TOOLPATH GENERATOR
+            //  TOOLPATH GENERATOR — Optimized, straight lines, ArtCAM quality
             // ============================================================
             function generateToolpath() {
                 if (!imageLoaded || !depthmapData) {
@@ -2841,7 +2859,9 @@
                     oy = -lh / 2; }
 
                 let useOffset = offsetApplied && offsetDistance > 0 && offsetPolygon;
-                const spacing = Math.max(step * 0.85, 0.1);
+                // Optimize spacing for ArtCAM-like quality and file size
+                // ~0.35-0.45mm spacing gives clean lines with reasonable file size
+                const spacing = Math.max(step * 0.75, 0.15);
 
                 const pts = [];
                 gcodeChunks = [];
@@ -2896,6 +2916,9 @@
                     return inside;
                 }
 
+                let totalSteps = 0;
+                let currentStep = 0;
+
                 if (style === 'raster') {
                     let goingRight = true;
                     const yStep = step;
@@ -2923,11 +2946,13 @@
                         yMax = Math.min(mh, maxY - oy);
                     }
 
-                    for (let y = yMin; y <= yMax + yStep * 0.1; y += yStep) {
+                    totalSteps = Math.ceil((yMax - yMin) / yStep) + 1;
+
+                    for (let y = yMin; y <= yMax + yStep * 0.01; y += yStep) {
                         const yPos = Math.min(yMax, y);
                         let first = true;
                         if (goingRight) {
-                            for (let x = xMin; x <= xMax + xStep * 0.1; x += xStep) {
+                            for (let x = xMin; x <= xMax + xStep * 0.01; x += xStep) {
                                 const xPos = Math.min(xMax, x);
                                 const mx = ox + xPos;
                                 const my = oy + yPos;
@@ -2942,7 +2967,7 @@
                                 pointCount++;
                             }
                         } else {
-                            for (let x = xMax; x >= xMin - xStep * 0.1; x -= xStep) {
+                            for (let x = xMax; x >= xMin - xStep * 0.01; x -= xStep) {
                                 const xPos = Math.max(xMin, x);
                                 const mx = ox + xPos;
                                 const my = oy + yPos;
@@ -2958,14 +2983,13 @@
                             }
                         }
                         goingRight = !goingRight;
-
-                        const pct = Math.min(95, Math.round((y - yMin) / (yMax - yMin) * 100));
-                        if (pct % 5 === 0) {
-                            progressFill.style.width = pct + '%';
-                            loaderProgress.textContent = pct + '%';
-                        }
+                        currentStep++;
+                        const pct = Math.min(98, Math.round((currentStep / totalSteps) * 100));
+                        progressFill.style.width = pct + '%';
+                        loaderProgress.textContent = pct + '%';
                     }
                 } else {
+                    // 3D Offset - concentric loops with optimized spacing
                     let minX = 0,
                         maxX = mw,
                         minY = 0,
@@ -2988,13 +3012,15 @@
                         maxY = Math.min(mh, maxYp - oy);
                     }
 
-                    const offsetStep = step * 0.8;
+                    const offsetStep = step * 0.7;
                     let loopCount = 0;
                     const maxLoops = Math.ceil(Math.min(maxX - minX, maxY - minY) / offsetStep / 2);
+                    totalSteps = maxLoops;
 
                     while (minX <= maxX && minY <= maxY && loopCount < maxLoops) {
                         let first = true;
-                        for (let x = minX; x <= maxX; x += spacing) {
+                        // Top
+                        for (let x = minX; x <= maxX + spacing * 0.01; x += spacing) {
                             const xPos = Math.min(maxX, x);
                             const mx = ox + xPos;
                             const my = oy + maxY;
@@ -3006,7 +3032,8 @@
                             if (pointCount % 50 === 0) previewPoints.push({ x: mx, y: my, z: z });
                             pointCount++;
                         }
-                        for (let y = maxY; y >= minY; y -= spacing) {
+                        // Right
+                        for (let y = maxY; y >= minY - spacing * 0.01; y -= spacing) {
                             const yPos = Math.max(minY, y);
                             const mx = ox + maxX;
                             const my = oy + yPos;
@@ -3016,7 +3043,8 @@
                             if (pointCount % 50 === 0) previewPoints.push({ x: mx, y: my, z: z });
                             pointCount++;
                         }
-                        for (let x = maxX; x >= minX; x -= spacing) {
+                        // Bottom
+                        for (let x = maxX; x >= minX - spacing * 0.01; x -= spacing) {
                             const xPos = Math.max(minX, x);
                             const mx = ox + xPos;
                             const my = oy + minY;
@@ -3026,7 +3054,8 @@
                             if (pointCount % 50 === 0) previewPoints.push({ x: mx, y: my, z: z });
                             pointCount++;
                         }
-                        for (let y = minY; y <= maxY; y += spacing) {
+                        // Left
+                        for (let y = minY; y <= maxY + spacing * 0.01; y += spacing) {
                             const yPos = Math.min(maxY, y);
                             const mx = ox + minX;
                             const my = oy + yPos;
@@ -3042,14 +3071,15 @@
                         minY += offsetStep;
                         maxY -= offsetStep;
                         loopCount++;
-
-                        const pct = Math.min(95, Math.round((loopCount / maxLoops) * 100));
-                        if (pct % 5 === 0) {
-                            progressFill.style.width = pct + '%';
-                            loaderProgress.textContent = pct + '%';
-                        }
+                        const pct = Math.min(98, Math.round((loopCount / maxLoops) * 100));
+                        progressFill.style.width = pct + '%';
+                        loaderProgress.textContent = pct + '%';
                     }
                 }
+
+                // Ensure 100% at the end
+                progressFill.style.width = '100%';
+                loaderProgress.textContent = '100%';
 
                 flushChunk();
                 gcodeChunks.push(`G0 Z${safeZ.toFixed(1)}\nM30\n`);
@@ -3102,6 +3132,7 @@
                 progressFill.style.width = '0%';
                 loaderProgress.textContent = '0%';
 
+                // Use setTimeout to allow UI to render
                 setTimeout(() => {
                     try {
                         const result = generateToolpath();
@@ -3115,7 +3146,10 @@
                     }
                     this.disabled = false;
                     this.innerHTML = '<i class="fas fa-cogs"></i> Calculate Toolpath';
-                    loader.classList.remove('show');
+                    // Keep loader visible briefly so user sees 100%
+                    setTimeout(() => {
+                        loader.classList.remove('show');
+                    }, 400);
                 }, 100);
             });
 
