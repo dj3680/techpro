@@ -4,70 +4,31 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>DCam Pro — CNC Toolpath Studio</title>
-    <script src="https://cdn.tailwindcss.com">
-    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
     <style>
         /* ============================================================
-           LUXURIOUS PREMIUM GLASS THEME — Gold Accents
+           CLEAN MODERN UI — Dark Professional Theme
            ============================================================ */
         :root {
-            --bg-main: #0b0b0f;
-            --glass-bg: rgba(255, 255, 255, 0.03);
-            --glass-border: rgba(255, 255, 255, 0.06);
-            --glass-shadow: 0 8px 40px rgba(0, 0, 0, 0.6);
-            --text-primary: #f0ede8;
-            --text-muted: #9a9a9f;
-            --accent: #d4af37;
-            --accent-glow: rgba(212, 175, 55, 0.15);
-            --accent-glow-strong: rgba(212, 175, 55, 0.25);
-            --border-light: rgba(255, 255, 255, 0.05);
-            --card-bg: rgba(255, 255, 255, 0.02);
-            --shadow-color: rgba(0, 0, 0, 0.6);
-            --toast-bg: rgba(18, 18, 22, 0.96);
-            --loader-bg: rgba(10, 10, 14, 0.9);
-            --handle-bg: rgba(255, 255, 255, 0.04);
-            --input-bg: rgba(255, 255, 255, 0.03);
-            --header-bg: rgba(10, 10, 14, 0.8);
-            --panel-overlay: rgba(18, 18, 22, 0.92);
-            --crop-overlay: rgba(0, 0, 0, 0.8);
-            --crop-bg: #1a1a20;
-            --progress-bg: rgba(255, 255, 255, 0.06);
-            --progress-fill: var(--accent);
-            --layout-border-color: rgba(212, 175, 55, 0.4);
-            --offset-color: #ff6b6b;
-            --radius-sm: 10px;
-            --radius-md: 14px;
-            --radius-lg: 20px;
-            --radius-xl: 28px;
-            --glass-blur: 24px;
-            --gold-grad: linear-gradient(135deg, #d4af37, #b8941e);
-        }
-        .light-theme {
-            --bg-main: #f2f0ed;
-            --glass-bg: rgba(0, 0, 0, 0.02);
-            --glass-border: rgba(0, 0, 0, 0.06);
-            --glass-shadow: 0 8px 40px rgba(0, 0, 0, 0.08);
-            --text-primary: #1a1a1e;
-            --text-muted: #6b6b70;
-            --accent: #b8941e;
-            --accent-glow: rgba(184, 148, 30, 0.12);
-            --accent-glow-strong: rgba(184, 148, 30, 0.2);
-            --border-light: rgba(0, 0, 0, 0.06);
-            --card-bg: rgba(0, 0, 0, 0.02);
-            --shadow-color: rgba(0, 0, 0, 0.08);
-            --toast-bg: rgba(255, 255, 255, 0.96);
-            --loader-bg: rgba(255, 255, 255, 0.9);
-            --handle-bg: rgba(0, 0, 0, 0.04);
-            --input-bg: rgba(0, 0, 0, 0.03);
-            --header-bg: rgba(255, 255, 255, 0.85);
-            --panel-overlay: rgba(255, 255, 255, 0.92);
-            --crop-overlay: rgba(0, 0, 0, 0.6);
-            --crop-bg: #ffffff;
-            --progress-bg: rgba(0, 0, 0, 0.06);
-            --progress-fill: var(--accent);
-            --layout-border-color: rgba(184, 148, 30, 0.5);
-            --offset-color: #cc5555;
+            --bg-primary: #0d0d12;
+            --bg-secondary: #16161e;
+            --bg-card: #1c1c26;
+            --bg-input: #22222e;
+            --border-color: #2a2a38;
+            --text-primary: #ececec;
+            --text-secondary: #9a9aa8;
+            --text-muted: #5a5a6a;
+            --accent: #5b7cfa;
+            --accent-hover: #6f8cff;
+            --accent-glow: rgba(91, 124, 250, 0.15);
+            --accent-glow-strong: rgba(91, 124, 250, 0.25);
+            --green: #34c759;
+            --red: #ff4757;
+            --radius: 12px;
+            --radius-sm: 8px;
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            --transition: 0.25s cubic-bezier(0.22, 1, 0.36, 1);
         }
 
         * {
@@ -76,447 +37,202 @@
             box-sizing: border-box;
         }
         body {
-            background: var(--bg-main);
+            background: var(--bg-primary);
             color: var(--text-primary);
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             overflow: hidden;
             height: 100vh;
             width: 100vw;
             position: relative;
-            -webkit-tap-highlight-color: transparent;
+            -webkit-font-smoothing: antialiased;
             touch-action: none;
-            transition: background 0.5s ease, color 0.5s ease;
-            font-size: 16px;
         }
         input,
         select,
-        textarea,
         button {
-            font-size: 16px !important;
+            font-family: inherit;
+            font-size: 14px;
         }
         ::-webkit-scrollbar {
-            width: 3px;
+            width: 4px;
         }
         ::-webkit-scrollbar-track {
-            background: var(--border-light);
+            background: var(--bg-secondary);
         }
         ::-webkit-scrollbar-thumb {
             background: var(--accent);
-            border-radius: 10px;
+            border-radius: 4px;
         }
 
-        #viewport {
-            position: absolute;
-            inset: 0;
-            z-index: 1;
-            background: var(--bg-main);
-        }
-        #viewport canvas {
-            display: block;
-            width: 100% !important;
-            height: 100% !important;
+        /* ===== LAYOUT ===== */
+        #app {
+            display: flex;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
         }
 
-        /* ===== TOP BAR — Premium Glass ===== */
-        #topbar {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 20;
+        /* ===== SIDEBAR ===== */
+        #sidebar {
+            width: 340px;
+            min-width: 340px;
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            z-index: 10;
+            transition: transform var(--transition);
+            overflow: hidden;
+            height: 100vh;
+        }
+        #sidebar.collapsed {
+            transform: translateX(-340px);
+            width: 0;
+            min-width: 0;
+            border-right: none;
+        }
+
+        .sidebar-header {
+            padding: 18px 20px 12px 20px;
+            border-bottom: 1px solid var(--border-color);
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 8px 20px;
-            background: var(--header-bg);
-            backdrop-filter: blur(var(--glass-blur));
-            -webkit-backdrop-filter: blur(var(--glass-blur));
-            border-bottom: 1px solid var(--glass-border);
-            pointer-events: none;
-            height: 56px;
-            transition: background 0.4s, border-color 0.4s;
-        }
-        #topbar>* {
-            pointer-events: auto;
-        }
-        .brand {
-            font-size: 22px;
-            font-weight: 700;
-            background: var(--gold-grad);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: -0.5px;
-            text-shadow: 0 0 30px var(--accent-glow);
-        }
-        .brand span {
-            font-weight: 300;
-            -webkit-text-fill-color: var(--text-muted);
-            font-size: 10px;
-            margin-left: 4px;
-            letter-spacing: 2px;
-            opacity: 0.6;
-        }
-        .topbar-center {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            flex: 1;
-            justify-content: center;
-        }
-        @media (min-width: 820px) {
-            .topbar-center {
-                justify-content: flex-start;
-                padding-left: 24px;
-            }
-        }
-        .topbar-right {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .header-btn {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            color: var(--text-muted);
-            padding: 6px 18px;
-            border-radius: 24px;
-            font-size: 10px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-family: inherit;
-            letter-spacing: 0.5px;
-            white-space: nowrap;
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-        }
-        .header-btn:hover {
-            background: rgba(255, 255, 255, 0.08);
-            border-color: var(--accent);
-            transform: translateY(-1px);
-            box-shadow: 0 4px 20px var(--accent-glow);
-        }
-        .header-btn:active {
-            transform: scale(0.96);
-        }
-        .header-btn.active {
-            background: var(--accent-glow);
-            border-color: var(--accent);
-            color: var(--accent);
-            box-shadow: 0 4px 24px var(--accent-glow);
-        }
-        .header-btn .icon {
-            font-size: 11px;
-        }
-        .header-btn-left {
-            margin-right: auto;
-        }
-        @media (min-width: 820px) {
-            .header-btn {
-                font-size: 11px;
-                padding: 6px 22px;
-                border-radius: 28px;
-            }
-            .header-btn .icon {
-                font-size: 13px;
-            }
-        }
-
-        /* ===== THEME TOGGLE — Premium ===== */
-        .theme-toggle {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            cursor: pointer;
-            font-size: 9px;
-            color: var(--text-muted);
-            padding: 4px 10px;
-            border-radius: 20px;
-            border: 1px solid var(--glass-border);
-            background: var(--glass-bg);
-            transition: all 0.3s;
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-        }
-        .theme-toggle:hover {
-            border-color: var(--accent);
-            background: var(--accent-glow);
-        }
-        .theme-toggle:active {
-            transform: scale(0.95);
-        }
-        .theme-toggle .switch {
-            position: relative;
-            width: 28px;
-            height: 16px;
-            background: var(--border-light);
-            border-radius: 10px;
-            transition: background 0.3s;
             flex-shrink: 0;
         }
-        .theme-toggle .switch::after {
-            content: '';
-            position: absolute;
-            top: 2px;
-            left: 2px;
-            width: 12px;
-            height: 12px;
-            background: #fff;
-            border-radius: 50%;
-            transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        .sidebar-header .brand {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: -0.5px;
         }
-        .theme-toggle .switch.active {
-            background: var(--accent);
+        .sidebar-header .brand span {
+            color: var(--accent);
         }
-        .theme-toggle .switch.active::after {
-            transform: translateX(12px);
-        }
-        .theme-toggle .icon {
+        .sidebar-header .brand small {
+            font-weight: 400;
             font-size: 11px;
+            color: var(--text-muted);
+            margin-left: 4px;
+            letter-spacing: 1px;
         }
-        @media (max-width: 420px) {
-            .theme-toggle {
-                font-size: 8px;
-                padding: 2px 8px;
-            }
-            .theme-toggle .switch {
-                width: 22px;
-                height: 13px;
-            }
-            .theme-toggle .switch::after {
-                width: 9px;
-                height: 9px;
-            }
-            .theme-toggle .switch.active::after {
-                transform: translateX(9px);
-            }
+        .sidebar-header .toggle-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 18px;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 6px;
+            transition: background var(--transition);
+            display: none;
+        }
+        .sidebar-header .toggle-btn:hover {
+            background: var(--bg-card);
         }
 
-        /* ===== MAIN PANEL — Premium Glass ===== */
-        #panel {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            z-index: 15;
-            background: var(--panel-overlay);
-            backdrop-filter: blur(var(--glass-blur));
-            -webkit-backdrop-filter: blur(var(--glass-blur));
-            border-top: 1px solid var(--glass-border);
-            border-radius: var(--radius-xl) var(--radius-xl) 0 0;
-            max-height: 72vh;
-            transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.4s ease, background 0.4s;
+        .sidebar-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px 20px 20px 20px;
             display: flex;
             flex-direction: column;
-            opacity: 1;
-            box-shadow: 0 -12px 48px var(--shadow-color);
-        }
-        #panel.hidden {
-            transform: translateY(calc(100% + 30px));
-            opacity: 0;
-            pointer-events: none;
-        }
-        @media (min-width: 820px) {
-            #panel {
-                top: 0;
-                left: 0;
-                right: auto;
-                bottom: 0;
-                width: 480px;
-                max-height: 100vh;
-                border-radius: 0;
-                border-top: none;
-                border-right: 1px solid var(--glass-border);
-                transform: translateX(0);
-                opacity: 1;
-                box-shadow: 4px 0 48px var(--shadow-color);
-            }
-            #panel.hidden {
-                transform: translateX(-100%);
-                opacity: 0;
-                pointer-events: none;
-            }
+            gap: 14px;
         }
 
-        .panel-body {
-            padding: 16px 20px 20px 20px;
-            overflow-y: auto;
-            flex: 1;
-            -webkit-overflow-scrolling: touch;
+        /* ===== FORM ELEMENTS ===== */
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
         }
-        .panel-body::-webkit-scrollbar {
-            width: 3px;
-        }
-        .panel-body::-webkit-scrollbar-thumb {
-            background: var(--accent);
-            border-radius: 10px;
-        }
-
-        /* ===== SECTION TITLES ===== */
-        .section-title {
-            font-size: 10px;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            color: var(--text-muted);
-            margin: 14px 0 6px 0;
-            font-weight: 600;
-            transition: color 0.3s;
-            opacity: 0.7;
-        }
-        .section-title:first-of-type {
-            margin-top: 0;
-        }
-        .section-title .badge {
-            font-size: 7px;
-            background: var(--accent-glow);
-            color: var(--accent);
-            padding: 2px 10px;
-            border-radius: 12px;
-            margin-left: 6px;
+        .form-group label {
+            font-size: 11px;
             font-weight: 500;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
-
-        /* ===== FORM GRID ===== */
-        .form-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
+        .form-group .helper {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+        .form-row {
+            display: flex;
             gap: 10px;
         }
-        .form-grid .full {
-            grid-column: 1 / -1;
+        .form-row .form-group {
+            flex: 1;
         }
 
-        /* ===== INPUT GROUP ===== */
-        .input-group label {
-            display: block;
-            font-size: 9px;
-            font-weight: 500;
-            color: var(--text-muted);
-            margin-bottom: 4px;
-            letter-spacing: 0.5px;
-            transition: color 0.3s;
-        }
-
-        /* ===== GLASS INPUTS ===== */
         .input-field {
             width: 100%;
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
+            background: var(--bg-input);
+            border: 1px solid var(--border-color);
             color: var(--text-primary);
-            padding: 8px 14px;
+            padding: 8px 12px;
             border-radius: var(--radius-sm);
-            font-size: 12px;
+            font-size: 13px;
             outline: none;
-            transition: all 0.3s ease;
-            font-family: inherit;
-            backdrop-filter: blur(4px);
-            -webkit-backdrop-filter: blur(4px);
-        }
-        .input-field:hover {
-            border-color: rgba(212, 175, 55, 0.3);
+            transition: border var(--transition), box-shadow var(--transition);
         }
         .input-field:focus {
             border-color: var(--accent);
-            box-shadow: 0 0 0 4px var(--accent-glow);
+            box-shadow: 0 0 0 3px var(--accent-glow);
         }
         .input-field::placeholder {
             color: var(--text-muted);
-            opacity: 0.4;
         }
         .input-field:disabled {
-            opacity: 0.3;
+            opacity: 0.4;
             cursor: not-allowed;
         }
         select.input-field {
             appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M0 0l6 6 6-6z' fill='%23d4af37'/%3E%3C/svg%3E");
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M0 0l6 6 6-6z' fill='%239a9aa8'/%3E%3C/svg%3E");
             background-repeat: no-repeat;
-            background-position: right 14px center;
-            padding-right: 36px;
+            background-position: right 12px center;
+            padding-right: 32px;
             cursor: pointer;
         }
         select.input-field option {
-            background: var(--panel-bg);
+            background: var(--bg-secondary);
             color: var(--text-primary);
         }
 
-        /* ===== RATIO BUTTON ===== */
-        .ratio-btn {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: var(--radius-sm);
-            color: var(--text-muted);
-            padding: 6px 12px;
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 38px;
-            min-width: 38px;
-            backdrop-filter: blur(4px);
-            -webkit-backdrop-filter: blur(4px);
-        }
-        .ratio-btn:hover {
-            border-color: var(--accent);
-            color: var(--accent);
-            background: var(--accent-glow);
-        }
-        .ratio-btn.active {
-            border-color: var(--accent);
-            color: var(--accent);
-            background: var(--accent-glow-strong);
-        }
-        .ratio-btn:active {
-            transform: scale(0.92);
-        }
-        .ratio-group {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .ratio-group .input-field {
-            flex: 1;
-        }
-
-        /* ===== FILE DROP — GLASS ===== */
+        /* ===== FILE DROP ===== */
         .file-drop {
-            border: 2px dashed var(--glass-border);
-            border-radius: var(--radius-md);
-            padding: 16px 12px;
+            border: 2px dashed var(--border-color);
+            border-radius: var(--radius-sm);
+            padding: 20px 12px;
             text-align: center;
             cursor: pointer;
-            transition: all 0.4s ease;
-            background: var(--glass-bg);
-            backdrop-filter: blur(4px);
-            -webkit-backdrop-filter: blur(4px);
+            transition: all var(--transition);
+            background: var(--bg-card);
             position: relative;
         }
         .file-drop:hover {
             border-color: var(--accent);
             background: var(--accent-glow);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px var(--accent-glow);
+        }
+        .file-drop.has-file {
+            border-color: var(--green);
+            background: rgba(52, 199, 89, 0.05);
         }
         .file-drop .icon {
-            font-size: 24px;
-            opacity: 0.3;
+            font-size: 28px;
+            opacity: 0.4;
             display: block;
             margin-bottom: 4px;
         }
         .file-drop .label {
-            font-size: 10px;
-            color: var(--text-muted);
+            font-size: 12px;
+            color: var(--text-secondary);
         }
         .file-drop .label strong {
             color: var(--accent);
-            font-weight: 600;
+            font-weight: 500;
         }
         .file-drop input[type="file"] {
             position: absolute;
@@ -524,64 +240,28 @@
             opacity: 0;
             cursor: pointer;
         }
-
-        /* ===== FILE INFO ===== */
         .file-info {
             display: none;
-            font-size: 9px;
-            color: var(--accent);
             align-items: center;
             justify-content: center;
-            gap: 6px;
-            flex-wrap: wrap;
+            gap: 8px;
+            font-size: 12px;
+            color: var(--green);
             margin-top: 6px;
-            background: var(--glass-bg);
-            padding: 6px 14px;
+            padding: 4px 12px;
+            background: rgba(52, 199, 89, 0.08);
             border-radius: var(--radius-sm);
-            backdrop-filter: blur(4px);
-            -webkit-backdrop-filter: blur(4px);
         }
         .file-info.show {
             display: flex;
         }
         .file-info .clear-btn {
-            background: rgba(200, 50, 50, 0.1);
-            color: #e06060;
+            background: none;
             border: none;
-            border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            font-size: 10px;
+            color: var(--red);
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background 0.2s;
-        }
-        .file-info .clear-btn:active {
-            background: rgba(200, 50, 50, 0.2);
-        }
-        .file-info .crop-btn {
-            background: var(--gold-grad);
-            color: #fff;
-            border: none;
-            border-radius: var(--radius-sm);
-            padding: 3px 14px;
-            font-size: 9px;
-            font-weight: 600;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 16px var(--accent-glow);
-        }
-        .file-info .crop-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 24px var(--accent-glow-strong);
-        }
-        .file-info .crop-btn:active {
-            transform: scale(0.95);
+            font-size: 14px;
+            padding: 0 4px;
         }
 
         /* ===== TOOL CHIPS ===== */
@@ -593,109 +273,93 @@
         .tool-chip {
             padding: 5px 14px;
             border-radius: 20px;
-            font-size: 10px;
+            font-size: 12px;
             font-weight: 500;
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            color: var(--text-muted);
+            background: var(--bg-input);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
             cursor: pointer;
-            transition: all 0.3s ease;
-            font-family: inherit;
-            backdrop-filter: blur(4px);
-            -webkit-backdrop-filter: blur(4px);
+            transition: all var(--transition);
         }
         .tool-chip:hover {
             border-color: var(--accent);
             color: var(--text-primary);
-            background: var(--accent-glow);
-            transform: translateY(-2px);
         }
         .tool-chip.active {
-            background: var(--accent-glow-strong);
+            background: var(--accent);
             border-color: var(--accent);
-            color: var(--accent);
-            box-shadow: 0 4px 20px var(--accent-glow);
-        }
-        .tool-chip:active {
-            transform: scale(0.94);
+            color: #fff;
+            box-shadow: 0 4px 16px var(--accent-glow);
         }
         .tool-chip .diam {
-            font-weight: 700;
-            color: var(--accent);
-        }
-        .tool-chip.no-tool {
-            border-color: #e06060;
-            color: #e06060;
+            font-weight: 600;
         }
         .tool-chip.no-tool.active {
-            background: rgba(200, 50, 50, 0.1);
-            border-color: #e06060;
-            color: #e06060;
+            background: var(--red);
+            border-color: var(--red);
+        }
+        .tool-chip.no-tool {
+            border-color: var(--red);
+            color: var(--red);
         }
 
-        /* ===== BUTTONS — PREMIUM ===== */
+        /* ===== BUTTONS ===== */
         .btn {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 6px;
-            padding: 8px 20px;
+            gap: 8px;
+            padding: 10px 20px;
             border-radius: var(--radius-sm);
-            font-size: 11px;
+            font-size: 13px;
             font-weight: 600;
             border: none;
             cursor: pointer;
-            transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
-            font-family: inherit;
-            letter-spacing: 0.3px;
+            transition: all var(--transition);
             width: 100%;
-            backdrop-filter: blur(4px);
-            -webkit-backdrop-filter: blur(4px);
-        }
-        .btn:active {
-            transform: scale(0.96);
         }
         .btn-primary {
-            background: var(--gold-grad);
+            background: var(--accent);
             color: #fff;
-            box-shadow: 0 4px 24px var(--accent-glow);
+            box-shadow: 0 4px 16px var(--accent-glow);
         }
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 32px var(--accent-glow-strong);
+        .btn-primary:hover:not(:disabled) {
+            background: var(--accent-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 24px var(--accent-glow-strong);
         }
         .btn-primary:disabled {
-            opacity: 0.25;
-            pointer-events: none;
+            opacity: 0.3;
+            cursor: not-allowed;
             transform: none;
         }
         .btn-success {
-            background: linear-gradient(135deg, #22c55e, #16a34a);
+            background: var(--green);
             color: #fff;
-            box-shadow: 0 4px 24px rgba(34, 197, 94, 0.15);
+            box-shadow: 0 4px 16px rgba(52, 199, 89, 0.15);
         }
-        .btn-success:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 32px rgba(34, 197, 94, 0.25);
+        .btn-success:hover:not(:disabled) {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 24px rgba(52, 199, 89, 0.25);
         }
         .btn-success:disabled {
-            opacity: 0.25;
-            pointer-events: none;
+            opacity: 0.3;
+            cursor: not-allowed;
             transform: none;
         }
         .btn-outline {
             background: transparent;
-            border: 1px solid var(--accent-glow);
-            color: var(--accent);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
         }
         .btn-outline:hover {
+            border-color: var(--accent);
+            color: var(--text-primary);
             background: var(--accent-glow);
-            transform: translateY(-2px);
         }
         .btn-sm {
-            padding: 5px 14px;
-            font-size: 9px;
-            border-radius: var(--radius-sm);
+            padding: 6px 14px;
+            font-size: 11px;
         }
         .btn-group {
             display: flex;
@@ -705,26 +369,20 @@
             flex: 1;
         }
 
-        .mt-1 {
-            margin-top: 4px;
-        }
         .mt-2 {
             margin-top: 8px;
         }
         .mt-3 {
             margin-top: 14px;
         }
-        .text-gold {
-            color: var(--accent);
-        }
         .text-muted {
             color: var(--text-muted);
         }
-        .text-xs {
-            font-size: 9px;
-        }
         .text-sm {
-            font-size: 11px;
+            font-size: 12px;
+        }
+        .text-xs {
+            font-size: 10px;
         }
         .flex {
             display: flex;
@@ -735,139 +393,169 @@
         .justify-between {
             justify-content: space-between;
         }
-        .gap-1 {
-            gap: 4px;
-        }
         .gap-2 {
             gap: 6px;
+        }
+        .gap-3 {
+            gap: 10px;
         }
         .w-full {
             width: 100%;
         }
 
-        /* ===== VIEWPORT CONTROLS — PREMIUM ===== */
+        /* ===== DIVIDER ===== */
+        .divider {
+            height: 1px;
+            background: var(--border-color);
+            margin: 4px 0;
+        }
+
+        /* ===== STATUS BAR ===== */
+        #statusbar {
+            padding: 10px 20px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-shrink: 0;
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+        #statusbar .status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 6px;
+        }
+        #statusbar .status-dot.ready {
+            background: var(--green);
+        }
+        #statusbar .status-dot.processing {
+            background: var(--accent);
+            animation: pulse-dot 1s ease-in-out infinite;
+        }
+        #statusbar .status-dot.error {
+            background: var(--red);
+        }
+        @keyframes pulse-dot {
+            0%,
+            100% {
+                opacity: 0.3;
+                transform: scale(0.8);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.1);
+            }
+        }
+
+        /* ===== 3D VIEWPORT ===== */
+        #viewport {
+            flex: 1;
+            background: var(--bg-primary);
+            position: relative;
+            overflow: hidden;
+        }
+        #viewport canvas {
+            display: block;
+            width: 100% !important;
+            height: 100% !important;
+        }
+
+        /* ===== VIEWPORT OVERLAY CONTROLS ===== */
         #viewport-controls {
             position: absolute;
-            bottom: 80px;
+            bottom: 24px;
             left: 50%;
             transform: translateX(-50%);
-            z-index: 12;
+            z-index: 5;
             display: flex;
-            gap: 6px;
-            background: var(--panel-overlay);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            padding: 6px 16px;
-            border-radius: 32px;
-            border: 1px solid var(--glass-border);
-            pointer-events: none;
-            transition: background 0.3s, border-color 0.3s;
-            box-shadow: 0 8px 40px var(--shadow-color);
-        }
-        #viewport-controls>* {
-            pointer-events: auto;
+            gap: 4px;
+            background: var(--bg-secondary);
+            padding: 4px 6px;
+            border-radius: 28px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow);
         }
         #viewport-controls .btn {
-            padding: 6px 18px;
-            font-size: 9px;
-            border-radius: 30px;
+            padding: 6px 16px;
+            font-size: 11px;
+            border-radius: 24px;
             background: transparent;
-            border: 1px solid transparent;
+            border: none;
             color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
+            cursor: pointer;
+            transition: all var(--transition);
             width: auto;
-            min-height: 30px;
-            transition: all 0.35s ease;
             font-weight: 500;
         }
         #viewport-controls .btn:hover {
             color: var(--text-primary);
-            background: rgba(255, 255, 255, 0.04);
+            background: var(--bg-input);
         }
         #viewport-controls .btn.active {
-            border-color: var(--accent);
-            color: var(--accent);
-            background: var(--accent-glow);
-            box-shadow: 0 4px 20px var(--accent-glow);
-        }
-        #viewport-controls .btn:active {
-            transform: scale(0.94);
+            background: var(--accent);
+            color: #fff;
+            box-shadow: 0 4px 16px var(--accent-glow);
         }
 
-        /* ===== ZOOM CONTROLS — PREMIUM ===== */
+        /* ===== ZOOM CONTROLS ===== */
         #zoom-controls {
             position: absolute;
             right: 16px;
-            bottom: 90px;
-            z-index: 12;
+            bottom: 80px;
+            z-index: 5;
             display: flex;
             flex-direction: column;
-            gap: 6px;
-            pointer-events: none;
-            transition: opacity 0.3s;
-        }
-        #zoom-controls.hidden-zoom {
-            opacity: 0;
-            pointer-events: none;
-        }
-        #zoom-controls>* {
-            pointer-events: auto;
+            gap: 4px;
         }
         #zoom-controls .btn {
-            width: 40px;
-            height: 40px;
+            width: 36px;
+            height: 36px;
             padding: 0;
-            font-size: 16px;
             border-radius: var(--radius-sm);
-            background: var(--panel-overlay);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid var(--glass-border);
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
             color: var(--text-muted);
+            font-size: 16px;
+            cursor: pointer;
+            transition: all var(--transition);
             display: flex;
             align-items: center;
             justify-content: center;
-            min-height: 40px;
-            min-width: 40px;
-            transition: all 0.35s ease;
-            box-shadow: 0 4px 20px var(--shadow-color);
+            box-shadow: var(--shadow);
         }
         #zoom-controls .btn:hover {
             border-color: var(--accent);
             color: var(--accent);
             background: var(--accent-glow);
-            transform: translateX(-2px);
         }
         #zoom-controls .btn:active {
             transform: scale(0.92);
         }
 
-        /* ===== TOAST — PREMIUM ===== */
+        /* ===== TOAST ===== */
         #toast {
             position: fixed;
-            top: 62px;
+            top: 16px;
             left: 50%;
-            transform: translateX(-50%) translateY(-16px);
-            background: var(--toast-bg);
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
-            padding: 6px 22px;
-            border-radius: var(--radius-md);
-            border: 1px solid var(--glass-border);
+            transform: translateX(-50%) translateY(-20px);
+            background: var(--bg-secondary);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--border-color);
+            padding: 8px 20px;
+            border-radius: var(--radius-sm);
             color: var(--text-primary);
-            font-size: 10px;
-            font-weight: 500;
+            font-size: 13px;
             z-index: 100;
             opacity: 0;
             pointer-events: none;
-            transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1), background 0.3s, border-color 0.3s, color 0.3s;
-            box-shadow: 0 12px 48px var(--shadow-color);
-            text-align: center;
-            max-width: 86%;
+            transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+            box-shadow: var(--shadow);
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
         }
         #toast.show {
             opacity: 1;
@@ -876,12 +564,12 @@
         }
         #toast .toast-close {
             cursor: pointer;
-            opacity: 0.2;
-            font-size: 12px;
-            transition: opacity 0.2s;
+            opacity: 0.3;
+            font-size: 14px;
+            transition: opacity var(--transition);
         }
         #toast .toast-close:hover {
-            opacity: 0.6;
+            opacity: 0.8;
         }
 
         /* ===== LOADER ===== */
@@ -890,14 +578,12 @@
             position: absolute;
             inset: 0;
             z-index: 50;
-            background: var(--loader-bg);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            background: rgba(13, 13, 18, 0.85);
+            backdrop-filter: blur(12px);
             flex-direction: column;
             align-items: center;
             justify-content: center;
             gap: 12px;
-            transition: background 0.3s;
         }
         #loader.show {
             display: flex;
@@ -905,10 +591,10 @@
         .loader-spinner {
             width: 40px;
             height: 40px;
-            border: 3px solid var(--accent-glow);
+            border: 3px solid var(--border-color);
             border-top-color: var(--accent);
             border-radius: 50%;
-            animation: spin 0.9s linear infinite;
+            animation: spin 0.8s linear infinite;
         }
         @keyframes spin {
             to {
@@ -916,667 +602,325 @@
             }
         }
         #loader-text {
-            font-size: 11px;
-            color: var(--text-muted);
-            letter-spacing: 0.5px;
+            font-size: 13px;
+            color: var(--text-secondary);
         }
         #loader-progress {
-            font-size: 14px;
+            font-size: 15px;
             color: var(--accent);
             font-weight: 600;
         }
-        .progress-bar-container {
-            width: 240px;
-            height: 4px;
-            background: var(--progress-bg);
+        .progress-bar {
+            width: 200px;
+            height: 3px;
+            background: var(--bg-input);
             border-radius: 4px;
             overflow: hidden;
-            margin-top: 4px;
         }
-        .progress-bar-fill {
+        .progress-bar .fill {
             height: 100%;
             width: 0%;
-            background: var(--gold-grad);
+            background: var(--accent);
             border-radius: 4px;
-            transition: width 0.25s ease;
+            transition: width 0.3s ease;
         }
 
-        /* ===== BADGES ===== */
-        .point-badge {
-            font-size: 8px;
-            color: var(--text-muted);
-            background: var(--glass-bg);
-            padding: 2px 12px;
-            border-radius: 14px;
-            border: 1px solid var(--glass-border);
-            backdrop-filter: blur(4px);
-            -webkit-backdrop-filter: blur(4px);
-        }
-
-        .image-preview-hint {
-            font-size: 9px;
-            color: var(--text-muted);
-            text-align: center;
-            margin-top: 4px;
-            opacity: 0.6;
-            font-style: italic;
-            transition: color 0.3s;
-        }
-        .image-preview-hint .highlight {
-            color: var(--accent);
-            opacity: 1;
-        }
-
-        /* ===== FLOATING TOGGLE — PREMIUM ===== */
-        #floatingToggle {
+        /* ===== SIDEBAR TOGGLE (mobile) ===== */
+        #sidebarToggle {
             position: fixed;
-            top: 62px;
-            right: 16px;
-            z-index: 30;
-            width: 46px;
-            height: 46px;
-            border-radius: 50%;
-            background: var(--gold-grad);
-            color: #fff;
-            border: none;
-            box-shadow: 0 8px 32px var(--accent-glow);
-            font-size: 20px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-            touch-action: manipulation;
-        }
-        #floatingToggle:hover {
-            transform: scale(1.05) translateY(-2px);
-            box-shadow: 0 12px 40px var(--accent-glow-strong);
-        }
-        #floatingToggle:active {
-            transform: scale(0.92);
-        }
-        #floatingToggle .icon {
-            font-size: 20px;
-        }
-        @media (max-width: 420px) {
-            #floatingToggle {
-                width: 38px;
-                height: 38px;
-                font-size: 16px;
-                top: 56px;
-                right: 10px;
-            }
-            #floatingToggle .icon {
-                font-size: 16px;
-            }
-        }
-        @media (min-width: 820px) {
-            #floatingToggle {
-                width: 52px;
-                height: 52px;
-                font-size: 22px;
-                top: 68px;
-                right: 24px;
-            }
-            #floatingToggle .icon {
-                font-size: 22px;
-            }
-        }
-
-        /* ===== CROP MODAL — PREMIUM ===== */
-        #cropModal {
-            display: none;
-            position: fixed;
-            inset: 0;
-            z-index: 60;
-            background: var(--crop-overlay);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-        }
-        #cropModal.active {
-            display: flex;
-        }
-        #cropModal .crop-container {
-            background: var(--crop-bg);
-            border-radius: var(--radius-lg);
-            padding: 20px;
-            max-width: 92%;
-            max-height: 92%;
-            overflow: auto;
-            position: relative;
-            box-shadow: 0 24px 80px var(--shadow-color);
-            transition: background 0.3s;
-            border: 1px solid var(--glass-border);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-        }
-        #cropModal .crop-image-wrapper {
-            position: relative;
-            display: inline-block;
-            cursor: default;
-            user-select: none;
-            -webkit-user-drag: none;
-        }
-        #cropModal .crop-image-wrapper img {
-            display: block;
-            max-width: 80vw;
-            max-height: 55vh;
-            user-select: none;
-            -webkit-user-drag: none;
-            pointer-events: none;
+            top: 12px;
+            left: 12px;
+            z-index: 20;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 8px 12px;
             border-radius: var(--radius-sm);
-        }
-        #cropModal .crop-selection {
-            position: absolute;
-            border: 2px solid var(--accent);
-            background: rgba(212, 175, 55, 0.06);
-            pointer-events: none;
-            display: none;
-            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
-            border-radius: 2px;
-        }
-        #cropModal .crop-handle {
-            position: absolute;
-            width: 24px;
-            height: 24px;
-            background: #fff;
-            border: 2.5px solid var(--accent);
-            border-radius: 50%;
-            pointer-events: auto;
             cursor: pointer;
-            z-index: 5;
-            box-shadow: 0 4px 16px var(--shadow-color);
-            transition: transform 0.2s, box-shadow 0.2s;
-            touch-action: none;
+            display: none;
+            font-size: 18px;
+            box-shadow: var(--shadow);
         }
-        #cropModal .crop-handle:hover {
-            transform: scale(1.1);
-            box-shadow: 0 4px 24px var(--shadow-color);
-        }
-        #cropModal .crop-handle:active {
-            transform: scale(1.2);
-        }
-        #cropModal .crop-handle.nw {
-            top: -12px;
-            left: -12px;
-            cursor: nw-resize;
-        }
-        #cropModal .crop-handle.ne {
-            top: -12px;
-            right: -12px;
-            cursor: ne-resize;
-        }
-        #cropModal .crop-handle.sw {
-            bottom: -12px;
-            left: -12px;
-            cursor: sw-resize;
-        }
-        #cropModal .crop-handle.se {
-            bottom: -12px;
-            right: -12px;
-            cursor: se-resize;
-        }
-        #cropModal .crop-handle.n {
-            top: -12px;
-            left: 50%;
-            transform: translateX(-50%);
-            cursor: n-resize;
-        }
-        #cropModal .crop-handle.s {
-            bottom: -12px;
-            left: 50%;
-            transform: translateX(-50%);
-            cursor: s-resize;
-        }
-        #cropModal .crop-handle.w {
-            top: 50%;
-            left: -12px;
-            transform: translateY(-50%);
-            cursor: w-resize;
-        }
-        #cropModal .crop-handle.e {
-            top: 50%;
-            right: -12px;
-            transform: translateY(-50%);
-            cursor: e-resize;
-        }
-        #cropModal .crop-controls {
-            display: flex;
-            gap: 10px;
-            margin-top: 14px;
-            justify-content: flex-end;
-        }
-        #cropModal .crop-controls .btn {
-            width: auto;
-            padding: 6px 20px;
-            font-size: 10px;
-            border-radius: var(--radius-sm);
-        }
-        #cropModal .crop-info {
-            font-size: 10px;
-            color: var(--text-muted);
-            text-align: center;
-            margin-top: 8px;
-            transition: color 0.3s;
+        #sidebarToggle:hover {
+            background: var(--bg-card);
         }
 
-        @media (max-width: 420px) {
-            #cropModal .crop-container {
-                padding: 14px;
-                max-width: 96%;
+        /* ============================================================
+           RESPONSIVE
+           ============================================================ */
+        @media (max-width: 820px) {
+            #sidebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                width: 320px;
+                min-width: 320px;
+                z-index: 30;
+                box-shadow: 4px 0 32px rgba(0, 0, 0, 0.6);
+                transform: translateX(-320px);
             }
-            #cropModal .crop-image-wrapper img {
-                max-width: 90vw;
-                max-height: 45vh;
+            #sidebar.open {
+                transform: translateX(0);
             }
-            #cropModal .crop-handle {
-                width: 26px;
-                height: 26px;
+            .sidebar-header .toggle-btn {
+                display: block;
             }
-            #cropModal .crop-handle.nw,
-            #cropModal .crop-handle.ne,
-            #cropModal .crop-handle.sw,
-            #cropModal .crop-handle.se {
-                width: 28px;
-                height: 28px;
+            #sidebarToggle {
+                display: block;
+            }
+            #viewport-controls .btn {
+                padding: 4px 12px;
+                font-size: 10px;
             }
         }
-
         @media (max-width: 420px) {
-            #panel .panel-body {
-                padding: 12px 14px 14px 14px;
+            #sidebar {
+                width: 100%;
+                min-width: 0;
             }
-            .brand {
-                font-size: 17px;
+            #sidebar.open {
+                width: 100%;
             }
-            .form-grid {
+            .sidebar-body {
+                padding: 12px 14px 16px 14px;
+            }
+            .sidebar-header {
+                padding: 14px 16px 10px 16px;
+            }
+            .form-row {
+                flex-direction: column;
                 gap: 6px;
             }
-            .input-field {
-                font-size: 10px;
-                padding: 6px 10px;
-            }
             .tool-chip {
-                font-size: 9px;
-                padding: 4px 10px;
+                font-size: 11px;
+                padding: 4px 12px;
             }
             .btn {
-                font-size: 9px;
-                padding: 6px 12px;
+                font-size: 12px;
+                padding: 8px 16px;
             }
             #viewport-controls {
-                bottom: 68px;
-                padding: 4px 10px;
-                gap: 4px;
+                bottom: 16px;
+                padding: 3px 4px;
+                gap: 2px;
             }
             #viewport-controls .btn {
-                font-size: 7px;
-                padding: 4px 12px;
-                min-height: 26px;
+                padding: 3px 10px;
+                font-size: 9px;
             }
             #zoom-controls {
-                right: 8px;
-                bottom: 78px;
+                right: 10px;
+                bottom: 64px;
             }
             #zoom-controls .btn {
-                width: 34px;
-                height: 34px;
-                font-size: 14px;
-                min-height: 34px;
-                min-width: 34px;
-            }
-            #toast {
-                top: 50px;
-                font-size: 9px;
-                padding: 4px 14px;
-                max-width: 94%;
-            }
-            .section-title {
-                font-size: 9px;
-                margin: 10px 0 4px 0;
-            }
-            .file-drop {
-                padding: 10px 8px;
-            }
-            .file-drop .icon {
-                font-size: 18px;
-            }
-            .file-drop .label {
-                font-size: 9px;
-            }
-            .header-btn {
-                font-size: 8px;
-                padding: 3px 12px;
-            }
-            .header-btn .icon {
-                font-size: 10px;
-            }
-            .telegram-link,
-            .bot-link {
-                font-size: 8px;
-                padding: 2px 10px;
+                width: 30px;
+                height: 30px;
+                font-size: 13px;
             }
         }
 
-        @media (min-width: 820px) {
-            #viewport-controls {
-                bottom: 28px;
-                padding: 6px 20px;
-            }
-            #viewport-controls .btn {
-                font-size: 10px;
-                padding: 6px 22px;
-                min-height: 34px;
-            }
-            #zoom-controls {
-                right: 22px;
-                bottom: 82px;
-            }
-            #zoom-controls .btn {
-                width: 44px;
-                height: 44px;
-                font-size: 18px;
-                min-height: 44px;
-                min-width: 44px;
-            }
-            #toast {
-                top: 66px;
-                font-size: 11px;
-                padding: 6px 24px;
-            }
-            .brand {
-                font-size: 26px;
-            }
-            #topbar {
-                padding: 10px 28px;
-                height: 60px;
-            }
+        /* ============================================================
+           SCROLLBAR STYLING FOR SIDEBAR
+           ============================================================ */
+        .sidebar-body::-webkit-scrollbar {
+            width: 3px;
+        }
+        .sidebar-body::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .sidebar-body::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 4px;
         }
 
-        .owner-footer {
-            font-size: 8px;
+        /* ===== TOOLTIP ===== */
+        .tip {
+            font-size: 11px;
             color: var(--text-muted);
-            opacity: 0.3;
-            text-align: center;
-            letter-spacing: 2.5px;
-            text-transform: uppercase;
-            padding-top: 10px;
-            border-top: 1px solid var(--glass-border);
-            margin-top: 12px;
-            width: 100%;
+            font-style: italic;
+            padding: 2px 4px;
         }
 
-        .offset-group {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .offset-group .input-field {
-            flex: 1;
-        }
-        .offset-group .offset-label {
-            font-size: 9px;
-            color: var(--text-muted);
-            white-space: nowrap;
-        }
-
-        .model-size-disabled .input-field {
-            opacity: 0.3;
-            cursor: not-allowed;
-        }
-        .model-size-disabled .ratio-btn {
-            opacity: 0.2;
-            cursor: not-allowed;
-            pointer-events: none;
-        }
-
-        /* Button with shimmer effect for primary */
-        .btn-primary::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            border-radius: inherit;
-            background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, transparent 60%);
-            pointer-events: none;
-            opacity: 0;
-            transition: opacity 0.4s;
-        }
-        .btn-primary:hover::after {
-            opacity: 1;
-        }
-        .btn-primary {
-            position: relative;
-            overflow: hidden;
+        /* ===== POINT BADGE ===== */
+        .point-badge {
+            font-size: 11px;
+            color: var(--text-secondary);
+            background: var(--bg-input);
+            padding: 2px 12px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
         }
     </style>
 </head>
 <body>
 
-    <!-- 3D Viewport -->
-    <div id="viewport"></div>
-
-    <!-- Top Bar -->
-    <div id="topbar">
-        <div class="brand">DCam<span>Pro</span></div>
-        <div class="topbar-center">
-            <button class="header-btn header-btn-left active" id="settingsToggle">
-                <i class="fas fa-tools icon"></i> Toolpath
-            </button>
-            <div class="theme-toggle" id="themeToggle" title="Toggle Dark/Light Theme">
-                <span class="icon">☀️</span>
-                <div class="switch active" id="themeSwitch"></div>
-                <span class="icon">🌙</span>
-            </div>
-        </div>
-        <div class="topbar-right">
-            <a class="bot-link header-btn" href="https://t.me/Image_2_3D_Bot" target="_blank" rel="noopener">
-                <span class="icon">🤖</span>
-                <span>RLF Bot</span>
-            </a>
-            <a class="telegram-link header-btn" href="https://t.me/dj3680" target="_blank" rel="noopener">
-                <span class="icon">🧑🏻‍💻</span>
-                <span>Owner</span>
-            </a>
-        </div>
-    </div>
-
-    <!-- Floating Toggle Button -->
-    <button id="floatingToggle" title="Toggle Simulation / Toolpath">
-        <i class="fas fa-cubes icon"></i>
+    <!-- Sidebar Toggle (mobile) -->
+    <button id="sidebarToggle" aria-label="Toggle sidebar">
+        <i class="fas fa-bars"></i>
     </button>
 
-    <!-- Settings Panel -->
-    <div id="panel">
-        <div class="panel-body">
+    <div id="app">
+        <!-- ===== SIDEBAR ===== -->
+        <div id="sidebar">
+            <div class="sidebar-header">
+                <div class="brand">
+                    DCam<span>Pro</span>
+                    <small>v2</small>
+                </div>
+                <button class="toggle-btn" id="sidebarCloseBtn" aria-label="Close sidebar">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
 
-            <!-- Layout Size -->
-            <div class="section-title">Layout Size</div>
-            <div class="form-grid">
-                <div class="input-group half-left">
-                    <label>Width (mm)</label>
-                    <div class="ratio-group">
-                        <input type="number" id="layoutWidth" value="300" min="10" max="2000" step="1" class="input-field" />
+            <div class="sidebar-body">
+                <!-- Step 1: Layout Size -->
+                <div class="form-group">
+                    <label><i class="fas fa-arrows-alt"></i> Layout Size</label>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <input type="number" id="layoutWidth" value="300" min="10" max="2000" step="1" class="input-field" placeholder="Width" />
+                            <span class="text-xs text-muted">mm</span>
+                        </div>
+                        <div class="form-group">
+                            <input type="number" id="layoutHeight" value="200" min="10" max="2000" step="1" class="input-field" placeholder="Height" />
+                            <span class="text-xs text-muted">mm</span>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label style="font-size:10px;text-transform:none;color:var(--text-muted);">Origin</label>
+                            <select id="mOrigin" class="input-field">
+                                <option value="center" selected>Center</option>
+                                <option value="bottom-left">Bottom Left</option>
+                                <option value="bottom-right">Bottom Right</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
-                <div class="input-group half-right">
-                    <label>Height (mm)</label>
-                    <div class="ratio-group">
-                        <input type="number" id="layoutHeight" value="200" min="10" max="2000" step="1" class="input-field" />
-                        <button class="ratio-btn" id="layoutRatioLock" title="Lock aspect ratio">
-                            <i class="fas fa-unlink"></i>
-                        </button>
+
+                <div class="divider"></div>
+
+                <!-- Step 2: Import Depthmap -->
+                <div class="form-group">
+                    <label><i class="fas fa-image"></i> Import Depthmap</label>
+                    <div class="file-drop" id="fileDrop">
+                        <span class="icon">📁</span>
+                        <div class="label">Drop or tap to import <br /><strong>PNG only</strong></div>
+                        <input type="file" id="fileInput" accept=".png" />
                     </div>
-                </div>
-            </div>
-
-            <!-- Depthmap Import -->
-            <div class="section-title">Depthmap</div>
-            <div class="file-drop" id="fileDrop">
-                <span class="icon">📁</span>
-                <div class="label">Drop or tap to import <br /><strong>PNG · BMP · TIFF</strong></div>
-                <input type="file" id="fileInput" accept=".png,.bmp,.tiff,.tif" />
-            </div>
-            <div class="file-info" id="fileInfo">
-                <span id="fileName">image.png</span>
-                <span id="fileSize">0 KB</span>
-                <span class="text-muted">·</span>
-                <span id="fileDims">0×0</span>
-                <span class="text-muted">·</span>
-                <span id="smoothLabel">smoothed 15%</span>
-                <button class="clear-btn" id="clearFileBtn">✕</button>
-                <button class="crop-btn" id="cropBtn"><i class="fas fa-crop-alt"></i> Crop</button>
-            </div>
-            <div class="image-preview-hint" id="previewHint">
-                <span class="highlight">✓</span> Model renders exactly as imported
-            </div>
-
-            <!-- Model Size - MOVED BELOW IMPORT, disabled until image loaded -->
-            <div class="section-title">Model Size <span class="badge">resize imported</span></div>
-            <div class="form-grid model-size-disabled" id="modelSizeGroup">
-                <div class="input-group half-left">
-                    <label>Width (mm)</label>
-                    <input type="number" id="modelWidth" value="200" min="1" max="2000" step="1" class="input-field" disabled />
-                </div>
-                <div class="input-group half-right">
-                    <label>Height (mm)</label>
-                    <div class="ratio-group">
-                        <input type="number" id="modelHeight" value="200" min="1" max="2000" step="1" class="input-field" disabled />
-                        <button class="ratio-btn" id="modelRatioLock" title="Lock aspect ratio" disabled>
-                            <i class="fas fa-unlink"></i>
-                        </button>
+                    <div class="file-info" id="fileInfo">
+                        <span id="fileName">image.png</span>
+                        <span id="fileDims">0×0</span>
+                        <button class="clear-btn" id="clearFileBtn">✕</button>
                     </div>
+                    <span class="text-xs text-muted">Image will automatically fill the layout</span>
                 </div>
-                <div class="input-group full">
-                    <label>Origin</label>
-                    <select id="mOrigin" class="input-field" disabled>
-                        <option value="bottom-left">Bottom Left</option>
-                        <option value="bottom-right">Bottom Right</option>
-                        <option value="center" selected>Center</option>
-                    </select>
-                </div>
-                <div class="input-group full">
-                    <span class="text-xs text-muted" id="modelSizeStatus">⏳ Import an image to enable resizing</span>
-                </div>
-            </div>
 
-            <!-- Z Height & Material Thickness -->
-            <div class="section-title">Depth &amp; Material</div>
-            <div class="form-grid">
-                <div class="input-group half-left">
-                    <label>Max Z (mm)</label>
+                <div class="divider"></div>
+
+                <!-- Step 3: Z Height -->
+                <div class="form-group">
+                    <label><i class="fas fa-arrow-up"></i> Z Height (mm)</label>
                     <input type="number" id="mZ" value="5" min="0.1" max="50" step="0.1" class="input-field" />
+                    <span class="text-xs text-muted">Max depth of carving</span>
                 </div>
-                <div class="input-group half-right">
-                    <label>Material Thickness (mm)</label>
-                    <input type="number" id="matThick" value="8" min="0.1" max="100" step="0.1" class="input-field" />
-                </div>
-                <div class="input-group full">
-                    <span class="text-xs text-muted">Material thickness must be ≥ Z + 2mm for safe clearance</span>
-                </div>
-            </div>
 
-            <!-- Tool -->
-            <div class="section-title">Tool <span class="badge">select one</span></div>
-            <div class="input-group">
-                <label>Ball Nose Diameter</label>
-                <div class="tool-chips" id="toolChips">
-                    <button class="tool-chip no-tool active" data-diam="0">None</button>
-                    <button class="tool-chip" data-diam="3">Ø <span class="diam">3</span></button>
-                    <button class="tool-chip" data-diam="4">Ø <span class="diam">4</span></button>
-                    <button class="tool-chip" data-diam="5">Ø <span class="diam">5</span></button>
-                    <button class="tool-chip" data-diam="6">Ø <span class="diam">6</span></button>
-                    <button class="tool-chip" data-diam="8">Ø <span class="diam">8</span></button>
-                    <button class="tool-chip" data-diam="10">Ø <span class="diam">10</span></button>
-                </div>
-                <div class="flex items-center gap-2 mt-1">
-                    <span class="text-xs text-muted">Stepover:</span>
-                    <span id="stepoverDisplay" class="text-xs text-gold font-medium">—</span>
-                    <span class="text-xs text-muted">(10% of Ø)</span>
-                </div>
-            </div>
+                <div class="divider"></div>
 
-            <!-- Strategy -->
-            <div class="section-title">Strategy</div>
-            <div class="btn-group">
-                <button class="btn btn-primary" id="styleRaster">Raster</button>
-                <button class="btn btn-outline" id="styleOffset">3D Offset</button>
-            </div>
-            <div id="styleDesc" class="text-xs text-muted mt-1">Zigzag raster pattern across model.</div>
-
-            <!-- Offset Vector -->
-            <div class="section-title">Offset Vector <span class="badge">inward boundary</span></div>
-            <div class="form-grid">
-                <div class="input-group full">
-                    <div class="offset-group">
-                        <span class="offset-label">Offset Distance (mm)</span>
-                        <input type="number" id="offsetDist" value="0" min="0" max="500" step="0.5" class="input-field" />
-                        <button class="btn btn-outline btn-sm" id="applyOffsetBtn" style="width:auto;padding:4px 14px;">
-                            <i class="fas fa-vector-square"></i> Apply
-                        </button>
+                <!-- Step 4: Tool -->
+                <div class="form-group">
+                    <label><i class="fas fa-circle"></i> Tool (Ball Nose)</label>
+                    <div class="tool-chips" id="toolChips">
+                        <button class="tool-chip no-tool active" data-diam="0">None</button>
+                        <button class="tool-chip" data-diam="3">Ø <span class="diam">3</span></button>
+                        <button class="tool-chip" data-diam="4">Ø <span class="diam">4</span></button>
+                        <button class="tool-chip" data-diam="5">Ø <span class="diam">5</span></button>
+                        <button class="tool-chip" data-diam="6">Ø <span class="diam">6</span></button>
+                        <button class="tool-chip" data-diam="8">Ø <span class="diam">8</span></button>
+                        <button class="tool-chip" data-diam="10">Ø <span class="diam">10</span></button>
+                    </div>
+                    <div class="flex items-center gap-2 mt-1">
+                        <span class="text-xs text-muted">Stepover:</span>
+                        <span id="stepoverDisplay" class="text-xs" style="color:var(--accent);font-weight:600;">—</span>
+                        <span class="text-xs text-muted">(10% of Ø)</span>
                     </div>
                 </div>
-                <div class="input-group full">
-                    <span class="text-xs text-muted" id="offsetStatus">No offset applied</span>
-                </div>
-            </div>
 
-            <!-- Calculate -->
-            <div class="mt-2">
+                <div class="divider"></div>
+
+                <!-- Step 5: Strategy -->
+                <div class="form-group">
+                    <label><i class="fas fa-route"></i> Strategy</label>
+                    <div class="btn-group">
+                        <button class="btn btn-primary" id="styleRaster">Raster</button>
+                        <button class="btn btn-outline" id="styleOffset">3D Offset</button>
+                    </div>
+                    <span id="styleDesc" class="text-xs text-muted">Zigzag raster pattern across model.</span>
+                </div>
+
+                <div class="divider"></div>
+
+                <!-- Step 6: Calculate -->
                 <button class="btn btn-primary" id="calcBtn">
                     <i class="fas fa-cogs"></i> Calculate Toolpath
                 </button>
-                <div id="calcStatus" class="text-xs text-muted mt-1 text-center" style="min-height:14px;"></div>
-            </div>
+                <div id="calcStatus" class="text-xs text-muted mt-1 text-center" style="min-height:18px;"></div>
 
-            <!-- Point info -->
-            <div id="pointInfo" class="flex items-center justify-between mt-1" style="display:none;">
-                <span class="text-xs text-muted">Points generated</span>
-                <span id="pointCount" class="point-badge">0</span>
-            </div>
+                <!-- Point info -->
+                <div id="pointInfo" class="flex items-center justify-between mt-1" style="display:none;">
+                    <span class="text-xs text-muted">Points generated</span>
+                    <span id="pointCount" class="point-badge">0</span>
+                </div>
 
-            <!-- Export -->
-            <div class="section-title mt-3">Export</div>
-            <div class="form-grid">
-                <div class="input-group full">
-                    <label>Filename</label>
-                    <div class="flex gap-1">
-                        <input type="text" id="exportName" value="" class="input-field" style="flex:1;" placeholder="Auto-generated" />
+                <div class="divider"></div>
+
+                <!-- Step 7: Export -->
+                <div class="form-group">
+                    <label><i class="fas fa-file-export"></i> Export</label>
+                    <div class="flex gap-2">
+                        <input type="text" id="exportName" value="" class="input-field" style="flex:1;" placeholder="Filename" />
                         <span class="text-xs text-muted" style="display:flex;align-items:center;">.tap</span>
                     </div>
+                    <div class="flex gap-2">
+                        <button class="btn btn-success" id="exportBtn" disabled style="flex:2;">
+                            <i class="fas fa-download"></i> Download
+                        </button>
+                    </div>
+                    <div id="exportStatus" class="text-xs text-muted mt-1 text-center" style="min-height:16px;"></div>
+                </div>
+
+                <!-- Footer -->
+                <div class="text-center mt-2" style="padding-top:8px;border-top:1px solid var(--border-color);">
+                    <span class="text-xs text-muted" style="opacity:0.4;letter-spacing:1px;">Developer: Dinesh</span>
                 </div>
             </div>
-            <div class="flex gap-2">
-                <button class="btn btn-success" id="exportBtn" disabled style="flex:2;">
-                    <i class="fas fa-download"></i> Download
-                </button>
-                <button class="btn btn-primary" id="shareBtn" disabled style="flex:1;">
-                    <i class="fas fa-share-alt"></i> Share
-                </button>
+
+            <!-- Status Bar -->
+            <div id="statusbar">
+                <span>
+                    <span class="status-dot ready" id="statusDot"></span>
+                    <span id="statusText">Ready</span>
+                </span>
+                <span id="statusExtra" class="text-xs"></span>
             </div>
-            <div id="exportStatus" class="text-xs text-muted mt-1 text-center" style="min-height:12px;"></div>
-
-            <!-- Footer -->
-            <div class="owner-footer">Developer: Dinesh</div>
-
         </div>
-    </div>
 
-    <!-- Viewport Controls -->
-    <div id="viewport-controls">
-        <button class="btn active" id="viewSurface">Surface</button>
-        <button class="btn" id="viewToolpath">Toolpath</button>
-        <button class="btn" id="viewSim">Sim</button>
-        <button class="btn" id="viewOffset">Offset</button>
-    </div>
+        <!-- ===== 3D VIEWPORT ===== -->
+        <div id="viewport">
+            <!-- Viewport Controls -->
+            <div id="viewport-controls">
+                <button class="btn active" id="viewSim">Simulation</button>
+                <button class="btn" id="viewToolpath">Toolpath</button>
+            </div>
 
-    <!-- Zoom Controls -->
-    <div id="zoom-controls" class="hidden-zoom">
-        <button class="btn" id="zoomIn">➕</button>
-        <button class="btn" id="zoomOut">➖</button>
-        <button class="btn" id="fitView">⊡</button>
+            <!-- Zoom Controls -->
+            <div id="zoom-controls">
+                <button class="btn" id="zoomIn">➕</button>
+                <button class="btn" id="zoomOut">➖</button>
+                <button class="btn" id="fitView">⊡</button>
+            </div>
+        </div>
     </div>
 
     <!-- Toast -->
@@ -1586,36 +930,11 @@
     <div id="loader">
         <div class="loader-spinner"></div>
         <div id="loader-text">Processing...</div>
-        <div class="progress-bar-container">
-            <div class="progress-bar-fill" id="progressFill"></div>
-        </div>
+        <div class="progress-bar"><div class="fill" id="progressFill"></div></div>
         <div id="loader-progress">0%</div>
     </div>
 
-    <!-- Crop Modal -->
-    <div id="cropModal">
-        <div class="crop-container">
-            <div class="crop-image-wrapper" id="cropWrapper">
-                <img id="cropImage" src="" alt="Crop image" />
-                <div class="crop-selection" id="cropSelection">
-                    <div class="crop-handle nw" data-handle="nw"></div>
-                    <div class="crop-handle n" data-handle="n"></div>
-                    <div class="crop-handle ne" data-handle="ne"></div>
-                    <div class="crop-handle w" data-handle="w"></div>
-                    <div class="crop-handle e" data-handle="e"></div>
-                    <div class="crop-handle sw" data-handle="sw"></div>
-                    <div class="crop-handle s" data-handle="s"></div>
-                    <div class="crop-handle se" data-handle="se"></div>
-                </div>
-            </div>
-            <div class="crop-info" id="cropInfo">Drag handles to crop</div>
-            <div class="crop-controls">
-                <button class="btn btn-outline" id="cropCancel">Cancel</button>
-                <button class="btn btn-primary" id="cropApply">Apply Crop</button>
-            </div>
-        </div>
-    </div>
-
+    <!-- Three.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js">
     </script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js">
@@ -1623,8 +942,8 @@
 
     <script>
         // ============================================================
-        //  DCam Pro — Professional CNC Toolpath Studio
-        //  Fixed simulation orientation, no overlap, premium UI
+        //  DCam Pro v2 — Clean Modern UI
+        //  Simplified Workflow: Layout → Import PNG → Z → Tool → Strategy
         // ============================================================
 
         (function() {
@@ -1635,9 +954,12 @@
             const qs = (sel, ctx) => (ctx || document).querySelector(sel);
             const qsa = (sel, ctx) => (ctx || document).querySelectorAll(sel);
 
-            const panel = $('panel');
-            const settingsToggle = $('settingsToggle');
-            const floatingToggle = $('floatingToggle');
+            const sidebar = $('sidebar');
+            const sidebarToggle = $('sidebarToggle');
+            const sidebarCloseBtn = $('sidebarCloseBtn');
+            const statusText = $('statusText');
+            const statusDot = $('statusDot');
+            const statusExtra = $('statusExtra');
             const toast = $('toast');
             const toastMsg = $('toastMsg');
             const toastClose = $('toastClose');
@@ -1645,11 +967,6 @@
             const loaderText = $('loader-text');
             const loaderProgress = $('loader-progress');
             const progressFill = $('progressFill');
-            const zoomControls = $('zoom-controls');
-            const themeToggle = $('themeToggle');
-            const themeSwitch = $('themeSwitch');
-            const modelSizeGroup = $('modelSizeGroup');
-            const modelSizeStatus = $('modelSizeStatus');
 
             // ---- State ----
             let toolDiameter = 0;
@@ -1659,42 +976,30 @@
             let imageLoaded = false;
             let toolpathPoints = null;
             let toolpathGenerated = false;
-            let simulationMode = 'surface';
+            let viewMode = 'sim'; // 'sim' | 'toolpath'
             let gcodeChunks = [];
             let totalPoints = 0;
-            let meshResolution = 200;
-            let ratioLockedLayout = false;
-            let ratioLockedModel = false;
-            let aspectRatioLayout = 1;
-            let aspectRatioModel = 1;
-            let settingsVisible = true;
-            let isSimulationActive = false;
+            let meshResolution = 180;
+            let isDarkTheme = true;
             let currentGcodeFull = '';
             let modelImageDataURL = '';
-            let isDarkTheme = true;
-            let customFilename = '';
-            let offsetDistance = 0;
-            let offsetApplied = false;
-            let offsetPolygon = null;
 
             // Three.js
             let scene, camera, renderer, controls;
             let surfaceMesh = null;
             let toolpathLine = null;
             let simMesh = null;
-            let offsetLine = null;
             let layoutBorderLine = null;
-            let axisHelper = null;
             let viewportInitialized = false;
 
-            // Crop state
-            let cropImageObj = null;
-            let cropBox = { x: 0, y: 0, w: 0, h: 0 };
-            let cropDragging = false;
-            let activeHandle = null;
+            // ---- Status ----
+            function setStatus(text, type = 'ready') {
+                statusText.textContent = text;
+                statusDot.className = 'status-dot ' + type;
+            }
 
             // ---- Toast ----
-            function showToast(msg, duration = 2400) {
+            function showToast(msg, duration = 2500) {
                 toastMsg.textContent = msg;
                 toast.classList.add('show');
                 clearTimeout(toast._timer);
@@ -1702,243 +1007,59 @@
             }
             toastClose.addEventListener('click', () => toast.classList.remove('show'));
 
-            // ---- Theme ----
-            function toggleTheme() {
-                isDarkTheme = !isDarkTheme;
-                document.documentElement.classList.toggle('light-theme', !isDarkTheme);
-                document.documentElement.classList.toggle('dark-theme', isDarkTheme);
-                themeSwitch.classList.toggle('active', isDarkTheme);
-                if (scene) {
-                    scene.background = new THREE.Color(isDarkTheme ? 0x0b0b0f : 0xf2f0ed);
-                }
-                localStorage.setItem('dcam_theme', isDarkTheme ? 'dark' : 'light');
-                showToast(isDarkTheme ? '🌙 Dark theme' : '☀️ Light theme', 1200);
-                if (viewportInitialized) update3DScene();
+            // ---- Sidebar toggle ----
+            function toggleSidebar(open) {
+                if (typeof open === 'undefined') open = !sidebar.classList.contains('open');
+                sidebar.classList.toggle('open', open);
             }
-
-            themeToggle.addEventListener('click', toggleTheme);
-
-            const savedTheme = localStorage.getItem('dcam_theme');
-            if (savedTheme === 'light') {
-                isDarkTheme = false;
-                document.documentElement.classList.add('light-theme');
-                document.documentElement.classList.remove('dark-theme');
-                themeSwitch.classList.remove('active');
-            } else {
-                isDarkTheme = true;
-                document.documentElement.classList.add('dark-theme');
-                document.documentElement.classList.remove('light-theme');
-                themeSwitch.classList.add('active');
-            }
-
-            // ---- Panel visibility ----
-            function toggleSettings(show) {
-                if (typeof show === 'undefined') show = !settingsVisible;
-                settingsVisible = show;
-                panel.classList.toggle('hidden', !show);
-                settingsToggle.classList.toggle('active', show);
-                settingsToggle.innerHTML = show ?
-                    '<i class="fas fa-tools icon"></i> Toolpath' :
-                    '<i class="fas fa-tools icon"></i> Toolpath';
-                updateFloatingButton();
-            }
-
-            // ---- Simulation toggle ----
-            function toggleSimulation(active) {
-                if (typeof active === 'undefined') active = !isSimulationActive;
-                isSimulationActive = active;
-                updateFloatingButton();
-
-                if (active) {
-                    if (simulationMode !== 'sim') {
-                        simulationMode = 'sim';
-                        applyViewMode();
+            sidebarToggle.addEventListener('click', () => toggleSidebar(true));
+            sidebarCloseBtn.addEventListener('click', () => toggleSidebar(false));
+            document.addEventListener('click', (e) => {
+                if (window.innerWidth <= 820) {
+                    if (!sidebar.contains(e.target) && e.target !== sidebarToggle) {
+                        sidebar.classList.remove('open');
                     }
-                    if (window.innerWidth < 820) {
-                        toggleSettings(false);
-                    }
-                    setTimeout(fitView, 200);
-                    showToast('🔮 Simulation view', 1500);
-                    zoomControls.classList.remove('hidden-zoom');
-                } else {
-                    if (simulationMode === 'sim') {
-                        simulationMode = 'surface';
-                        applyViewMode();
-                    }
-                    if (window.innerWidth < 820 && !settingsVisible) {
-                        toggleSettings(true);
-                    }
-                    showToast('🔮 Surface view');
-                    zoomControls.classList.add('hidden-zoom');
                 }
-            }
-
-            // ---- Floating button ----
-            function updateFloatingButton() {
-                if (isSimulationActive) {
-                    floatingToggle.innerHTML = '<i class="fas fa-sliders-h icon"></i>';
-                    floatingToggle.title = 'Go to Toolpath Settings';
-                } else {
-                    floatingToggle.innerHTML = '<i class="fas fa-cubes icon"></i>';
-                    floatingToggle.title = 'Go to Simulation';
-                }
-            }
-
-            floatingToggle.addEventListener('click', function() {
-                if (isSimulationActive) {
-                    toggleSimulation(false);
-                    if (!settingsVisible) toggleSettings(true);
-                } else {
-                    toggleSimulation(true);
-                }
-            });
-
-            settingsToggle.addEventListener('click', () => {
-                toggleSettings(!settingsVisible);
             });
 
             // ---- Inputs ----
             const layoutWidth = $('layoutWidth');
             const layoutHeight = $('layoutHeight');
-            const layoutRatioLock = $('layoutRatioLock');
-            const modelWidth = $('modelWidth');
-            const modelHeight = $('modelHeight');
-            const modelRatioLock = $('modelRatioLock');
             const mOrigin = $('mOrigin');
             const mZ = $('mZ');
-            const matThick = $('matThick');
             const exportName = $('exportName');
-            const offsetDist = $('offsetDist');
-
-            // Layout ratio
-            layoutRatioLock.classList.remove('active');
-            layoutRatioLock.innerHTML = '<i class="fas fa-unlink"></i>';
-            layoutRatioLock.addEventListener('click', function() {
-                ratioLockedLayout = !ratioLockedLayout;
-                this.classList.toggle('active', ratioLockedLayout);
-                this.innerHTML = ratioLockedLayout ? '<i class="fas fa-link"></i>' : '<i class="fas fa-unlink"></i>';
-                if (ratioLockedLayout) {
-                    const w = parseFloat(layoutWidth.value) || 300;
-                    const h = parseFloat(layoutHeight.value) || 200;
-                    aspectRatioLayout = w / h;
-                    showToast('🔗 Layout ratio locked', 1000);
-                } else {
-                    showToast('🔓 Layout ratio unlocked', 1000);
-                }
-            });
-
-            layoutWidth.addEventListener('input', function() {
-                if (ratioLockedLayout) {
-                    const w = parseFloat(this.value) || 300;
-                    layoutHeight.value = (w / aspectRatioLayout).toFixed(1);
-                }
-                autoApply();
-            });
-            layoutHeight.addEventListener('input', function() {
-                if (ratioLockedLayout) {
-                    const h = parseFloat(this.value) || 200;
-                    layoutWidth.value = (h * aspectRatioLayout).toFixed(1);
-                }
-                autoApply();
-            });
-
-            // Model ratio - enabled only after image load
-            modelRatioLock.classList.remove('active');
-            modelRatioLock.innerHTML = '<i class="fas fa-unlink"></i>';
-            modelRatioLock.addEventListener('click', function() {
-                if (!imageLoaded) return;
-                ratioLockedModel = !ratioLockedModel;
-                this.classList.toggle('active', ratioLockedModel);
-                this.innerHTML = ratioLockedModel ? '<i class="fas fa-link"></i>' : '<i class="fas fa-unlink"></i>';
-                if (ratioLockedModel && imageLoaded && depthmapData) {
-                    const ar = depthmapData.width / depthmapData.height;
-                    const w = parseFloat(modelWidth.value) || 200;
-                    modelHeight.value = (w / ar).toFixed(1);
-                    aspectRatioModel = ar;
-                    showToast('🔗 Model ratio locked to image', 1000);
-                } else if (ratioLockedModel) {
-                    const w = parseFloat(modelWidth.value) || 200;
-                    const h = parseFloat(modelHeight.value) || 200;
-                    aspectRatioModel = w / h;
-                    showToast('🔗 Model ratio locked', 1000);
-                } else {
-                    showToast('🔓 Model ratio unlocked', 1000);
-                }
-            });
-
-            modelWidth.addEventListener('input', function() {
-                if (ratioLockedModel && imageLoaded) {
-                    const w = parseFloat(this.value) || 200;
-                    modelHeight.value = (w / aspectRatioModel).toFixed(1);
-                }
-                autoApply();
-            });
-            modelHeight.addEventListener('input', function() {
-                if (ratioLockedModel && imageLoaded) {
-                    const h = parseFloat(this.value) || 200;
-                    modelWidth.value = (h * aspectRatioModel).toFixed(1);
-                }
-                autoApply();
-            });
-
-            // ---- Enable/disable model size controls ----
-            function setModelSizeEnabled(enabled) {
-                const inputs = modelSizeGroup.querySelectorAll('.input-field');
-                const btns = modelSizeGroup.querySelectorAll('.ratio-btn');
-                inputs.forEach(inp => inp.disabled = !enabled);
-                btns.forEach(btn => btn.disabled = !enabled);
-                if (enabled) {
-                    modelSizeGroup.classList.remove('model-size-disabled');
-                    modelSizeStatus.textContent = '✅ Model loaded — resize freely';
-                    modelSizeStatus.style.color = 'var(--accent)';
-                } else {
-                    modelSizeGroup.classList.add('model-size-disabled');
-                    modelSizeStatus.textContent = '⏳ Import an image to enable resizing';
-                    modelSizeStatus.style.color = 'var(--text-muted)';
-                }
-            }
-
-            setModelSizeEnabled(false);
 
             // ---- Generate filename ----
             function generateDefaultFilename() {
-                const w = parseFloat(modelWidth.value) || 200;
-                const h = parseFloat(modelHeight.value) || 200;
+                const w = parseFloat(layoutWidth.value) || 300;
+                const h = parseFloat(layoutHeight.value) || 200;
                 const z = parseFloat(mZ.value) || 5;
                 const tool = toolDiameter || 0;
                 const origin = mOrigin.value;
-                return `DCam_${h}x${w}x${z}_(Tool${tool}mm)_(Origin${origin})`;
+                return `DCam_${w}x${h}x${z}_(Tool${tool})_(Origin${origin})`;
             }
 
             setTimeout(() => {
                 exportName.value = generateDefaultFilename();
-                customFilename = exportName.value;
             }, 100);
 
             function updateFilename() {
-                if (!exportName.value || exportName.value === customFilename || exportName.value === '') {
+                if (!exportName.value || exportName.value === '' || exportName.value === 'dcam_model') {
                     exportName.value = generateDefaultFilename();
-                    customFilename = exportName.value;
                 }
             }
-
-            modelWidth.addEventListener('change', updateFilename);
-            modelHeight.addEventListener('change', updateFilename);
+            layoutWidth.addEventListener('change', updateFilename);
+            layoutHeight.addEventListener('change', updateFilename);
             mZ.addEventListener('change', updateFilename);
             mOrigin.addEventListener('change', updateFilename);
-            exportName.addEventListener('input', function() { customFilename = this.value; });
 
-            // ---- File import ----
+            // ---- File import (PNG only) ----
             const fileInput = $('fileInput');
             const fileDrop = $('fileDrop');
             const fileInfo = $('fileInfo');
             const fileName = $('fileName');
-            const fileSize = $('fileSize');
             const fileDims = $('fileDims');
-            const smoothLabel = $('smoothLabel');
             const clearFileBtn = $('clearFileBtn');
-            const cropBtn = $('cropBtn');
-            const previewHint = $('previewHint');
 
             function smoothDepthmap(pixels, w, h, strength) {
                 const kernelSize = Math.max(3, Math.floor(Math.min(w, h) * strength * 0.15));
@@ -1973,296 +1094,15 @@
                 return result;
             }
 
-            // ---- Crop ----
-            function initCrop() {
-                if (!imageLoaded || !depthmapData) {
-                    showToast('⚠️ Please import an image first.');
-                    return;
-                }
-                const img = new Image();
-                img.onload = function() {
-                    cropImageObj = img;
-                    const cropImg = $('cropImage');
-                    cropImg.src = img.src;
-                    const sel = $('cropSelection');
-                    sel.style.display = 'block';
-                    const wrapper = $('cropWrapper');
-                    const rect = wrapper.getBoundingClientRect();
-                    const imgRect = cropImg.getBoundingClientRect();
-                    const pad = 0.05;
-                    const iw = imgRect.width,
-                        ih = imgRect.height;
-                    cropBox = {
-                        x: iw * pad,
-                        y: ih * pad,
-                        w: iw * (1 - pad * 2),
-                        h: ih * (1 - pad * 2)
-                    };
-                    updateCropBox();
-                    $('cropModal').classList.add('active');
-                };
-                if (window._cropImageDataURL) {
-                    img.src = window._cropImageDataURL;
-                } else {
-                    showToast('❌ No image data available for cropping.');
-                }
-            }
-
-            function updateCropBox() {
-                const sel = $('cropSelection');
-                sel.style.left = cropBox.x + 'px';
-                sel.style.top = cropBox.y + 'px';
-                sel.style.width = cropBox.w + 'px';
-                sel.style.height = cropBox.h + 'px';
-                const img = $('cropImage');
-                const imgRect = img.getBoundingClientRect();
-                const scaleX = cropImageObj ? cropImageObj.naturalWidth / imgRect.width : 1;
-                const scaleY = cropImageObj ? cropImageObj.naturalHeight / imgRect.height : 1;
-                const pw = Math.round(cropBox.w * scaleX);
-                const ph = Math.round(cropBox.h * scaleY);
-                $('cropInfo').textContent = `Selection: ${pw} × ${ph} px`;
-            }
-
-            function setupCropHandles() {
-                const handles = qsa('.crop-handle');
-                const wrapper = $('cropWrapper');
-
-                function getPos(e) {
-                    const rect = wrapper.getBoundingClientRect();
-                    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-                    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-                    return {
-                        x: Math.max(0, Math.min(clientX - rect.left, rect.width)),
-                        y: Math.max(0, Math.min(clientY - rect.top, rect.height))
-                    };
-                }
-
-                handles.forEach(h => {
-                    const startDrag = function(e) {
-                        e.preventDefault();
-                        activeHandle = h.dataset.handle;
-                        cropDragging = true;
-                        const pos = getPos(e);
-                        const sel = $('cropSelection');
-                        const selRect = sel.getBoundingClientRect();
-                        const wrapperRect = wrapper.getBoundingClientRect();
-                        cropBox._offsetX = pos.x - (selRect.left - wrapperRect.left);
-                        cropBox._offsetY = pos.y - (selRect.top - wrapperRect.top);
-                        const hName = activeHandle;
-                        if (hName.includes('n')) cropBox._fixedY = cropBox.y + cropBox.h;
-                        if (hName.includes('s')) cropBox._fixedY = cropBox.y;
-                        if (hName.includes('w')) cropBox._fixedX = cropBox.x + cropBox.w;
-                        if (hName.includes('e')) cropBox._fixedX = cropBox.x;
-                        cropBox._origX = cropBox.x;
-                        cropBox._origY = cropBox.y;
-                        cropBox._origW = cropBox.w;
-                        cropBox._origH = cropBox.h;
-                    };
-
-                    h.addEventListener('mousedown', startDrag);
-                    h.addEventListener('touchstart', startDrag, { passive: false });
-                });
-
-                document.addEventListener('mousemove', function(e) {
-                    if (!cropDragging || !activeHandle) return;
-                    const pos = getPos(e);
-                    const h = activeHandle;
-                    const minSize = 10;
-
-                    if (h === 'nw') {
-                        let newX = Math.min(pos.x, cropBox._fixedX - minSize);
-                        let newY = Math.min(pos.y, cropBox._fixedY - minSize);
-                        cropBox.x = Math.max(0, newX);
-                        cropBox.y = Math.max(0, newY);
-                        cropBox.w = Math.max(minSize, cropBox._fixedX - cropBox.x);
-                        cropBox.h = Math.max(minSize, cropBox._fixedY - cropBox.y);
-                    } else if (h === 'ne') {
-                        let newX = Math.max(pos.x, cropBox._fixedX + minSize);
-                        let newY = Math.min(pos.y, cropBox._fixedY - minSize);
-                        cropBox.y = Math.max(0, newY);
-                        cropBox.w = Math.max(minSize, newX - cropBox.x);
-                        cropBox.h = Math.max(minSize, cropBox._fixedY - cropBox.y);
-                    } else if (h === 'sw') {
-                        let newX = Math.min(pos.x, cropBox._fixedX - minSize);
-                        let newY = Math.max(pos.y, cropBox._fixedY + minSize);
-                        cropBox.x = Math.max(0, newX);
-                        cropBox.w = Math.max(minSize, cropBox._fixedX - cropBox.x);
-                        cropBox.h = Math.max(minSize, newY - cropBox.y);
-                    } else if (h === 'se') {
-                        let newX = Math.max(pos.x, cropBox._fixedX + minSize);
-                        let newY = Math.max(pos.y, cropBox._fixedY + minSize);
-                        cropBox.w = Math.max(minSize, newX - cropBox.x);
-                        cropBox.h = Math.max(minSize, newY - cropBox.y);
-                    } else if (h === 'n') {
-                        let newY = Math.min(pos.y, cropBox._fixedY - minSize);
-                        cropBox.y = Math.max(0, newY);
-                        cropBox.h = Math.max(minSize, cropBox._fixedY - cropBox.y);
-                    } else if (h === 's') {
-                        let newY = Math.max(pos.y, cropBox.y + minSize);
-                        cropBox.h = Math.max(minSize, newY - cropBox.y);
-                    } else if (h === 'w') {
-                        let newX = Math.min(pos.x, cropBox._fixedX - minSize);
-                        cropBox.x = Math.max(0, newX);
-                        cropBox.w = Math.max(minSize, cropBox._fixedX - cropBox.x);
-                    } else if (h === 'e') {
-                        let newX = Math.max(pos.x, cropBox.x + minSize);
-                        cropBox.w = Math.max(minSize, newX - cropBox.x);
-                    }
-
-                    const wrapperRect = wrapper.getBoundingClientRect();
-                    cropBox.x = Math.max(0, Math.min(cropBox.x, wrapperRect.width - minSize));
-                    cropBox.y = Math.max(0, Math.min(cropBox.y, wrapperRect.height - minSize));
-                    cropBox.w = Math.max(minSize, Math.min(cropBox.w, wrapperRect.width - cropBox.x));
-                    cropBox.h = Math.max(minSize, Math.min(cropBox.h, wrapperRect.height - cropBox.y));
-
-                    updateCropBox();
-                });
-
-                document.addEventListener('touchmove', function(e) {
-                    if (!cropDragging || !activeHandle) return;
-                    e.preventDefault();
-                    const pos = getPos(e);
-                    const h = activeHandle;
-                    const minSize = 10;
-
-                    if (h === 'nw') {
-                        let newX = Math.min(pos.x, cropBox._fixedX - minSize);
-                        let newY = Math.min(pos.y, cropBox._fixedY - minSize);
-                        cropBox.x = Math.max(0, newX);
-                        cropBox.y = Math.max(0, newY);
-                        cropBox.w = Math.max(minSize, cropBox._fixedX - cropBox.x);
-                        cropBox.h = Math.max(minSize, cropBox._fixedY - cropBox.y);
-                    } else if (h === 'ne') {
-                        let newX = Math.max(pos.x, cropBox._fixedX + minSize);
-                        let newY = Math.min(pos.y, cropBox._fixedY - minSize);
-                        cropBox.y = Math.max(0, newY);
-                        cropBox.w = Math.max(minSize, newX - cropBox.x);
-                        cropBox.h = Math.max(minSize, cropBox._fixedY - cropBox.y);
-                    } else if (h === 'sw') {
-                        let newX = Math.min(pos.x, cropBox._fixedX - minSize);
-                        let newY = Math.max(pos.y, cropBox._fixedY + minSize);
-                        cropBox.x = Math.max(0, newX);
-                        cropBox.w = Math.max(minSize, cropBox._fixedX - cropBox.x);
-                        cropBox.h = Math.max(minSize, newY - cropBox.y);
-                    } else if (h === 'se') {
-                        let newX = Math.max(pos.x, cropBox._fixedX + minSize);
-                        let newY = Math.max(pos.y, cropBox._fixedY + minSize);
-                        cropBox.w = Math.max(minSize, newX - cropBox.x);
-                        cropBox.h = Math.max(minSize, newY - cropBox.y);
-                    } else if (h === 'n') {
-                        let newY = Math.min(pos.y, cropBox._fixedY - minSize);
-                        cropBox.y = Math.max(0, newY);
-                        cropBox.h = Math.max(minSize, cropBox._fixedY - cropBox.y);
-                    } else if (h === 's') {
-                        let newY = Math.max(pos.y, cropBox.y + minSize);
-                        cropBox.h = Math.max(minSize, newY - cropBox.y);
-                    } else if (h === 'w') {
-                        let newX = Math.min(pos.x, cropBox._fixedX - minSize);
-                        cropBox.x = Math.max(0, newX);
-                        cropBox.w = Math.max(minSize, cropBox._fixedX - cropBox.x);
-                    } else if (h === 'e') {
-                        let newX = Math.max(pos.x, cropBox.x + minSize);
-                        cropBox.w = Math.max(minSize, newX - cropBox.x);
-                    }
-
-                    const wrapperRect = wrapper.getBoundingClientRect();
-                    cropBox.x = Math.max(0, Math.min(cropBox.x, wrapperRect.width - minSize));
-                    cropBox.y = Math.max(0, Math.min(cropBox.y, wrapperRect.height - minSize));
-                    cropBox.w = Math.max(minSize, Math.min(cropBox.w, wrapperRect.width - cropBox.x));
-                    cropBox.h = Math.max(minSize, Math.min(cropBox.h, wrapperRect.height - cropBox.y));
-
-                    updateCropBox();
-                }, { passive: false });
-
-                document.addEventListener('mouseup', function() {
-                    if (cropDragging) {
-                        cropDragging = false;
-                        activeHandle = null;
-                    }
-                });
-
-                document.addEventListener('touchend', function() {
-                    if (cropDragging) {
-                        cropDragging = false;
-                        activeHandle = null;
-                    }
-                });
-            }
-
-            $('cropCancel').addEventListener('click', function() {
-                $('cropModal').classList.remove('active');
-            });
-
-            $('cropApply').addEventListener('click', function() {
-                if (!cropImageObj) return;
-                const imgRect = $('cropImage').getBoundingClientRect();
-                const scaleX = cropImageObj.naturalWidth / imgRect.width;
-                const scaleY = cropImageObj.naturalHeight / imgRect.height;
-
-                const cropX = Math.round(cropBox.x * scaleX);
-                const cropY = Math.round(cropBox.y * scaleY);
-                const cropW = Math.round(cropBox.w * scaleX);
-                const cropH = Math.round(cropBox.h * scaleY);
-
-                if (cropW < 4 || cropH < 4) {
-                    showToast('❌ Selection too small.');
-                    return;
-                }
-
-                const canvas = document.createElement('canvas');
-                canvas.width = cropW;
-                canvas.height = cropH;
-                const ctx = canvas.getContext('2d');
-                ctx.drawImage(cropImageObj, cropX, cropY, cropW, cropH, 0, 0, cropW, cropH);
-                const imageData = ctx.getImageData(0, 0, cropW, cropH);
-                const data = imageData.data;
-                const pixels = new Float32Array(cropW * cropH);
-                for (let i = 0; i < cropW * cropH; i++) {
-                    const idx = i * 4;
-                    const r = data[idx],
-                        g = data[idx + 1],
-                        b = data[idx + 2];
-                    pixels[i] = (r + g + b) / 3 / 255;
-                }
-                const smoothed = smoothDepthmap(pixels, cropW, cropH, 0.15);
-                depthmapData = { width: cropW, height: cropH, pixels: smoothed };
-                imageLoaded = true;
-                window._cropImageDataURL = canvas.toDataURL('image/png');
-                modelImageDataURL = window._cropImageDataURL;
-
-                fileName.textContent = 'cropped.png';
-                fileSize.textContent = '--';
-                fileDims.textContent = `${cropW}×${cropH}`;
-                smoothLabel.textContent = 'smoothed 15%';
-                previewHint.innerHTML = `<span class="highlight">✓</span> Cropped (${cropW}×${cropH})`;
-
-                aspectRatioModel = cropW / cropH;
-                if (ratioLockedModel) {
-                    const w = parseFloat(modelWidth.value) || 200;
-                    modelHeight.value = (w / aspectRatioModel).toFixed(1);
-                }
-
-                setModelSizeEnabled(true);
-                if (viewportInitialized) update3DScene();
-                showToast(`✅ Cropped to ${cropW}×${cropH}`);
-                $('cropModal').classList.remove('active');
-                const sel = $('cropSelection');
-                sel.style.display = 'none';
-                updateFilename();
-            });
-
-            cropBtn.addEventListener('click', initCrop);
-
             function loadImageAsDepthmap(file) {
                 const ext = file.name.split('.').pop().toLowerCase();
-                if (!['png', 'bmp', 'tiff', 'tif'].includes(ext)) {
-                    showToast('❌ Please import PNG, BMP, or TIFF files only.');
+                if (ext !== 'png') {
+                    showToast('❌ Please import a PNG file only.');
                     return;
                 }
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     const dataURL = e.target.result;
-                    window._cropImageDataURL = dataURL;
                     modelImageDataURL = dataURL;
                     const img = new Image();
                     img.onload = function() {
@@ -2287,29 +1127,21 @@
                         depthmapData = { width: w, height: h, pixels: smoothed };
                         imageLoaded = true;
 
-                        aspectRatioModel = w / h;
-                        if (ratioLockedModel) {
-                            const wVal = parseFloat(modelWidth.value) || 200;
-                            modelHeight.value = (wVal / aspectRatioModel).toFixed(1);
-                        }
-
                         fileName.textContent = file.name.substring(0, 20) + (file.name.length > 20 ? '...' : '');
-                        fileSize.textContent = (file.size / 1024).toFixed(1) + ' KB';
                         fileDims.textContent = `${w}×${h}`;
-                        smoothLabel.textContent = 'smoothed 15%';
                         fileInfo.classList.add('show');
-                        fileDrop.style.display = 'none';
+                        fileDrop.classList.add('has-file');
+                        fileDrop.querySelector('.label').innerHTML = '✅ <strong>PNG loaded</strong>';
+                        fileDrop.querySelector('.icon').textContent = '📄';
+
                         const mp = (w * h / 1e6).toFixed(1);
-                        previewHint.innerHTML =
-                            `<span class="highlight">✓</span> Image (${mp}M px) · ${w}×${h}`;
                         showToast(`✅ Loaded ${file.name} (${mp}M px)`);
-                        setModelSizeEnabled(true);
+                        setStatus(`Image loaded (${w}×${h})`, 'ready');
                         if (viewportInitialized) update3DScene();
-                        setTimeout(setupCropHandles, 100);
                         updateFilename();
                     };
                     img.onerror = function() {
-                        showToast('❌ Failed to load image.');
+                        showToast('❌ Failed to load image. Try a valid PNG.');
                     };
                     img.src = dataURL;
                 };
@@ -2327,11 +1159,11 @@
                 fileDrop.style.borderColor = 'var(--accent)';
             });
             fileDrop.addEventListener('dragleave', () => {
-                fileDrop.style.borderColor = 'var(--accent-glow)';
+                fileDrop.style.borderColor = '';
             });
             fileDrop.addEventListener('drop', (e) => {
                 e.preventDefault();
-                fileDrop.style.borderColor = 'var(--accent-glow)';
+                fileDrop.style.borderColor = '';
                 if (e.dataTransfer.files && e.dataTransfer.files[0]) {
                     loadImageAsDepthmap(e.dataTransfer.files[0]);
                 }
@@ -2346,16 +1178,13 @@
                 totalPoints = 0;
                 currentGcodeFull = '';
                 fileInfo.classList.remove('show');
-                fileDrop.style.display = 'block';
+                fileDrop.classList.remove('has-file');
+                fileDrop.querySelector('.label').innerHTML = 'Drop or tap to import <br /><strong>PNG only</strong>';
+                fileDrop.querySelector('.icon').textContent = '📁';
                 fileInput.value = '';
-                previewHint.innerHTML = `<span class="highlight">✓</span> No image loaded`;
                 $('pointInfo').style.display = 'none';
                 $('exportBtn').disabled = true;
-                $('shareBtn').disabled = true;
-                offsetApplied = false;
-                offsetPolygon = null;
-                updateOffsetDisplay();
-                setModelSizeEnabled(false);
+                setStatus('Ready', 'ready');
                 showToast('🗑️ Depthmap cleared');
                 if (viewportInitialized) update3DScene();
                 updateFilename();
@@ -2399,49 +1228,7 @@
             styleOffset.addEventListener('click', () => setStyle('offset'));
             setStyle('raster');
 
-            // ---- Offset Vector ----
-            function updateOffsetDisplay() {
-                const status = $('offsetStatus');
-                if (offsetApplied && offsetDistance > 0) {
-                    status.textContent = `✅ Offset applied: ${offsetDistance.toFixed(1)}mm inward`;
-                    status.style.color = 'var(--accent)';
-                } else if (offsetDistance === 0) {
-                    status.textContent = 'ℹ️ No offset (0mm)';
-                    status.style.color = 'var(--text-muted)';
-                } else {
-                    status.textContent = '⚠️ Offset not applied yet';
-                    status.style.color = '#e06060';
-                }
-            }
-
-            $('applyOffsetBtn').addEventListener('click', function() {
-                const dist = parseFloat(offsetDist.value) || 0;
-                if (dist < 0) { showToast('❌ Offset must be positive'); return; }
-                offsetDistance = dist;
-                if (dist === 0) {
-                    offsetApplied = false;
-                    offsetPolygon = null;
-                    showToast('ℹ️ Offset removed', 1200);
-                } else {
-                    offsetApplied = true;
-                    const lw = parseFloat(layoutWidth.value) || 300;
-                    const lh = parseFloat(layoutHeight.value) || 200;
-                    const ox = -lw / 2;
-                    const oy = -lh / 2;
-                    const d = Math.min(dist, lw / 2, lh / 2);
-                    offsetPolygon = [
-                        { x: ox + d, y: oy + d },
-                        { x: ox + lw - d, y: oy + d },
-                        { x: ox + lw - d, y: oy + lh - d },
-                        { x: ox + d, y: oy + lh - d }
-                    ];
-                    showToast(`✅ Offset applied: ${d.toFixed(1)}mm inward`, 1500);
-                }
-                updateOffsetDisplay();
-                if (viewportInitialized) update3DScene();
-            });
-
-            // ---- Auto apply ----
+            // ---- Auto apply on changes ----
             let debounceTimer = null;
 
             function autoApply() {
@@ -2454,11 +1241,8 @@
             }
             mOrigin.addEventListener('change', autoApply);
             mZ.addEventListener('input', autoApply);
-            matThick.addEventListener('input', autoApply);
             layoutWidth.addEventListener('input', autoApply);
             layoutHeight.addEventListener('input', autoApply);
-            modelWidth.addEventListener('input', autoApply);
-            modelHeight.addEventListener('input', autoApply);
 
             // ---- 3D Viewport ----
             function initViewport() {
@@ -2466,7 +1250,7 @@
                 const rect = container.getBoundingClientRect();
 
                 scene = new THREE.Scene();
-                scene.background = new THREE.Color(isDarkTheme ? 0x0b0b0f : 0xf2f0ed);
+                scene.background = new THREE.Color(0x0d0d12);
 
                 const aspect = rect.width / rect.height || 1;
                 camera = new THREE.PerspectiveCamera(35, aspect, 0.1, 3000);
@@ -2529,8 +1313,9 @@
                 const hemi = new THREE.HemisphereLight(0xffffff, 0x444444, 0.5);
                 scene.add(hemi);
 
-                axisHelper = new THREE.AxesHelper(120);
-                scene.add(axisHelper);
+                // Simple axes helper
+                const axes = new THREE.AxesHelper(60);
+                scene.add(axes);
 
                 viewportInitialized = true;
                 animate3D();
@@ -2566,18 +1351,16 @@
                 const geo = new THREE.BufferGeometry();
                 geo.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
 
-                const borderColor = isDarkTheme ? 0xd4af37 : 0xb8941e;
                 const mat = new THREE.LineBasicMaterial({
-                    color: borderColor,
+                    color: 0x5b7cfa,
                     transparent: true,
-                    opacity: 0.5,
-                    linewidth: 2,
+                    opacity: 0.3,
                 });
                 layoutBorderLine = new THREE.Line(geo, mat);
                 scene.add(layoutBorderLine);
             }
 
-            // ---- Build Surface Mesh ----
+            // ---- Build Depthmap Surface (for simulation view before calc) ----
             function buildSurfaceMesh() {
                 if (!depthmapData) return;
                 const dw = depthmapData.width;
@@ -2585,20 +1368,17 @@
                 const pixels = depthmapData.pixels;
                 if (!pixels) return;
 
-                const mw = parseFloat(modelWidth.value) || 200;
-                const mh = parseFloat(modelHeight.value) || 200;
+                const lw = parseFloat(layoutWidth.value) || 300;
+                const lh = parseFloat(layoutHeight.value) || 200;
                 const zMax = parseFloat(mZ.value) || 5;
                 const origin = mOrigin.value;
 
-                const lw = parseFloat(layoutWidth.value) || 300;
-                const lh = parseFloat(layoutHeight.value) || 200;
-
                 let ox = 0,
                     oy = 0;
-                if (origin === 'center') { ox = -mw / 2;
-                    oy = -mh / 2; } else if (origin === 'bottom-left') { ox = -lw / 2;
-                    oy = -lh / 2; } else if (origin === 'bottom-right') { ox = lw / 2 - mw;
-                    oy = -lh / 2; }
+                if (origin === 'center') { ox = -lw / 2;
+                    oy = -lh / 2; } else if (origin === 'bottom-left') { ox = 0;
+                    oy = 0; } else if (origin === 'bottom-right') { ox = -lw;
+                    oy = 0; }
 
                 const res = Math.min(meshResolution, Math.floor(Math.min(dw, dh) / 1.2));
                 const cols = Math.min(res, dw);
@@ -2622,40 +1402,34 @@
                     }
                 }
 
-                const centerY = oy + mh / 2;
-
+                // Flip Y to match Three.js coordinate system
                 for (let r = 0; r < rows; r++) {
                     for (let c = 0; c < cols; c++) {
                         const px = c / cols;
                         const py = 1 - (r / rows);
                         const z = heightMap[r * cols + c];
-                        const x = ox + px * mw;
-                        let y = oy + py * mh;
-                        y = 2 * centerY - y;
+                        const x = ox + px * lw;
+                        const y = oy + py * lh;
                         positions.push(x, y, z);
 
+                        // Heatmap color based on height
                         const t = Math.min(1, Math.max(0, z / (zMax || 1)));
                         let rCol, gCol, bCol;
-                        if (t < 0.25) {
-                            const u = t / 0.25;
-                            rCol = 0.05 + u * 0.05;
-                            gCol = 0.05 + u * 0.35;
-                            bCol = 0.35 + u * 0.35;
-                        } else if (t < 0.5) {
-                            const u = (t - 0.25) / 0.25;
-                            rCol = 0.10 + u * 0.15;
-                            gCol = 0.40 + u * 0.35;
-                            bCol = 0.70 - u * 0.40;
-                        } else if (t < 0.75) {
-                            const u = (t - 0.5) / 0.25;
-                            rCol = 0.25 + u * 0.55;
-                            gCol = 0.75 - u * 0.25;
-                            bCol = 0.30 - u * 0.20;
+                        if (t < 0.33) {
+                            const u = t / 0.33;
+                            rCol = 0.1 + u * 0.8;
+                            gCol = 0.05 + u * 0.7;
+                            bCol = 0.3 + u * 0.1;
+                        } else if (t < 0.66) {
+                            const u = (t - 0.33) / 0.33;
+                            rCol = 0.9 - u * 0.5;
+                            gCol = 0.75 + u * 0.2;
+                            bCol = 0.4 - u * 0.2;
                         } else {
-                            const u = (t - 0.75) / 0.25;
-                            rCol = 0.80 + u * 0.20;
-                            gCol = 0.50 - u * 0.30;
-                            bCol = 0.10 - u * 0.05;
+                            const u = (t - 0.66) / 0.34;
+                            rCol = 0.4 + u * 0.4;
+                            gCol = 0.95 - u * 0.4;
+                            bCol = 0.2 - u * 0.1;
                         }
                         colors.push(Math.min(1, rCol), Math.min(1, gCol), Math.min(1, bCol));
                     }
@@ -2679,7 +1453,7 @@
 
                 const mat = new THREE.MeshStandardMaterial({
                     vertexColors: true,
-                    roughness: 0.3,
+                    roughness: 0.4,
                     metalness: 0.05,
                     side: THREE.DoubleSide,
                     flatShading: false,
@@ -2691,7 +1465,7 @@
                 scene.add(surfaceMesh);
             }
 
-            // ---- Build Simulation Mesh (no rotation, same orientation as surface) ----
+            // ---- Build Simulation Mesh (Carved material) ----
             function buildSimulationMesh() {
                 if (!depthmapData) return;
                 const dw = depthmapData.width;
@@ -2699,19 +1473,17 @@
                 const pixels = depthmapData.pixels;
                 if (!pixels) return;
 
-                const mw = parseFloat(modelWidth.value) || 200;
-                const mh = parseFloat(modelHeight.value) || 200;
-                const zMax = parseFloat(mZ.value) || 5;
-                const origin = mOrigin.value;
                 const lw = parseFloat(layoutWidth.value) || 300;
                 const lh = parseFloat(layoutHeight.value) || 200;
+                const zMax = parseFloat(mZ.value) || 5;
+                const origin = mOrigin.value;
 
                 let ox = 0,
                     oy = 0;
-                if (origin === 'center') { ox = -mw / 2;
-                    oy = -mh / 2; } else if (origin === 'bottom-left') { ox = -lw / 2;
-                    oy = -lh / 2; } else if (origin === 'bottom-right') { ox = lw / 2 - mw;
-                    oy = -lh / 2; }
+                if (origin === 'center') { ox = -lw / 2;
+                    oy = -lh / 2; } else if (origin === 'bottom-left') { ox = 0;
+                    oy = 0; } else if (origin === 'bottom-right') { ox = -lw;
+                    oy = 0; }
 
                 const res = Math.min(meshResolution, Math.floor(Math.min(dw, dh) / 1.2));
                 const cols = Math.min(res, dw);
@@ -2734,16 +1506,13 @@
                     }
                 }
 
-                const centerY = oy + mh / 2;
-
                 for (let r = 0; r < rows; r++) {
                     for (let c = 0; c < cols; c++) {
                         const px = c / cols;
                         const py = 1 - (r / rows);
                         const z = heightMap[r * cols + c];
-                        const x = ox + px * mw;
-                        let y = oy + py * mh;
-                        y = 2 * centerY - y;
+                        const x = ox + px * lw;
+                        const y = oy + py * lh;
                         positions.push(x, y, z);
                     }
                 }
@@ -2763,49 +1532,21 @@
                 geo.setIndex(indices);
                 geo.computeVertexNormals();
 
+                // Wood-like material for carved simulation
                 const mat = new THREE.MeshStandardMaterial({
                     color: 0x8a6e4b,
-                    roughness: 0.55,
+                    roughness: 0.6,
                     metalness: 0.02,
                     side: THREE.DoubleSide,
                     flatShading: false,
                     emissive: new THREE.Color(0x1a120a),
-                    emissiveIntensity: 0.05,
+                    emissiveIntensity: 0.03,
                 });
 
                 simMesh = new THREE.Mesh(geo, mat);
-                // No rotation - keep same orientation as surface
                 simMesh.castShadow = true;
                 simMesh.receiveShadow = true;
                 scene.add(simMesh);
-            }
-
-            // ---- Build Offset Line ----
-            function buildOffsetLine() {
-                if (offsetLine) { scene.remove(offsetLine);
-                    offsetLine.geometry.dispose();
-                    offsetLine.material.dispose();
-                    offsetLine = null; }
-                if (!offsetApplied || !offsetPolygon || offsetPolygon.length < 3) return;
-
-                const pts = offsetPolygon;
-                const positions = [];
-                for (let i = 0; i < pts.length; i++) {
-                    positions.push(pts[i].x, pts[i].y, 0);
-                }
-                positions.push(pts[0].x, pts[0].y, 0);
-
-                const geo = new THREE.BufferGeometry();
-                geo.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
-
-                const mat = new THREE.LineBasicMaterial({
-                    color: 0xff6b6b,
-                    transparent: true,
-                    opacity: 0.8,
-                    linewidth: 2,
-                });
-                offsetLine = new THREE.Line(geo, mat);
-                scene.add(offsetLine);
             }
 
             // ---- Build Toolpath Line ----
@@ -2814,7 +1555,9 @@
                 const pts = toolpathPoints;
                 const positions = [];
 
-                for (let i = 0; i < pts.length; i++) {
+                // Sample points for performance but keep quality
+                const step = Math.max(1, Math.floor(pts.length / 80000));
+                for (let i = 0; i < pts.length; i += step) {
                     const p = pts[i];
                     positions.push(p.x, p.y, p.z);
                 }
@@ -2823,10 +1566,9 @@
                 geo.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
 
                 const mat = new THREE.LineBasicMaterial({
-                    color: 0xd4af37,
+                    color: 0x5b7cfa,
                     transparent: true,
-                    opacity: 0.5,
-                    linewidth: 1,
+                    opacity: 0.7,
                 });
                 toolpathLine = new THREE.Line(geo, mat);
                 scene.add(toolpathLine);
@@ -2852,12 +1594,33 @@
                 buildLayoutBorder();
 
                 if (imageLoaded && depthmapData) {
-                    buildSurfaceMesh();
-                    buildSimulationMesh();
+                    // In 'sim' view: show depthmap if not calculated, else show carved simulation
+                    if (viewMode === 'sim') {
+                        if (toolpathGenerated && toolpathPoints) {
+                            // Show carved simulation
+                            buildSimulationMesh();
+                            // Also show toolpath overlay in sim view (subtle)
+                            buildToolpathLine();
+                            if (toolpathLine) toolpathLine.material.opacity = 0.2;
+                        } else {
+                            // Show depthmap surface
+                            buildSurfaceMesh();
+                        }
+                    } else if (viewMode === 'toolpath') {
+                        // Only show toolpath
+                        if (toolpathGenerated && toolpathPoints) {
+                            buildToolpathLine();
+                        } else {
+                            // Show depthmap with toolpath overlay hint
+                            buildSurfaceMesh();
+                            // Show message in 3D? We'll use toast.
+                        }
+                    }
                 } else {
+                    // Empty state - just grid
                     const geo = new THREE.PlaneGeometry(300, 200, 1, 1);
                     const mat = new THREE.MeshStandardMaterial({
-                        color: isDarkTheme ? 0x222222 : 0xd0d0d0,
+                        color: 0x222222,
                         transparent: true,
                         opacity: 0.06,
                         side: THREE.DoubleSide,
@@ -2872,15 +1635,9 @@
                     scene.add(surfaceMesh);
                 }
 
-                buildOffsetLine();
-
-                if (toolpathGenerated && toolpathPoints) {
-                    buildToolpathLine();
-                }
-
                 applyViewMode();
 
-                if (!toolpathGenerated && imageLoaded) {
+                if (!toolpathGenerated && imageLoaded && viewMode === 'sim') {
                     const lw = parseFloat(layoutWidth.value) || 300;
                     const lh = parseFloat(layoutHeight.value) || 200;
                     const maxDim = Math.max(lw, lh, 50);
@@ -2893,66 +1650,46 @@
 
             // ---- View Mode ----
             function applyViewMode() {
-                // In 'sim' mode, only show simMesh and toolpath (not surface)
-                const showSurface = (simulationMode === 'surface');
-                const showSim = (simulationMode === 'sim');
-                const showToolpath = (simulationMode === 'toolpath' || simulationMode === 'sim');
-                const showOffset = true;
+                const isSimView = (viewMode === 'sim');
+                const isToolpathView = (viewMode === 'toolpath');
 
-                if (surfaceMesh) surfaceMesh.visible = showSurface;
-                if (simMesh) simMesh.visible = showSim;
-                if (toolpathLine) toolpathLine.visible = showToolpath;
-                if (offsetLine) offsetLine.visible = showOffset;
-                if (layoutBorderLine) layoutBorderLine.visible = true;
+                if (surfaceMesh) surfaceMesh.visible = isSimView;
+                if (simMesh) simMesh.visible = isSimView && toolpathGenerated;
+                if (toolpathLine) toolpathLine.visible = (isToolpathView || isSimView);
 
-                const map = { 'surface': 'viewSurface', 'toolpath': 'viewToolpath', 'sim': 'viewSim', 'offset': 'viewOffset' };
-                const btn = $(map[simulationMode]);
-                if (btn) {
-                    qsa('#viewport-controls .btn').forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
+                // If in toolpath view and no toolpath generated, show surface
+                if (isToolpathView && !toolpathGenerated && surfaceMesh) {
+                    surfaceMesh.visible = true;
+                }
+                if (isToolpathView && toolpathGenerated && surfaceMesh) {
+                    surfaceMesh.visible = false;
                 }
 
-                updateFloatingButton();
-
-                if (simulationMode === 'sim') {
-                    zoomControls.classList.remove('hidden-zoom');
-                    if (!isSimulationActive) {
-                        isSimulationActive = true;
-                        updateFloatingButton();
-                    }
-                } else {
-                    zoomControls.classList.add('hidden-zoom');
-                    if (isSimulationActive) {
-                        isSimulationActive = false;
-                        updateFloatingButton();
-                    }
-                }
+                // Update active button
+                qsa('#viewport-controls .btn').forEach(b => b.classList.remove('active'));
+                if (isSimView) $('viewSim').classList.add('active');
+                else $('viewToolpath').classList.add('active');
             }
 
             // ---- Viewport controls ----
-            $('viewSurface').addEventListener('click', function() {
-                simulationMode = 'surface';
-                applyViewMode();
-                showToast('🔮 Surface view');
+            $('viewSim').addEventListener('click', function() {
+                viewMode = 'sim';
+                update3DScene();
+                if (!toolpathGenerated) {
+                    showToast('🔮 Depthmap view — import and calculate toolpath for simulation');
+                } else {
+                    showToast('🔮 Simulation — carved material');
+                }
             });
 
             $('viewToolpath').addEventListener('click', function() {
-                simulationMode = 'toolpath';
-                applyViewMode();
-                showToast('📐 Toolpath view');
-            });
-
-            $('viewSim').addEventListener('click', function() {
-                simulationMode = 'sim';
-                applyViewMode();
-                setTimeout(fitView, 100);
-                showToast('🔮 Simulation view');
-            });
-
-            $('viewOffset').addEventListener('click', function() {
-                simulationMode = 'offset';
-                applyViewMode();
-                showToast('📐 Offset view');
+                viewMode = 'toolpath';
+                update3DScene();
+                if (toolpathGenerated) {
+                    showToast('📐 Toolpath view');
+                } else {
+                    showToast('📐 Generate toolpath first to see paths');
+                }
             });
 
             // ---- Fit View ----
@@ -2991,7 +1728,7 @@
             });
 
             // ============================================================
-            //  TOOLPATH GENERATOR
+            //  TOOLPATH GENERATOR — Optimized
             // ============================================================
             function generateToolpath() {
                 if (!imageLoaded || !depthmapData) {
@@ -3006,14 +1743,11 @@
 
                 const lw = parseFloat(layoutWidth.value) || 300;
                 const lh = parseFloat(layoutHeight.value) || 200;
-                const mw = parseFloat(modelWidth.value) || 200;
-                const mh = parseFloat(modelHeight.value) || 200;
                 const zMax = parseFloat(mZ.value) || 5;
                 const diam = toolDiameter;
                 const step = stepover;
                 const origin = mOrigin.value;
                 const style = toolpathStyle;
-                const matThickVal = parseFloat(matThick.value) || 8;
 
                 const dw = depthmapData.width;
                 const dh = depthmapData.height;
@@ -3022,13 +1756,12 @@
 
                 let ox = 0,
                     oy = 0;
-                if (origin === 'center') { ox = -mw / 2;
-                    oy = -mh / 2; } else if (origin === 'bottom-left') { ox = -lw / 2;
-                    oy = -lh / 2; } else if (origin === 'bottom-right') { ox = lw / 2 - mw;
-                    oy = -lh / 2; }
+                if (origin === 'center') { ox = -lw / 2;
+                    oy = -lh / 2; } else if (origin === 'bottom-left') { ox = 0;
+                    oy = 0; } else if (origin === 'bottom-right') { ox = -lw;
+                    oy = 0; }
 
-                let useOffset = offsetApplied && offsetDistance > 0 && offsetPolygon;
-                const spacing = Math.max(step * 0.75, 0.15);
+                const spacing = Math.max(step * 0.75, 0.12);
 
                 const pts = [];
                 gcodeChunks = [];
@@ -3050,7 +1783,7 @@
                     if (chunkSize >= maxChunkLines) flushChunk();
                 }
 
-                const safeZ = Math.max(matThickVal, zMax + 2);
+                const safeZ = zMax + 2;
 
                 gcodeChunks.push(`(Generated by DCam Pro)\nG21\nG90\nG0 Z${safeZ.toFixed(1)}\n`);
 
@@ -3058,29 +1791,13 @@
                 const previewPoints = [];
 
                 function getZ(x, y) {
-                    const relX = (x - ox) / mw;
-                    const relY = (y - oy) / mh;
+                    const relX = (x - ox) / lw;
+                    const relY = (y - oy) / lh;
                     if (relX < 0 || relX > 1 || relY < 0 || relY > 1) return 0;
                     const pi = Math.floor(Math.min(1, Math.max(0, relX)) * (dw - 1));
                     const pj = Math.floor(Math.min(1, Math.max(0, 1 - relY)) * (dh - 1));
                     const idx = pj * dw + pi;
                     return (pixels[idx] || 0) * zMax;
-                }
-
-                function isInsideOffset(x, y) {
-                    if (!useOffset) return true;
-                    const poly = offsetPolygon;
-                    let inside = false;
-                    for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) {
-                        const xi = poly[i].x,
-                            yi = poly[i].y;
-                        const xj = poly[j].x,
-                            yj = poly[j].y;
-                        const intersect = ((yi > y) !== (yj > y)) &&
-                            (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
-                        if (intersect) inside = !inside;
-                    }
-                    return inside;
                 }
 
                 let totalSteps = 0;
@@ -3092,27 +1809,9 @@
                     const xStep = spacing;
 
                     let xMin = 0,
-                        xMax = mw,
+                        xMax = lw,
                         yMin = 0,
-                        yMax = mh;
-                    if (useOffset) {
-                        const poly = offsetPolygon;
-                        let minX = Infinity,
-                            maxX = -Infinity,
-                            minY = Infinity,
-                            maxY = -Infinity;
-                        for (const p of poly) {
-                            if (p.x < minX) minX = p.x;
-                            if (p.x > maxX) maxX = p.x;
-                            if (p.y < minY) minY = p.y;
-                            if (p.y > maxY) maxY = p.y;
-                        }
-                        xMin = Math.max(0, minX - ox);
-                        xMax = Math.min(mw, maxX - ox);
-                        yMin = Math.max(0, minY - oy);
-                        yMax = Math.min(mh, maxY - oy);
-                    }
-
+                        yMax = lh;
                     totalSteps = Math.ceil((yMax - yMin) / yStep) + 1;
 
                     for (let y = yMin; y <= yMax + yStep * 0.01; y += yStep) {
@@ -3123,7 +1822,6 @@
                                 const xPos = Math.min(xMax, x);
                                 const mx = ox + xPos;
                                 const my = oy + yPos;
-                                if (!isInsideOffset(mx, my)) continue;
                                 const z = getZ(mx, my);
                                 if (first) {
                                     addLine(`G0 X${mx.toFixed(3)} Y${my.toFixed(3)}`);
@@ -3138,7 +1836,6 @@
                                 const xPos = Math.max(xMin, x);
                                 const mx = ox + xPos;
                                 const my = oy + yPos;
-                                if (!isInsideOffset(mx, my)) continue;
                                 const z = getZ(mx, my);
                                 if (first) {
                                     addLine(`G0 X${mx.toFixed(3)} Y${my.toFixed(3)}`);
@@ -3156,28 +1853,11 @@
                         loaderProgress.textContent = pct + '%';
                     }
                 } else {
+                    // 3D Offset
                     let minX = 0,
-                        maxX = mw,
+                        maxX = lw,
                         minY = 0,
-                        maxY = mh;
-                    if (useOffset) {
-                        const poly = offsetPolygon;
-                        let minXp = Infinity,
-                            maxXp = -Infinity,
-                            minYp = Infinity,
-                            maxYp = -Infinity;
-                        for (const p of poly) {
-                            if (p.x < minXp) minXp = p.x;
-                            if (p.x > maxXp) maxXp = p.x;
-                            if (p.y < minYp) minYp = p.y;
-                            if (p.y > maxYp) maxYp = p.y;
-                        }
-                        minX = Math.max(0, minXp - ox);
-                        maxX = Math.min(mw, maxXp - ox);
-                        minY = Math.max(0, minYp - oy);
-                        maxY = Math.min(mh, maxYp - oy);
-                    }
-
+                        maxY = lh;
                     const offsetStep = step * 0.7;
                     let loopCount = 0;
                     const maxLoops = Math.ceil(Math.min(maxX - minX, maxY - minY) / offsetStep / 2);
@@ -3189,7 +1869,6 @@
                             const xPos = Math.min(maxX, x);
                             const mx = ox + xPos;
                             const my = oy + maxY;
-                            if (!isInsideOffset(mx, my)) continue;
                             const z = getZ(mx, my);
                             if (first) { addLine(`G0 X${mx.toFixed(3)} Y${my.toFixed(3)}`);
                                 first = false; }
@@ -3201,7 +1880,6 @@
                             const yPos = Math.max(minY, y);
                             const mx = ox + maxX;
                             const my = oy + yPos;
-                            if (!isInsideOffset(mx, my)) continue;
                             const z = getZ(mx, my);
                             addLine(`G1 Z${z.toFixed(3)} F600`);
                             if (pointCount % 50 === 0) previewPoints.push({ x: mx, y: my, z: z });
@@ -3211,7 +1889,6 @@
                             const xPos = Math.max(minX, x);
                             const mx = ox + xPos;
                             const my = oy + minY;
-                            if (!isInsideOffset(mx, my)) continue;
                             const z = getZ(mx, my);
                             addLine(`G1 Z${z.toFixed(3)} F600`);
                             if (pointCount % 50 === 0) previewPoints.push({ x: mx, y: my, z: z });
@@ -3221,7 +1898,6 @@
                             const yPos = Math.min(maxY, y);
                             const mx = ox + minX;
                             const my = oy + yPos;
-                            if (!isInsideOffset(mx, my)) continue;
                             const z = getZ(mx, my);
                             addLine(`G1 Z${z.toFixed(3)} F600`);
                             if (pointCount % 50 === 0) previewPoints.push({ x: mx, y: my, z: z });
@@ -3255,16 +1931,17 @@
                 toolpathGenerated = true;
                 currentGcodeFull = gcodeChunks.join('');
 
-                $('calcStatus').innerHTML = `✅ ${totalPoints.toLocaleString()} points generated`;
+                const sizeKB = (currentGcodeFull.length / 1024).toFixed(1);
+                $('calcStatus').innerHTML = `✅ ${totalPoints.toLocaleString()} points (~${sizeKB} KB)`;
                 $('pointInfo').style.display = 'flex';
                 $('pointCount').textContent = totalPoints.toLocaleString();
                 $('exportBtn').disabled = false;
-                $('shareBtn').disabled = false;
 
                 showToast(`✅ Toolpath — ${totalPoints.toLocaleString()} points`);
 
                 update3DScene();
-                simulationMode = 'sim';
+                // Switch to sim view to show carved material
+                viewMode = 'sim';
                 applyViewMode();
                 setTimeout(fitView, 200);
 
@@ -3296,8 +1973,8 @@
                 setTimeout(() => {
                     try {
                         const result = generateToolpath();
-                        if (result && window.innerWidth < 820) {
-                            toggleSettings(false);
+                        if (!result) {
+                            calcStatus.textContent = '❌ Failed to generate toolpath.';
                         }
                     } catch (err) {
                         console.error(err);
@@ -3312,7 +1989,7 @@
                 }, 100);
             });
 
-            // ---- Export & Share ----
+            // ---- Export ----
             function getTapFile() {
                 if (!toolpathGenerated || gcodeChunks.length === 0) return null;
                 const name = exportName.value.trim() || generateDefaultFilename();
@@ -3335,88 +2012,40 @@
                 a.click();
                 document.body.removeChild(a);
                 setTimeout(() => URL.revokeObjectURL(url), 5000);
-                showToast(`💾 Saved ${fileData.filename}`);
-            });
-
-            $('shareBtn').addEventListener('click', async function() {
-                const fileData = getTapFile();
-                if (!fileData) {
-                    showToast('⚠️ Generate toolpath first.');
-                    return;
-                }
-
-                const tapBlob = new Blob([fileData.content], { type: 'application/octet-stream' });
-                const tapFile = new File([tapBlob], fileData.filename, { type: 'application/octet-stream' });
-
-                try {
-                    const shareData = { files: [tapFile] };
-                    if (navigator.share && navigator.canShare(shareData)) {
-                        await navigator.share(shareData);
-                        showToast('✅ Shared successfully!');
-                        return;
-                    }
-                } catch (e) {
-                    if (e.name !== 'AbortError') {
-                        console.warn('Share API failed:', e);
-                    } else return;
-                }
-
-                try {
-                    const tapUrl = URL.createObjectURL(tapBlob);
-                    const a = document.createElement('a');
-                    a.href = tapUrl;
-                    a.download = fileData.filename;
-                    document.body.appendChild(a);
-                    a.click();
-                    document.body.removeChild(a);
-                    setTimeout(() => URL.revokeObjectURL(tapUrl), 5000);
-                    showToast('📥 File downloaded (Share not available)');
-                } catch (e) {
-                    showToast('❌ Could not share or download.');
-                }
+                showToast(`💾 Downloaded ${fileData.filename}`);
+                $('exportStatus').textContent = `✅ Downloaded ${fileData.filename}`;
             });
 
             // ============================================================
             //  INIT
             // ============================================================
             function init() {
-                toggleSettings(true);
-                toggleSimulation(false);
-
                 const lw = parseFloat(layoutWidth.value) || 300;
                 const lh = parseFloat(layoutHeight.value) || 200;
-                aspectRatioLayout = lw / lh;
-                aspectRatioModel = 1;
 
                 setTimeout(() => {
                     initViewport();
                     update3DScene();
                     setTimeout(fitView, 500);
-                    setTimeout(setupCropHandles, 300);
                 }, 300);
 
-                showToast('✨ DCam Pro — Premium CNC Studio', 3000);
-
-                zoomControls.classList.add('hidden-zoom');
+                setStatus('Ready', 'ready');
+                showToast('✨ DCam Pro — Professional CNC Toolpath Studio', 3000);
 
                 setTimeout(() => {
                     exportName.value = generateDefaultFilename();
-                    customFilename = exportName.value;
                 }, 200);
 
-                updateOffsetDisplay();
-
-                offsetDist.addEventListener('change', function() {
-                    const val = parseFloat(this.value) || 0;
-                    if (val === 0) {
-                        offsetApplied = false;
-                        offsetPolygon = null;
-                        updateOffsetDisplay();
-                        if (viewportInitialized) update3DScene();
+                // Auto-fit when window resizes
+                window.addEventListener('resize', () => {
+                    if (viewportInitialized) {
+                        const container = $('viewport');
+                        const rect = container.getBoundingClientRect();
+                        camera.aspect = rect.width / rect.height;
+                        camera.updateProjectionMatrix();
+                        renderer.setSize(rect.width, rect.height);
                     }
                 });
-
-                setModelSizeEnabled(false);
             }
 
             // ---- Keyboard shortcuts ----
@@ -3427,23 +2056,10 @@
                 } else if (e.key === 'f' || e.key === 'F') {
                     e.preventDefault();
                     fitView();
-                } else if (e.key === 's' || e.key === 'S') {
-                    e.preventDefault();
-                    toggleSettings(!settingsVisible);
-                } else if (e.key === 'v' || e.key === 'V') {
-                    e.preventDefault();
-                    toggleSimulation(!isSimulationActive);
-                }
-            });
-
-            // ---- Resize ----
-            window.addEventListener('resize', () => {
-                if (viewportInitialized) {
-                    const container = $('viewport');
-                    const rect = container.getBoundingClientRect();
-                    camera.aspect = rect.width / rect.height;
-                    camera.updateProjectionMatrix();
-                    renderer.setSize(rect.width, rect.height);
+                } else if (e.key === '1') {
+                    $('viewSim').click();
+                } else if (e.key === '2') {
+                    $('viewToolpath').click();
                 }
             });
 
